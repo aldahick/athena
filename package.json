@@ -1,0 +1,23 @@
+{
+  "name": "@athena/core",
+  "version": "0.1.0",
+  "description": "Framework for GraphQL and REST APIs",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "test": "mocha dist/**/*.spec.js",
+    "test:dev": "tsc-watch --onSuccess \"npm run test\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/aldahick/athena.git"
+  },
+  "author": "Alex Hicks <alex@alexhicks.net> (https://alexhicks.net)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/aldahick/athena/issues"
+  },
+  "homepage": "https://github.com/aldahick/athena#readme",
+  "dependencies": {},
+  "devDependencies": {}
+}
