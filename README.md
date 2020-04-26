@@ -16,4 +16,4 @@ The only logic in my server-side codebase should be application-specific busines
 
 ## Usage
 
-See the project in `./demo`.
+See the demo codebase in `./src/demo`.
