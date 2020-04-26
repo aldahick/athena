@@ -1,10 +1,12 @@
 import { container } from "tsyringe";
 import { WebServer } from "./WebServer";
 import { ControllerRegistry } from "./registry/controller";
+import { ResolverRegistry } from "./registry/resolver";
 
 export class Application {
   readonly registry = {
-    controller: container.resolve(ControllerRegistry)
+    controller: container.resolve(ControllerRegistry),
+    resolver: container.resolve(ResolverRegistry)
   };
   readonly webServer = container.resolve(WebServer);
 

@@ -2,7 +2,7 @@ import * as express from "express";
 import { singleton, container } from "tsyringe";
 import { WebServer } from "../../WebServer";
 import { LoggerService } from "../../service/logger";
-import { HttpError } from "../../util";
+import { HttpError, DecoratorUtils } from "../../util";
 import { ControllerMetadata, CONTROLLER_METADATA_KEY } from "./controller.decorators";
 import { ControllerPayload } from "./ControllerPayload";
 
@@ -15,14 +15,14 @@ export class ControllerRegistry {
 
   register(controllers: any[]) {
     if (!this.webServer.express) {
-      this.logger.error("Express not instantiated before controller registration");
+      this.logger.error("controller.registerBeforeExpress");
       return;
     }
     for (const controller of controllers.map(c => container.resolve<any>(c))) {
-      const metadatas = this.getMetadatas(controller);
+      const metadatas = DecoratorUtils.get<ControllerMetadata[]>(CONTROLLER_METADATA_KEY, controller) || [];
       for (const metadata of metadatas) {
         const routeHandler = this.buildRouteHandler(controller[metadata.methodName].bind(controller));
-        this.logger.info(metadata, "register.controller");
+        this.logger.trace({ ...metadata, className: controller.name }, "register.controller");
         this.webServer.express[metadata.httpMethod](metadata.route, routeHandler);
       }
     }
@@ -51,10 +51,5 @@ export class ControllerRegistry {
         res.status(500).send({ error: err.message });
       }
     };
-  }
-
-  private getMetadatas(target: any) {
-    const metadatas: ControllerMetadata[] | undefined = Reflect.getMetadata(CONTROLLER_METADATA_KEY, target);
-    return metadatas || [];
   }
 }

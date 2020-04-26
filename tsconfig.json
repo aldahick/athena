@@ -9,7 +9,9 @@
     "inlineSourceMap": true,
     "strict": true,
     "experimentalDecorators": true,
-    "emitDecoratorMetadata": true
+    "emitDecoratorMetadata": true,
+    // unfortunately necessary since apollo-server-express's types are weird
+    "skipLibCheck": true
   },
   "include": ["src/*.ts", "src/**/*.ts"]
 }
