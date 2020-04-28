@@ -9,6 +9,7 @@ export * from "./registry/resolver";
 export * from "./service/config";
 export * from "./service/logger";
 export * from "./service/mongo";
+export * from "./service/typeorm";
 
 export * from "./util";
 

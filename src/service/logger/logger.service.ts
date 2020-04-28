@@ -4,7 +4,8 @@ import { singleton } from "tsyringe";
 @singleton()
 export class LoggerService {
   logger = bunyan.createLogger({
-    name: "athena"
+    name: "athena",
+    level: process.env.LOG_LEVEL as any || "info"
   });
 
   trace = this.logger.trace.bind(this.logger);

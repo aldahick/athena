@@ -16,6 +16,7 @@ const main = async () => {
     // __dirname = "~/dist/demo/"
     schemaDir: `${__dirname}/../../src/demo/graphql`
   });
+
   await app.start();
 };
 

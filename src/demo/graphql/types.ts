@@ -14,11 +14,18 @@ export type IQuery = {
    __typename?: 'Query';
   hello: Scalars['String'];
   users: Array<IUser>;
+  roles: Array<IRole>;
 };
 
 export type IUser = {
    __typename?: 'User';
   username: Scalars['String'];
+};
+
+export type IRole = {
+   __typename?: 'Role';
+  id: Scalars['Int'];
+  name: Scalars['String'];
 };
 
 export enum ICacheControlScope {
