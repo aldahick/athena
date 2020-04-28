@@ -5,8 +5,6 @@ import { ConfigUtils } from "../../util";
 dotenv.config();
 
 @singleton()
-export class ConfigService {
+export class BaseConfigService {
   httpPort = ConfigUtils.required("HTTP_PORT", Number);
-
-  mongoUrl = ConfigUtils.required("MONGO_URL");
 }
