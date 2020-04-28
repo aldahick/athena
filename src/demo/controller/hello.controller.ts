@@ -1,5 +1,4 @@
-import { singleton } from "tsyringe";
-import { controller } from "../../registry/controller";
+import { controller, singleton } from "../..";
 
 @singleton()
 export class GetHelloController {

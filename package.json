@@ -10,7 +10,8 @@
     "test": "mocha dist/**/*.spec.js",
     "test:dev": "tsc-watch --onSuccess \"npm run test\"",
     "demo": "node dist/demo/index",
-    "demo:dev": "tsc-watch --onSuccess \"npm run demo\""
+    "demo:dev": "tsc-watch --onSuccess \"npm run demo\"",
+    "demo:generate": "graphql-codegen --config src/demo/graphql/codegen.yml"
   },
   "repository": {
     "type": "git",
@@ -23,6 +24,7 @@
   },
   "homepage": "https://github.com/aldahick/athena#readme",
   "dependencies": {
+    "@typegoose/typegoose": "^7.0.0",
     "apollo-server-express": "^2.12.0",
     "bunyan": "^1.8.12",
     "cors": "^2.8.5",
@@ -31,6 +33,7 @@
     "fs-extra": "^9.0.0",
     "graphql": "^15.0.0",
     "lodash": "^4.17.15",
+    "mongoose": "^5.9.10",
     "recursive-readdir": "^2.2.2",
     "reflect-metadata": "^0.1.13",
     "source-map-support": "^0.5.19",
@@ -38,6 +41,9 @@
   },
   "devDependencies": {
     "@aldahick/eslint-rules": "^0.5.1",
+    "@graphql-codegen/cli": "^1.13.3",
+    "@graphql-codegen/typescript": "^1.13.3",
+    "@graphql-codegen/typescript-operations": "^1.13.3",
     "@types/bunyan": "^1.8.6",
     "@types/chai": "^4.2.11",
     "@types/cors": "^2.8.6",
@@ -45,6 +51,7 @@
     "@types/fs-extra": "^8.1.0",
     "@types/lodash": "^4.14.150",
     "@types/mocha": "^7.0.2",
+    "@types/mongoose": "^5.7.14",
     "@types/node": "^13.13.2",
     "@types/recursive-readdir": "^2.2.0",
     "@types/source-map-support": "^0.5.1",

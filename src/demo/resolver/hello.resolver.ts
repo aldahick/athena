@@ -1,5 +1,4 @@
-import { singleton } from "tsyringe";
-import { query } from "../../registry/resolver";
+import { singleton, query } from "../..";
 
 @singleton()
 export class HelloResolver {

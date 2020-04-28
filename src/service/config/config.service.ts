@@ -7,4 +7,6 @@ dotenv.config();
 @singleton()
 export class ConfigService {
   httpPort = ConfigUtils.required("HTTP_PORT", Number);
+
+  mongoUrl = ConfigUtils.required("MONGO_URL");
 }
