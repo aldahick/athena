@@ -10,17 +10,17 @@ The only logic in my server-side codebase should be application-specific busines
 ## Goals
 
 - [x] HTTP controllers
-  - Usage: `src/demo/controller`
+  - Usage: [`src/demo/controller`](https://github.com/aldahick/athena/tree/master/src/demo/controller)
 - [x] GraphQL resolvers
-  - Usage: `src/demo/resolver`
+  - Usage: [`src/demo/resolver`](https://github.com/aldahick/athena/tree/master/src/demo/resolver)
 - [x] SQL databases
-  - Usage: `src/demo/service/database`
+  - Usage: [`src/demo/service/database`](https://github.com/aldahick/athena/tree/master/src/demo/service/database)
 - [x] MongoDB databases
-  - Usage: `src/demo/service/database`
+  - Usage: [`src/demo/service/database`](https://github.com/aldahick/athena/tree/master/src/demo/service/database)
 - [ ] Authentication
 - [ ] Authorization
 - More, for sure
 
 ## Usage
 
-See the demo codebase in `./src/demo`.
+See the demo codebase in `src/demo`. (Pay attention to `src/demo/index.ts`, which initializes everything!)
