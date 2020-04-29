@@ -26,6 +26,9 @@ export class MongoService {
   }
 
   getModel<T extends AnyParamConstructor<any>>(model: T, collectionName: string) {
+    if (!this.connection) {
+      throw new Error("Not connected");
+    }
     return getModelForClass<any, T>(model, {
       existingConnection: this.connection,
       schemaOptions: { collection: collectionName }

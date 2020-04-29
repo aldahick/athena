@@ -1,0 +1,78 @@
+version: 2.1
+
+workflows:
+  version: 2.1
+  build_and_deploy:
+    jobs:
+      - install_dependencies
+      - build:
+          requires:
+            - install_dependencies
+      - lint:
+          requires:
+            - install_dependencies
+      - deploy:
+          requires:
+            - build
+            - lint
+          filters:
+            branches:
+              only: master
+
+jobs:
+  install_dependencies:
+    docker:
+      - image: circleci/node:12.16
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+          - v1-dependencies-{{ checksum "package-lock.json" }}
+          - v1-dependencies-
+      - run:
+          name: Install NPM modules
+          command: npm install
+      - save_cache:
+          paths:
+            - node_modules
+          key: v1-dependencies-{{ checksum "package-lock.json" }}
+  lint:
+    docker:
+      - image: circleci/node:12.16
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+          - v1-dependencies-{{ checksum "package-lock.json" }}
+      - run:
+          name: Lint
+          command: npm run lint
+  build:
+    docker:
+      - image: circleci/node:12.16
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+          - v1-dependencies-{{ checksum "package-lock.json" }}
+      - run:
+          name: Build
+          command: npm run build
+      - save_cache:
+          paths:
+            - dist
+          key: v1-dist
+  deploy:
+    docker:
+      - image: circleci/node:12.16
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+          - v1-dist
+      - run:
+          name: Setup NPM credentials
+          command: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > .npmrc
+      - run:
+          name: Publish package
+          command: npm publish

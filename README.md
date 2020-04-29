@@ -6,10 +6,14 @@ The only logic in my server-side codebase should be application-specific busines
 
 ## Goals
 
-- [ ] HTTP controllers
-- [ ] GraphQL resolvers
-- [ ] SQL databases
-- [ ] MongoDB databases
+- [x] HTTP controllers
+  - Usage: `src/demo/controller`
+- [x] GraphQL resolvers
+  - Usage: `src/demo/resolver`
+- [x] SQL databases
+  - Usage: `src/demo/service/database`
+- [x] MongoDB databases
+  - Usage: `src/demo/service/database`
 - [ ] Authentication
 - [ ] Authorization
 - More, for sure

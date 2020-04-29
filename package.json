@@ -1,5 +1,5 @@
 {
-  "name": "@athena/core",
+  "name": "@athenajs/core",
   "version": "0.1.0",
   "description": "Framework for GraphQL and REST APIs",
   "main": "dist/index.js",
