@@ -5,11 +5,13 @@ import { singleton, container } from "tsyringe";
 import { WebServer } from "../../WebServer";
 import { LoggerService } from "../../service/logger";
 import { DecoratorUtils } from "../../util";
+import { AuthRegistry } from "../auth";
 import { ResolverMetadata, RESOLVER_METADATA_KEY } from "./resolver.decorators";
 
 @singleton()
 export class ResolverRegistry {
   constructor(
+    private authRegistry: AuthRegistry,
     private logger: LoggerService,
     private webServer: WebServer
   ) { }
@@ -37,7 +39,8 @@ export class ResolverRegistry {
     )).join("\n");
     const apollo = new ApolloServer({
       typeDefs,
-      resolvers
+      resolvers,
+      context: ({ req }) => this.authRegistry.createContext(req)
     });
     apollo.applyMiddleware({ app: this.webServer.express });
   }

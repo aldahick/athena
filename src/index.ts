@@ -3,9 +3,11 @@ import "source-map-support/register";
 
 export { container, singleton } from "tsyringe";
 
+export * from "./registry/auth";
 export * from "./registry/controller";
 export * from "./registry/resolver";
 
+export * from "./service/auth";
 export * from "./service/config";
 export * from "./service/logger";
 export * from "./service/mongo";

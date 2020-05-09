@@ -1,4 +1,4 @@
-import { query, singleton } from "../..";
+import { query, singleton, guard } from "../..";
 import { IQuery } from "../graphql/types";
 import { DatabaseService } from "../service/database";
 
@@ -8,6 +8,10 @@ export class RoleResolver {
     private db: DatabaseService
   ) { }
 
+  @guard({
+    resource: "role",
+    action: "readAny"
+  })
   @query()
   roles(): Promise<IQuery["roles"]> {
     return this.db.roles.find();

@@ -1,7 +1,8 @@
 import { Connection, createConnection } from "mongoose";
-import { getModelForClass } from "@typegoose/typegoose";
+import { getModelForClass, prop } from "@typegoose/typegoose";
 import { AnyParamConstructor } from "@typegoose/typegoose/lib/types";
 import { singleton } from "tsyringe";
+import * as randomstring from "randomstring";
 import { LoggerService } from "../logger";
 
 @singleton()
@@ -18,7 +19,8 @@ export class MongoService {
       useNewUrlParser: true,
       useUnifiedTopology: true
     });
-    this.logger.info("connected to mongo database");
+    const { host } = new URL(url);
+    this.logger.info({ host }, "connected to mongo database");
   }
 
   async close() {
@@ -34,4 +36,10 @@ export class MongoService {
       schemaOptions: { collection: collectionName }
     });
   }
+
+  static idProp = (...props: Parameters<typeof prop>) => prop({
+    default: () => randomstring.generate(16),
+    required: true,
+    ...props
+  });
 }

@@ -15,7 +15,8 @@ export class TypeormService {
       synchronize: true,
       ...options
     });
-    this.logger.info(`connected to ${options.type} database`);
+    const { host } = ("url" in options && options.url) ? new URL(options.url) : { host: ("host" in options ? options.host : "") };
+    this.logger.info({ host }, `connected to ${options.type} database`);
   }
 
   getRepository<T extends Function>(model: T): Repository<T["prototype"]> {

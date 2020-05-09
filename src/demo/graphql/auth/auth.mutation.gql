@@ -1,0 +1,5 @@
+# the only one that isn't "extend type"
+type Mutation {
+  # obviously you'd normally actually authenticate, but this _is_ a demo
+  createAuthToken(username: String!): String!
+}

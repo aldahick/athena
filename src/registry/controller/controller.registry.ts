@@ -3,12 +3,14 @@ import { singleton, container } from "tsyringe";
 import { WebServer } from "../../WebServer";
 import { LoggerService } from "../../service/logger";
 import { HttpError, DecoratorUtils } from "../../util";
+import { AuthRegistry } from "../auth";
 import { ControllerMetadata, CONTROLLER_METADATA_KEY } from "./controller.decorators";
 import { ControllerPayload } from "./ControllerPayload";
 
 @singleton()
 export class ControllerRegistry {
   constructor(
+    private authRegistry: AuthRegistry,
     private logger: LoggerService,
     private webServer: WebServer
   ) { }
@@ -33,7 +35,11 @@ export class ControllerRegistry {
       try {
         let result: any;
         try {
-          result = await callback({ req, res });
+          result = await callback({
+            req,
+            res,
+            context: this.authRegistry.createContext(req)
+          });
         } catch (err) {
           if (err instanceof HttpError) {
             res.status(err.status).send({ error: err.message });

@@ -10,16 +10,29 @@ export type Scalars = {
   Upload: File;
 };
 
+export enum ICacheControlScope {
+  Public = 'PUBLIC',
+  Private = 'PRIVATE'
+}
+
+/** the only one that isn't "extend type" */
+export type IMutation = {
+   __typename?: 'Mutation';
+  /** obviously you'd normally actually authenticate, but this _is_ a demo */
+  createAuthToken: Scalars['String'];
+};
+
+
+/** the only one that isn't "extend type" */
+export type IMutationCreateAuthTokenArgs = {
+  username: Scalars['String'];
+};
+
 export type IQuery = {
    __typename?: 'Query';
   hello: Scalars['String'];
-  users: Array<IUser>;
   roles: Array<IRole>;
-};
-
-export type IUser = {
-   __typename?: 'User';
-  username: Scalars['String'];
+  users: Array<IUser>;
 };
 
 export type IRole = {
@@ -28,9 +41,10 @@ export type IRole = {
   name: Scalars['String'];
 };
 
-export enum ICacheControlScope {
-  Public = 'PUBLIC',
-  Private = 'PRIVATE'
-}
 
+export type IUser = {
+   __typename?: 'User';
+  id: Scalars['String'];
+  username: Scalars['String'];
+};
 
