@@ -24,7 +24,6 @@ export class DemoAuthContext implements BaseAuthContext {
 
   async isAuthorized(check: AuthCheck): Promise<boolean> {
     await this.fetchUserAndRoles();
-    console.log(this.payload, this._user, this.roles);
     if (!this.roles) { return false; }
     const authService = container.resolve(AuthService);
     return authService.isCheckValid(_.flatten(
@@ -44,7 +43,6 @@ export class DemoAuthContext implements BaseAuthContext {
     const db = container.resolve(DatabaseService);
     // findById() returns Promise<User | null> so it's just dandy here
     this._user = await db.users.findById(this.payload.userId);
-    console.log(this._user, this.payload.userId);
     if (this._user) {
       this.roles = await db.roles.createQueryBuilder("role")
         .leftJoinAndSelect("role.permissions", "rolePermission")
