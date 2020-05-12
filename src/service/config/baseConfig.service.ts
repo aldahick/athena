@@ -6,6 +6,11 @@ dotenv.config();
 
 @singleton()
 export class BaseConfigService {
-  httpPort = ConfigUtils.required("HTTP_PORT", Number);
-  jwtKey = ConfigUtils.required("JWT_KEY");
+  readonly environment = ConfigUtils.optional("NODE_ENV") || "development";
+  readonly httpPort = ConfigUtils.required("HTTP_PORT", Number);
+  readonly jwtKey = ConfigUtils.required("JWT_KEY");
+
+  get inDevelopment() {
+    return this.environment === "development";
+  }
 }

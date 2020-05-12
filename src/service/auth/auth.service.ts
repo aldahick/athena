@@ -14,8 +14,12 @@ export class AuthService {
     private config: BaseConfigService
   ) { }
 
-  verifyToken(token: string): object {
-    return jwt.verify(token, this.config.jwtKey) as object;
+  verifyToken(token: string): object | undefined {
+    try {
+      return jwt.verify(token, this.config.jwtKey) as object;
+    } catch (err) {
+      return undefined;
+    }
   }
 
   signToken(payload: object): string {
