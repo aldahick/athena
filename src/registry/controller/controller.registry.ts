@@ -30,7 +30,7 @@ export class ControllerRegistry {
     }
   }
 
-  private buildRouteHandler(callback: (payload: ControllerPayload) => Promise<any>) {
+  private buildRouteHandler(callback: (payload: ControllerPayload<any>) => Promise<any>) {
     return async (req: express.Request, res: express.Response) => {
       try {
         let result: any;

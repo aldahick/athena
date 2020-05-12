@@ -8,7 +8,7 @@ import { AuthCheck } from "./AuthCheck";
 
 export const guard = (check: AuthCheck): MethodDecorator => (target: any, key, descriptor: TypedPropertyDescriptor<any>) => {
   const old: Function = target[key];
-  descriptor.value = async function(...args: [any, any, BaseAuthContext] | [ControllerPayload]) {
+  descriptor.value = async function(...args: [any, any, BaseAuthContext] | [ControllerPayload<any>]) {
     let context: BaseAuthContext;
     if (args.length === 1) { // controller
       context = args[0].context;

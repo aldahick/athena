@@ -20,7 +20,7 @@ export class MongoService {
       useUnifiedTopology: true
     });
     const { host } = new URL(url);
-    this.logger.info({ host }, "connected to mongo database");
+    this.logger.info({ host }, "connect.db.mongo");
   }
 
   async close() {

@@ -1,8 +1,8 @@
 import * as express from "express";
 import { BaseAuthContext } from "../auth";
 
-export interface ControllerPayload {
+export interface ControllerPayload<AuthContext extends BaseAuthContext> {
   req: express.Request;
   res: express.Response;
-  context: BaseAuthContext;
+  context: AuthContext;
 }
