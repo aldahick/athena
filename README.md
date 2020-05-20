@@ -7,6 +7,8 @@ I'm tired of rebuilding the same architecture over and over for REST & GraphQL A
 
 The only logic in my server-side codebase should be application-specific business logic.
 
+[Here's the changelog.](https://github.com/aldahick/athena/tree/master/CHANGELOG.md)
+
 ## Goals
 
 - [x] HTTP controllers
@@ -17,8 +19,12 @@ The only logic in my server-side codebase should be application-specific busines
   - Usage: [`src/demo/service/database`](https://github.com/aldahick/athena/tree/master/src/demo/service/database)
 - [x] MongoDB databases
   - Usage: [`src/demo/service/database`](https://github.com/aldahick/athena/tree/master/src/demo/service/database)
-- [ ] Authentication
-- [ ] Authorization
+- [x] Authentication
+  - Usage: [`src/demo/manager/auth`](https://github.com/aldahick/athena/tree/master/src/demo/manager/auth)
+- [x] Authorization
+  - Usage:
+    - [`src/demo/manager/auth`](https://github.com/aldahick/athena/tree/master/src/demo/manager/auth)
+    - [`src/demo/resolver/role.resolver.ts`](https://github.com/aldahick/athena/tree/master/src/demo/resolver/role.resolver.ts)
 - More, for sure
 
 ## Usage
