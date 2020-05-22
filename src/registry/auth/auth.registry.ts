@@ -31,9 +31,11 @@ export class AuthRegistry {
         isAuthorized: () => Promise.resolve(false)
       };
     }
-    const [bearerPrefix, token] = (req.headers.authorization || "").split(" ");
+    const [bearerPrefix, bearerToken] = (req.headers.authorization || "").split(" ");
+    const queryToken = req.query.token?.toString();
+    const token = bearerPrefix.toLowerCase() === "bearer" && bearerToken ? bearerToken : queryToken;
     let payload: any;
-    if (bearerPrefix.toLowerCase() === "bearer" && token) {
+    if (token) {
       try {
         payload = this.authService.verifyToken(token);
       } catch (err) {

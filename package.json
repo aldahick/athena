@@ -12,7 +12,8 @@
     "test:dev": "tsc-watch --onSuccess \"npm run test\"",
     "demo": "node dist/demo/index",
     "demo:dev": "tsc-watch --onSuccess \"npm run demo\" | bunyan",
-    "demo:generate": "graphql-codegen --config src/demo/graphql/codegen.yml"
+    "demo:generate": "graphql-codegen --config src/demo/graphql/codegen.yml",
+    "prepublishOnly": "npm run build"
   },
   "repository": {
     "type": "git",
