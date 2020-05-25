@@ -1,4 +1,4 @@
-import { BaseConfigService, singleton, ConfigUtils } from "../../..";
+import { BaseConfigService, ConfigUtils,singleton } from "../../..";
 
 @singleton()
 export class ConfigService extends BaseConfigService {

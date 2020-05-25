@@ -1,9 +1,8 @@
 import "reflect-metadata";
-
+import { Application, container } from "..";
 import * as controllers from "./controller";
 import * as resolvers from "./resolver";
 import { DatabaseService } from "./service/database";
-import { Application, container } from "..";
 
 const main = async () => {
   const app = new Application();
@@ -20,4 +19,5 @@ const main = async () => {
   await app.start();
 };
 
+// eslint-disable-next-line no-console
 main().catch(console.error);

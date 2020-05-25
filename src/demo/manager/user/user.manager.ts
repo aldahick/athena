@@ -1,7 +1,7 @@
 import { singleton } from "tsyringe";
-import { DatabaseService } from "../../service/database";
-import { User } from "../../model/mongo/User";
 import { HttpError } from "../../../util";
+import { User } from "../../model/mongo/User";
+import { DatabaseService } from "../../service/database";
 
 @singleton()
 export class UserManager {

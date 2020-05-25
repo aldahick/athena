@@ -2,8 +2,8 @@ import { ReturnModelType } from "@typegoose/typegoose";
 import { Repository } from "typeorm";
 import { MongoService, singleton, TypeormService } from "../../..";
 import { User } from "../../model/mongo/User";
-import { ConfigService } from "../config";
 import * as postgresModels from "../../model/postgres";
+import { ConfigService } from "../config";
 
 @singleton()
 export class DatabaseService {

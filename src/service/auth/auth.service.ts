@@ -2,8 +2,8 @@ import { AccessControl } from "accesscontrol";
 import * as jwt from "jsonwebtoken";
 import * as _ from "lodash";
 import { singleton } from "tsyringe";
-import { BaseConfigService } from "../config";
 import { AuthCheck } from "../../registry/auth";
+import { BaseConfigService } from "../config";
 
 /**
  * Various utilities related to tokens & permissions
@@ -14,15 +14,15 @@ export class AuthService {
     private config: BaseConfigService
   ) { }
 
-  verifyToken(token: string): object | undefined {
+  verifyToken(token: string): {[key: string]: any} | undefined {
     try {
-      return jwt.verify(token, this.config.jwtKey) as object;
+      return jwt.verify(token, this.config.jwtKey) as {[key: string]: any};
     } catch (err) {
       return undefined;
     }
   }
 
-  signToken(payload: object): string {
+  signToken(payload: {[key: string]: any}): string {
     return jwt.sign(payload, this.config.jwtKey);
   }
 

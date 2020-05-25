@@ -1,9 +1,9 @@
-import * as http from "http";
 import * as cors from "cors";
 import * as express from "express";
+import * as http from "http";
 import { singleton } from "tsyringe";
-import { LoggerService } from "./service/logger";
 import { BaseConfigService } from "./service/config";
+import { LoggerService } from "./service/logger";
 
 @singleton()
 export class WebServer {

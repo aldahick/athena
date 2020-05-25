@@ -1,13 +1,13 @@
 import { container } from "tsyringe";
-import { ControllerPayload } from "../controller";
 import { HttpError } from "../../util";
+import { ControllerPayload } from "../controller";
 import { AuthRegistry } from "./auth.registry";
+import { AuthCheck } from "./AuthCheck";
 import { AuthProviderClass } from "./AuthProvider";
 import { BaseAuthContext } from "./BaseAuthContext";
-import { AuthCheck } from "./AuthCheck";
 
 export const guard = (check: AuthCheck): MethodDecorator => (target: any, key, descriptor: TypedPropertyDescriptor<any>) => {
-  const old: Function = target[key];
+  const old: (...args: any[]) => any = target[key];
   descriptor.value = async function(...args: [any, any, BaseAuthContext] | [ControllerPayload<any>]) {
     let context: BaseAuthContext;
     if (args.length === 1) { // controller

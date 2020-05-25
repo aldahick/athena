@@ -1,10 +1,10 @@
 import * as express from "express";
-import { singleton, container } from "tsyringe";
-import { WebServer } from "../../WebServer";
+import { container,singleton } from "tsyringe";
 import { LoggerService } from "../../service/logger";
-import { HttpError, DecoratorUtils } from "../../util";
+import { DecoratorUtils,HttpError } from "../../util";
+import { WebServer } from "../../WebServer";
 import { AuthRegistry } from "../auth";
-import { ControllerMetadata, CONTROLLER_METADATA_KEY } from "./controller.decorators";
+import { CONTROLLER_METADATA_KEY,ControllerMetadata } from "./controller.decorators";
 import { ControllerPayload } from "./ControllerPayload";
 
 @singleton()

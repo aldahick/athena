@@ -1,4 +1,4 @@
-import { query, singleton, guard } from "../..";
+import { guard,query, singleton } from "../..";
 import { IQuery } from "../graphql/types";
 import { DatabaseService } from "../service/database";
 

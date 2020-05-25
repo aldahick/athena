@@ -14,7 +14,7 @@ export const mutation = (type?: string) => buildMetadataSetter(key => `Mutation.
 
 export const resolver = (type: string) => buildMetadataSetter(() => type);
 
-const buildMetadataSetter = (buildType: (key: string) => string) => (target: object, key: string | symbol) => {
+const buildMetadataSetter = (buildType: (key: string) => string) => (target: any, key: string | symbol) => {
   const [type, field] = buildType(key.toString()).split(".");
   DecoratorUtils.push<ResolverMetadata>(RESOLVER_METADATA_KEY, {
     methodName: key.toString(),

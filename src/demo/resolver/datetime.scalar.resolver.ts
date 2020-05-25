@@ -1,5 +1,5 @@
+import { GraphQLError,GraphQLScalarType } from "graphql";
 import { singleton } from "tsyringe";
-import { GraphQLScalarType, GraphQLError } from "graphql";
 import { resolver } from "../..";
 
 @singleton()

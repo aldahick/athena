@@ -1,8 +1,8 @@
-import { Connection, createConnection } from "mongoose";
 import { getModelForClass, prop } from "@typegoose/typegoose";
 import { AnyParamConstructor } from "@typegoose/typegoose/lib/types";
-import { singleton } from "tsyringe";
+import { Connection, createConnection } from "mongoose";
 import * as randomstring from "randomstring";
+import { singleton } from "tsyringe";
 import { LoggerService } from "../logger";
 
 @singleton()

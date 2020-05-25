@@ -1,4 +1,4 @@
-import { prop, arrayProp } from "@typegoose/typegoose";
+import { arrayProp,prop } from "@typegoose/typegoose";
 import { MongoService } from "../../../..";
 
 export class User {

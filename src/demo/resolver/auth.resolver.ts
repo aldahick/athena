@@ -1,8 +1,8 @@
 import { singleton } from "tsyringe";
 import { mutation } from "../..";
-import { IMutationCreateAuthTokenArgs, IMutation } from "../graphql/types";
-import { UserManager } from "../manager/user";
+import { IMutation,IMutationCreateAuthTokenArgs } from "../graphql/types";
 import { AuthManager } from "../manager/auth";
+import { UserManager } from "../manager/user";
 
 @singleton()
 export class AuthResolver {

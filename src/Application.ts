@@ -1,7 +1,7 @@
 import { container } from "tsyringe";
-import { WebServer } from "./WebServer";
 import { ControllerRegistry } from "./registry/controller";
 import { ResolverRegistry } from "./registry/resolver";
+import { WebServer } from "./WebServer";
 
 export class Application {
   readonly registry = {

@@ -1,8 +1,8 @@
-import { singleton } from "tsyringe";
 import { Request } from "express";
-import { authProvider, AuthProvider } from "../../..";
-import { User } from "../../model/mongo/User";
+import { singleton } from "tsyringe";
+import { AuthProvider,authProvider } from "../../..";
 import { AuthService } from "../../../service/auth";
+import { User } from "../../model/mongo/User";
 import { DemoAuthContext } from "./DemoAuthContext";
 import { DemoTokenPayload } from "./DemoTokenPayload";
 

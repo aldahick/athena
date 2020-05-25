@@ -1,4 +1,4 @@
-import { singleton, query } from "../..";
+import { query,singleton } from "../..";
 
 @singleton()
 export class HelloResolver {

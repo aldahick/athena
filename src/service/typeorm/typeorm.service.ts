@@ -1,5 +1,5 @@
 import { singleton } from "tsyringe";
-import { createConnection, Connection, ConnectionOptions, Repository } from "typeorm";
+import { Connection, ConnectionOptions, createConnection, Repository } from "typeorm";
 import { LoggerService } from "../logger";
 
 @singleton()
@@ -19,7 +19,7 @@ export class TypeormService {
     this.logger.info({ host }, `connect.db.${options.type}`);
   }
 
-  getRepository<T extends Function>(model: T): Repository<T["prototype"]> {
+  getRepository<T extends { new(): any; prototype: any }>(model: T): Repository<T["prototype"]> {
     if (!this.connection) {
       throw new Error("Not connected");
     }

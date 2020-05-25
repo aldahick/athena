@@ -1,10 +1,10 @@
 import { Request } from "express";
 import * as _ from "lodash";
 import { container } from "tsyringe";
-import { User } from "../../model/mongo/User";
 import { AuthCheck, AuthService, BaseAuthContext } from "../../..";
-import { DatabaseService } from "../../service/database";
+import { User } from "../../model/mongo/User";
 import { Role } from "../../model/postgres";
+import { DatabaseService } from "../../service/database";
 import { DemoTokenPayload } from "./DemoTokenPayload";
 
 export class DemoAuthContext implements BaseAuthContext {
