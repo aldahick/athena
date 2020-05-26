@@ -1,3 +1,7 @@
+### 0.3.0
+
+- Upgraded to Typescript 3.9.3
+
 ### 0.2.4
 
 - Added `BaseConfigService.environment`
