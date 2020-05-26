@@ -19,9 +19,7 @@ The only logic in my server-side codebase should be application-specific busines
   - Usage: [`src/demo/service/database`](https://github.com/aldahick/athena/tree/master/src/demo/service/database)
 - [x] MongoDB databases
   - Usage: [`src/demo/service/database`](https://github.com/aldahick/athena/tree/master/src/demo/service/database)
-- [x] Authentication
-  - Usage: [`src/demo/manager/auth`](https://github.com/aldahick/athena/tree/master/src/demo/manager/auth)
-- [x] Authorization
+- [x] Authentication / Authorization
   - Usage:
     - [`src/demo/manager/auth`](https://github.com/aldahick/athena/tree/master/src/demo/manager/auth)
     - [`src/demo/resolver/role.resolver.ts`](https://github.com/aldahick/athena/tree/master/src/demo/resolver/role.resolver.ts)
