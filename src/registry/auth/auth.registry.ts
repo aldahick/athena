@@ -32,7 +32,7 @@ export class AuthRegistry {
       };
     }
     const [bearerPrefix, bearerToken] = (req.headers.authorization || "").split(" ");
-    const queryToken = req.query.token?.toString();
+    const queryToken = (req.query || (req as any)._query).token?.toString();
     const token = bearerPrefix.toLowerCase() === "bearer" && bearerToken ? bearerToken : queryToken;
     let payload: any;
     if (token) {
