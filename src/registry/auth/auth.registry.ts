@@ -25,15 +25,20 @@ export class AuthRegistry {
   }
 
   createContext(req: express.Request): BaseAuthContext {
+    const [bearerPrefix, bearerToken] = (req.headers.authorization || "").split(" ");
+    const queryToken = req.query.token?.toString();
+    const token = bearerPrefix.toLowerCase() === "bearer" && bearerToken ? bearerToken : queryToken;
+    return this.createContextFromToken(req, token);
+  }
+
+  /** some protocols don't provide a particularly sane way of getting token from request */
+  createContextFromToken(req: express.Request, token: string | undefined): BaseAuthContext {
     if (!this.provider) {
       return {
         req,
         isAuthorized: () => Promise.resolve(false)
       };
     }
-    const [bearerPrefix, bearerToken] = (req.headers.authorization || "").split(" ");
-    const queryToken = (req.query || (req as any)._query).token?.toString();
-    const token = bearerPrefix.toLowerCase() === "bearer" && bearerToken ? bearerToken : queryToken;
     let payload: any;
     if (token) {
       try {

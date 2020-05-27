@@ -4,6 +4,7 @@ import { LoggerService } from "../../service/logger";
 import { DecoratorUtils } from "../../util";
 import { WebServer } from "../../WebServer";
 import { AuthRegistry } from "../auth";
+import { AuthWebsocketHandler } from "./auth.websocket";
 import { WEBSOCKET_METADATA_KEY,WebsocketMetadata } from "./websocket.decorators";
 import { WebsocketPayload } from "./WebsocketPayload";
 
@@ -28,14 +29,20 @@ export class WebsocketRegistry {
       throw new Error("Web server must be started before websockets can be registered");
     }
     this.io = socketIO(this.webServer.httpServer);
-    this.logger.trace("started socket.io server");
 
-    const eventHandlers = eventHandlerClasses.map(c => container.resolve<any>(c));
+    const eventHandlers = eventHandlerClasses.map(c => container.resolve<any>(c)).concat([
+      container.resolve(AuthWebsocketHandler)
+    ]);
     for (const eventHandler of eventHandlers) {
       const metadatas = DecoratorUtils.get<WebsocketMetadata[]>(WEBSOCKET_METADATA_KEY, eventHandler) || [];
       for (const { eventName, methodName } of metadatas) {
         const handler = eventHandler[methodName].bind(eventHandler);
         this.eventHandlers[eventName] = handler;
+        this.logger.trace({
+          eventName,
+          methodName,
+          className: eventHandler.constructor.name,
+        }, "register.websocketEvent");
       }
     }
 
@@ -43,16 +50,21 @@ export class WebsocketRegistry {
   }
 
   private onConnection = (socket: SocketIO.Socket) => {
-    const context = this.authRegistry.createContext(socket.request);
+    (socket as any).context = this.authRegistry.createContextFromToken(socket.request, undefined);
     for (const [eventName, eventHandler] of Object.entries(this.eventHandlers)) {
-      socket.on(eventName, data => {
-        eventHandler({ socket, data, context }).then(res => {
+      socket.on(eventName, async data => {
+        try {
+          const res = await eventHandler({
+            socket,
+            data,
+            context: (socket as any).context
+          });
           if (res !== undefined) {
             socket.emit(eventName, res);
           }
-        }).catch(err => {
+        } catch (err) {
           this.logger.error(err);
-        });
+        }
       });
     }
   };
