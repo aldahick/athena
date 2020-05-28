@@ -1,3 +1,4 @@
+import * as joi from "@hapi/joi";
 import * as socketIO from "socket.io";
 import { container,singleton } from "tsyringe";
 import { LoggerService } from "../../service/logger";
@@ -8,13 +9,14 @@ import { AuthWebsocketHandler } from "./auth.websocket";
 import { WEBSOCKET_METADATA_KEY,WebsocketMetadata } from "./websocket.decorators";
 import { WebsocketPayload } from "./WebsocketPayload";
 
-type EventHandler = (payload: WebsocketPayload<any, any>) => Promise<any>;
-
 @singleton()
 export class WebsocketRegistry {
   private io?: SocketIO.Server;
   private eventHandlers: {
-    [eventName: string]: EventHandler;
+    [eventName: string]: {
+      validationSchema?: joi.Schema;
+      handle: (payload: WebsocketPayload<any, any>) => Promise<any>;
+    };
   } = {};
 
   constructor(
@@ -35,9 +37,11 @@ export class WebsocketRegistry {
     ]);
     for (const eventHandler of eventHandlers) {
       const metadatas = DecoratorUtils.get<WebsocketMetadata[]>(WEBSOCKET_METADATA_KEY, eventHandler) || [];
-      for (const { eventName, methodName } of metadatas) {
-        const handler = eventHandler[methodName].bind(eventHandler);
-        this.eventHandlers[eventName] = handler;
+      for (const { eventName, methodName, validationSchema } of metadatas) {
+        this.eventHandlers[eventName] = {
+          validationSchema,
+          handle: eventHandler[methodName].bind(eventHandler)
+        };
         this.logger.trace({
           eventName,
           methodName,
@@ -51,10 +55,17 @@ export class WebsocketRegistry {
 
   private onConnection = (socket: SocketIO.Socket) => {
     (socket as any).context = this.authRegistry.createContextFromToken(socket.request, undefined);
-    for (const [eventName, eventHandler] of Object.entries(this.eventHandlers)) {
+    for (const [eventName, { validationSchema, handle }] of Object.entries(this.eventHandlers)) {
       socket.on(eventName, async data => {
         try {
-          const res = await eventHandler({
+          if (validationSchema) {
+            try {
+              await validationSchema.validateAsync(data);
+            } catch (validationError) {
+              return socket.emit("athena.error", validationError.message);
+            }
+          }
+          const res = await handle({
             socket,
             data,
             context: (socket as any).context

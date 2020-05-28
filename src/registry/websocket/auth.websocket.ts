@@ -1,3 +1,4 @@
+import * as joi from "@hapi/joi";
 import { singleton } from "tsyringe";
 import { AuthRegistry,BaseAuthContext } from "../auth";
 import { websocketEvent } from "./websocket.decorators";
@@ -9,7 +10,7 @@ export class AuthWebsocketHandler {
     private authRegistry: AuthRegistry
   ) { }
 
-  @websocketEvent("athena.auth")
+  @websocketEvent("athena.auth", joi.string().required())
   async auth({ data, socket }: WebsocketPayload<string, BaseAuthContext>) {
     (socket as any).context = this.authRegistry.createContextFromToken(socket.request, data.toString());
     return true;
