@@ -11,7 +11,7 @@ import { WebsocketPayload } from "./WebsocketPayload";
 
 @singleton()
 export class WebsocketRegistry {
-  private io?: SocketIO.Server;
+  io!: SocketIO.Server;
   private eventHandlers: {
     [eventName: string]: {
       validationSchema?: joi.Schema;
@@ -74,7 +74,7 @@ export class WebsocketRegistry {
             socket.emit(eventName, res);
           }
         } catch (err) {
-          this.logger.error(err);
+          socket.emit("athena.error", err.message);
         }
       });
     }
