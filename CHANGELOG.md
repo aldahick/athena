@@ -1,3 +1,20 @@
+### 0.4.3
+
+- Changed `Application` to emit `start` and `stop` events
+
+### 0.4.2
+
+- Improved websocket error handling
+- Made `WebsocketRegistry.io` public
+
+### 0.4.1
+
+- Implemented websocket data validation
+
+### 0.4.0
+
+- Implemented websocket support
+
 ### 0.3.0
 
 - Upgraded to Typescript 3.9.3
@@ -11,11 +28,11 @@
 
 ### 0.2.3
 
-- Allow resolvers to be properties, not just methods (actually)
+- Allowed resolvers to be properties, not just methods (actually)
 
 ### 0.2.2
 
-- Allow resolvers to be properties, not just methods
+- Allowed resolvers to be properties, not just methods
 
 ### 0.2.1
 
