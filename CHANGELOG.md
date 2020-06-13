@@ -1,3 +1,11 @@
+# Changelog
+
+## Versions
+
+### 0.4.4
+
+- Bump some dependencies
+
 ### 0.4.3
 
 - Changed `Application` to emit `start` and `stop` events
