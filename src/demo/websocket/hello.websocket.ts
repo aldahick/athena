@@ -5,7 +5,7 @@ import { websocketEvent, WebsocketPayload } from "../..";
 @singleton()
 export class HelloWebsocketHandler {
   @websocketEvent("hello", joi.string().alphanum().required())
-  async hello({ data }: WebsocketPayload<string, any>) {
+  hello({ data }: WebsocketPayload<string>): string {
     return `Hello, ${data}`;
   }
 }

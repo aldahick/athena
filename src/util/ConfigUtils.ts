@@ -1,21 +1,23 @@
 import { container } from "tsyringe";
 import { LoggerService } from "../service/logger";
 
-export class ConfigUtils {
-  // to avoid duplicate notifications of missing keys
-  private static checkedKeys: string[] = [];
+const ERROR_EXIT_CODE = 1;
 
-  static required<T = string>(key: string, valueTransformer?: (value: string) => T): T {
-    const value = ConfigUtils.optional(key, valueTransformer);
+class ConfigUtils {
+  // to avoid duplicate notifications of missing keys
+  private readonly checkedKeys: string[] = [];
+
+  required<T = string>(key: string, valueTransformer?: (value: string) => T): T {
+    const value = this.optional(key, valueTransformer);
     if (value === undefined) {
       const logger = container.resolve(LoggerService);
       logger.error({ key }, "config.missingRequiredVariable");
-      process.exit(1);
+      process.exit(ERROR_EXIT_CODE);
     }
     return value;
-  };
+  }
 
-  static optional<T = string>(key: string, valueTransformer?: (value: string) => T): T | undefined {
+  optional<T = string>(key: string, valueTransformer?: (value: string) => T): T | undefined {
     const rawValue = process.env[key];
     if (rawValue === undefined) {
       if (!this.checkedKeys.includes(key)) {
@@ -28,7 +30,8 @@ export class ConfigUtils {
     return valueTransformer
       ? valueTransformer(rawValue)
       // string doesn't *technically* overlap with T but in practice, it will
-      : rawValue as any as T;
-  };
+      : rawValue as unknown as T;
+  }
 }
 
+export const configUtils = new ConfigUtils();

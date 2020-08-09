@@ -1,12 +1,12 @@
 import { singleton } from "tsyringe";
-import { HttpError } from "../../../util";
+import { HttpError } from "../../..";
 import { User } from "../../model/mongo/User";
 import { DatabaseService } from "../../service/database";
 
 @singleton()
 export class UserManager {
   constructor(
-    private db: DatabaseService
+    private readonly db: DatabaseService
   ) { }
 
   /**

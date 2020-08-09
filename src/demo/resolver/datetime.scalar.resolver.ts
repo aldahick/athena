@@ -1,13 +1,13 @@
-import { GraphQLError,GraphQLScalarType } from "graphql";
+import { GraphQLError, GraphQLScalarType } from "graphql";
 import { singleton } from "tsyringe";
-import { resolver } from "../..";
+import { scalar } from "../..";
 
 @singleton()
 export class DateTimeScalarResolver {
-  @resolver("DateTime")
+  @scalar("DateTime")
   dateTime = new GraphQLScalarType({
     name: "DateTime",
-    serialize: (date: Date) => {
+    serialize: (date: Date): string => {
       if (!(date instanceof Date)) {
         throw new GraphQLError("can't serialize non-Date value as DateTime");
       }

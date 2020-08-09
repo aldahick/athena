@@ -11,17 +11,24 @@ import { BaseConfigService } from "../config";
 @singleton()
 export class AuthService {
   constructor(
-    private config: BaseConfigService
+    private readonly config: BaseConfigService
   ) { }
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   verifyToken(token: string): {[key: string]: any} | undefined {
+    let payload: string | {[key: string]: unknown};
     try {
-      return jwt.verify(token, this.config.jwtKey) as {[key: string]: any};
+      payload = jwt.verify(token, this.config.jwtKey) as string | {[key: string]: unknown};
     } catch (err) {
       return undefined;
     }
+    if (typeof payload !== "object") {
+      throw new Error("Token payload is not an object");
+    }
+    return payload;
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   signToken(payload: {[key: string]: any}): string {
     return jwt.sign(payload, this.config.jwtKey);
   }
@@ -45,17 +52,14 @@ export class AuthService {
     // coerce checkOrChecks into, well, an array
     const checks = checkOrChecks instanceof Array ? checkOrChecks : [checkOrChecks];
     for (const check of checks) {
-    // big ugly check: at least one role complies with `check`
+      // big ugly check: at least one role complies with `check`
       const isAuthorized = roles.some(r => {
-      // can this role do `action` to `resource`?
+        // can this role do `action` to `resource`?
         const permission = ac.can(r)[check.action](check.resource);
         // is the found perm * or is the specified attribute included?
-        const isAttributeAllowed = permission.attributes.includes("*") || (
-          check.attributes && permission.attributes.includes(check.attributes)
-        );
-        if (permission.granted && isAttributeAllowed) {
-          return true;
-        }
+        const isAttributeAllowed = permission.attributes.includes("*") ||
+          check.attributes !== undefined && permission.attributes.includes(check.attributes);
+        return permission.granted && isAttributeAllowed;
       });
       // if no roles comply with `check`, not authorized
       if (!isAuthorized) {
@@ -63,5 +67,5 @@ export class AuthService {
       }
     }
     return true;
-  };
+  }
 }

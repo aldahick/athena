@@ -23,42 +23,42 @@ workflows:
 jobs:
   install_dependencies:
     docker:
-      - image: circleci/node:12.16.2
+      - image: cimg/node:12.18
     steps:
       - checkout
       - restore_cache:
           keys:
-          - v1-dependencies-{{ checksum "package-lock.json" }}
+          - v1-dependencies-{{ checksum "yarn.lock" }}
           - v1-dependencies-
       - run:
           name: Install NPM modules
-          command: npm install
+          command: yarn
       - save_cache:
           paths:
             - node_modules
-          key: v1-dependencies-{{ checksum "package-lock.json" }}
+          key: v1-dependencies-{{ checksum "yarn.lock" }}
   lint:
     docker:
-      - image: circleci/node:12.16.2
+      - image: cimg/node:12.18
     steps:
       - checkout
       - restore_cache:
           keys:
-          - v1-dependencies-{{ checksum "package-lock.json" }}
+          - v1-dependencies-{{ checksum "yarn.lock" }}
       - run:
           name: Lint
-          command: npm run lint
+          command: yarn lint
   build:
     docker:
-      - image: circleci/node:12.16.2
+      - image: cimg/node:12.18
     steps:
       - checkout
       - restore_cache:
           keys:
-          - v1-dependencies-{{ checksum "package-lock.json" }}
+          - v1-dependencies-{{ checksum "yarn.lock" }}
       - run:
           name: Build
-          command: npm run build
+          command: yarn build
       - save_cache:
           paths:
             - dist

@@ -1,4 +1,4 @@
-export * from "./ConfigUtils";
-export * from "./DecoratorUtils";
+export * from "./configUtils";
+export * from "./decoratorUtils";
 export * from "./HttpError";
 export * from "./HttpMethod";

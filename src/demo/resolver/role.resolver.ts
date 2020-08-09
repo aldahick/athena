@@ -1,11 +1,11 @@
-import { guard,query, singleton } from "../..";
+import { guard, query, singleton } from "../..";
 import { IQuery } from "../graphql/types";
 import { DatabaseService } from "../service/database";
 
 @singleton()
 export class RoleResolver {
   constructor(
-    private db: DatabaseService
+    private readonly db: DatabaseService
   ) { }
 
   @guard({

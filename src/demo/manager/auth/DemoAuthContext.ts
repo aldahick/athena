@@ -8,23 +8,26 @@ import { DatabaseService } from "../../service/database";
 import { DemoTokenPayload } from "./DemoTokenPayload";
 
 export class DemoAuthContext implements BaseAuthContext {
+  // null signifies "already tried to fetch"
+  private _user: User | undefined | null;
+
+  private roles?: Role[];
+
   constructor(
     readonly req: Request,
     readonly payload?: DemoTokenPayload
   ) { }
 
-  // null signifies "already tried to fetch"
-  private _user: User | undefined | null;
-  private roles?: Role[];
-
   async user(): Promise<User | undefined> {
     await this.fetchUserAndRoles();
-    return this._user || undefined;
+    return this._user ?? undefined;
   }
 
   async isAuthorized(check: AuthCheck): Promise<boolean> {
     await this.fetchUserAndRoles();
-    if (!this.roles) { return false; }
+    if (!this.roles) {
+      return false;
+    }
     const authService = container.resolve(AuthService);
     return authService.isCheckValid(_.flatten(
       this.roles.map(role =>
@@ -36,9 +39,9 @@ export class DemoAuthContext implements BaseAuthContext {
     ), check);
   }
 
-  private async fetchUserAndRoles() {
+  private async fetchUserAndRoles(): Promise<void> {
     if (!this.payload || this._user || this._user === null) {
-      return this._user || undefined;
+      return;
     }
     const db = container.resolve(DatabaseService);
     // findById() returns Promise<User | null> so it's just dandy here

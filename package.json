@@ -52,7 +52,7 @@
     "typeorm": "^0.2.25"
   },
   "devDependencies": {
-    "@aldahick/eslint-rules": "^0.7.2",
+    "@aldahick/eslint-rules": "^0.8.0",
     "@graphql-codegen/cli": "^1.17.0",
     "@graphql-codegen/typescript": "^1.17.0",
     "@graphql-codegen/typescript-operations": "^1.17.0",

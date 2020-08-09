@@ -1,7 +1,8 @@
-import { BaseConfigService, ConfigUtils,singleton } from "../../..";
+import { BaseConfigService, configUtils, singleton } from "../../..";
 
 @singleton()
 export class ConfigService extends BaseConfigService {
-  mongoUrl = ConfigUtils.required("MONGO_URL");
-  postgresUrl = ConfigUtils.required("POSTGRES_URL");
+  mongoUrl = configUtils.required("MONGO_URL");
+
+  postgresUrl = configUtils.required("POSTGRES_URL");
 }

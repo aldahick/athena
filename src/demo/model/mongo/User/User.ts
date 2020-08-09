@@ -1,4 +1,4 @@
-import { arrayProp,prop } from "@typegoose/typegoose";
+import { prop } from "@typegoose/typegoose";
 import { MongoService } from "../../../..";
 
 export class User {
@@ -8,6 +8,6 @@ export class User {
   @prop({ required: true })
   username!: string;
 
-  @arrayProp({ items: Number, required: true })
+  @prop({ type: Number, required: true })
   roleIds!: number[];
 }

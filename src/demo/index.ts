@@ -5,7 +5,7 @@ import * as resolvers from "./resolver";
 import { DatabaseService } from "./service/database";
 import * as websocketHandlers from "./websocket";
 
-const main = async () => {
+const main = async (): Promise<void> => {
   const app = new Application();
 
   const db = container.resolve(DatabaseService);

@@ -1,46 +1,61 @@
 import * as joi from "@hapi/joi";
+import * as _ from "lodash";
 import * as socketIO from "socket.io";
-import { container,singleton } from "tsyringe";
+import { container, InjectionToken, singleton } from "tsyringe";
 import { LoggerService } from "../../service/logger";
-import { DecoratorUtils } from "../../util";
+import { decoratorUtils } from "../../util";
 import { WebServer } from "../../WebServer";
 import { AuthRegistry } from "../auth";
 import { AuthWebsocketHandler } from "./auth.websocket";
-import { WEBSOCKET_METADATA_KEY,WebsocketMetadata } from "./websocket.decorators";
+import { WEBSOCKET_METADATA_KEY, WebsocketMetadata } from "./websocket.decorators";
 import { WebsocketPayload } from "./WebsocketPayload";
+import { WebsocketWithContext } from "./WebsocketWithContext";
+
+interface EventHandlerMetadata {
+  validationSchema?: joi.Schema;
+  handle: WebsocketHandler;
+}
+type WebsocketHandler = (payload: WebsocketPayload<unknown>) => Promise<unknown>;
 
 @singleton()
 export class WebsocketRegistry {
   io!: SocketIO.Server;
+
   private eventHandlers: {
-    [eventName: string]: {
-      validationSchema?: joi.Schema;
-      handle: (payload: WebsocketPayload<any, any>) => Promise<any>;
-    };
+    [eventName: string]: EventHandlerMetadata;
   } = {};
 
   constructor(
-    private authRegistry: AuthRegistry,
-    private logger: LoggerService,
-    private webServer: WebServer
+    private readonly authRegistry: AuthRegistry,
+    private readonly logger: LoggerService,
+    private readonly webServer: WebServer
   ) { }
 
   /** must call this after WebServer.start() */
-  register(eventHandlerClasses: any[]) {
+  register(eventHandlerClasses: unknown[]): void {
     if (!this.webServer.httpServer) {
       throw new Error("Web server must be started before websockets can be registered");
     }
     this.io = socketIO(this.webServer.httpServer);
 
-    const eventHandlers = eventHandlerClasses.map(c => container.resolve<any>(c)).concat([
+    const eventHandlers = _.compact(eventHandlerClasses.map(c =>
+      container.resolve<unknown>(c as InjectionToken)
+    )).concat([
       container.resolve(AuthWebsocketHandler)
-    ]);
+    ]) as Record<string, unknown>[];
     for (const eventHandler of eventHandlers) {
-      const metadatas = DecoratorUtils.get<WebsocketMetadata[]>(WEBSOCKET_METADATA_KEY, eventHandler) || [];
+      const metadatas = decoratorUtils.get<WebsocketMetadata[]>(WEBSOCKET_METADATA_KEY, eventHandler) ?? [];
       for (const { eventName, methodName, validationSchema } of metadatas) {
+        if (typeof eventHandler !== "object") {
+          continue;
+        }
+        const callback = eventHandler[methodName];
+        if (typeof callback !== "function") {
+          continue;
+        }
         this.eventHandlers[eventName] = {
           validationSchema,
-          handle: eventHandler[methodName].bind(eventHandler)
+          handle: callback.bind(eventHandler) as WebsocketHandler
         };
         this.logger.trace({
           eventName,
@@ -53,30 +68,43 @@ export class WebsocketRegistry {
     this.io.on("connection", this.onConnection);
   }
 
-  private onConnection = (socket: SocketIO.Socket) => {
-    (socket as any).context = this.authRegistry.createContextFromToken(socket.request, undefined);
-    for (const [eventName, { validationSchema, handle }] of Object.entries(this.eventHandlers)) {
-      socket.on(eventName, async data => {
-        try {
-          if (validationSchema) {
-            try {
-              await validationSchema.validateAsync(data);
-            } catch (validationError) {
-              return socket.emit("athena.error", validationError.message);
-            }
-          }
-          const res = await handle({
-            socket,
-            data,
-            context: (socket as any).context
-          });
-          if (res !== undefined) {
-            socket.emit(eventName, res);
-          }
-        } catch (err) {
-          socket.emit("athena.error", err.message);
-        }
+  private readonly onConnection = (socket: WebsocketWithContext): void => {
+    socket.context = this.authRegistry.createContextFromToken(socket.request, undefined);
+    for (const [eventName, metadata] of Object.entries(this.eventHandlers)) {
+      socket.on(eventName, (data: unknown) => {
+        this.fireData({
+          socket,
+          metadata,
+          eventName,
+          data
+        }).catch((err: unknown) => {
+          socket.emit("athena.error", err instanceof Error ? err.message : err);
+        });
       });
     }
   };
+
+  private async fireData({ socket, eventName, data, metadata: { validationSchema, handle } }: {
+    socket: WebsocketWithContext;
+    metadata: EventHandlerMetadata;
+    eventName: string;
+    data: unknown;
+  }): Promise<void> {
+    if (validationSchema) {
+      try {
+        await validationSchema.validateAsync(data);
+      } catch (validationError) {
+        socket.emit("athena.error", validationError instanceof Error ? validationError.message : validationError);
+        return;
+      }
+    }
+    const res = await handle({
+      socket,
+      data,
+      context: socket.context
+    });
+    if (res !== undefined) {
+      socket.emit(eventName, res);
+    }
+  }
 }

@@ -7,17 +7,17 @@ import { ConfigService } from "../config";
 
 @singleton()
 export class DatabaseService {
-  constructor(
-    private config: ConfigService,
-    private mongo: MongoService,
-    private typeorm: TypeormService
-  ) { }
-
   roles!: Repository<postgresModels.Role>;
 
   users!: ReturnModelType<typeof User>;
 
-  async init() {
+  constructor(
+    private readonly config: ConfigService,
+    private readonly mongo: MongoService,
+    private readonly typeorm: TypeormService
+  ) { }
+
+  async init(): Promise<void> {
     await this.mongo.init(this.config.mongoUrl);
     this.users = this.mongo.getModel(User, "users");
 

@@ -1,5 +1,5 @@
 import * as express from "express";
-import { container,singleton } from "tsyringe";
+import { container, singleton } from "tsyringe";
 import { AuthService } from "../../service/auth";
 import { LoggerService } from "../../service/logger";
 import { AuthProvider, AuthProviderClass } from "./AuthProvider";
@@ -7,14 +7,14 @@ import { BaseAuthContext } from "./BaseAuthContext";
 
 @singleton()
 export class AuthRegistry {
-  provider?: AuthProvider<any, any>;
+  provider?: AuthProvider<unknown, BaseAuthContext>;
 
   constructor(
-    private authService: AuthService,
-    private logger: LoggerService
+    private readonly authService: AuthService,
+    private readonly logger: LoggerService
   ) { }
 
-  addProvider(provider: AuthProviderClass) {
+  addProvider(provider: AuthProviderClass): void {
     if (this.provider) {
       this.logger.warn({
         oldProvider: this.provider.constructor.name,
@@ -25,7 +25,7 @@ export class AuthRegistry {
   }
 
   createContext(req: express.Request): BaseAuthContext {
-    const [bearerPrefix, bearerToken] = (req.headers.authorization || "").split(" ");
+    const [bearerPrefix, bearerToken] = (req.headers.authorization ?? "").split(" ");
     const queryToken = req.query.token?.toString();
     const token = bearerPrefix.toLowerCase() === "bearer" && bearerToken ? bearerToken : queryToken;
     return this.createContextFromToken(req, token);
@@ -36,11 +36,11 @@ export class AuthRegistry {
     if (!this.provider) {
       return {
         req,
-        isAuthorized: () => Promise.resolve(false)
+        isAuthorized: (): Promise<boolean> => Promise.resolve(false)
       };
     }
-    let payload: any;
-    if (token) {
+    let payload: unknown;
+    if (token !== undefined) {
       try {
         payload = this.authService.verifyToken(token);
       } catch (err) {

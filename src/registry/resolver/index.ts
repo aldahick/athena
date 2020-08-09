@@ -1,2 +1,2 @@
-export { mutation, query, resolver } from "./resolver.decorators";
+export { mutation, query, resolver, scalar } from "./resolver.decorators";
 export * from "./resolver.registry";

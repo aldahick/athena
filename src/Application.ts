@@ -7,13 +7,16 @@ import { LoggerService } from "./service/logger";
 import { WebServer } from "./WebServer";
 
 export class Application extends EventEmitter {
-  private logger = container.resolve(LoggerService);
+
   readonly registry = {
     controller: container.resolve(ControllerRegistry),
     resolver: container.resolve(ResolverRegistry),
     websocket: container.resolve(WebsocketRegistry)
   };
+
   readonly webServer = container.resolve(WebServer);
+
+  private readonly logger = container.resolve(LoggerService);
 
   constructor(
     { registerStopHandlers = true }: { registerStopHandlers?: boolean } = { }
@@ -26,16 +29,17 @@ export class Application extends EventEmitter {
     }
   }
 
-  async start() {
+  async start(): Promise<void> {
     this.emit("start");
     await this.webServer.start();
   }
 
-  async stop(err?: any) {
+  stop(err?: unknown): void {
     this.emit("stop");
-    if (err) {
+    if (err !== undefined) {
       this.logger.error(err, "app.uncaught");
     }
-    await this.webServer.stop();
+    // eslint-disable-next-line no-console
+    this.webServer.stop().catch(console.error);
   }
 }

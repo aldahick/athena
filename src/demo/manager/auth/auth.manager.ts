@@ -1,7 +1,6 @@
 import { Request } from "express";
 import { singleton } from "tsyringe";
-import { AuthProvider,authProvider } from "../../..";
-import { AuthService } from "../../../service/auth";
+import { AuthProvider, authProvider, AuthService } from "../../..";
 import { User } from "../../model/mongo/User";
 import { DemoAuthContext } from "./DemoAuthContext";
 import { DemoTokenPayload } from "./DemoTokenPayload";
@@ -10,10 +9,10 @@ import { DemoTokenPayload } from "./DemoTokenPayload";
 @singleton()
 export class AuthManager implements AuthProvider<DemoTokenPayload, DemoAuthContext> {
   constructor(
-    private authService: AuthService
+    private readonly authService: AuthService
   ) { }
 
-  getContext(req: Request, payload?: DemoTokenPayload) {
+  getContext(req: Request, payload?: DemoTokenPayload): DemoAuthContext {
     return new DemoAuthContext(req, payload);
   }
 
