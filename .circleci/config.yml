@@ -10,15 +10,6 @@ workflows:
       - lint:
           requires:
             - install_dependencies
-      - deploy:
-          requires:
-            - build
-            - lint
-          filters:
-            tags:
-              only: /^v.*/
-            branches:
-              ignore: /.*/
 
 jobs:
   install_dependencies:
@@ -63,17 +54,3 @@ jobs:
           paths:
             - dist
           key: v1-dist
-  deploy:
-    docker:
-      - image: circleci/node:12.16.2
-    steps:
-      - checkout
-      - restore_cache:
-          keys:
-          - v1-dist
-      - run:
-          name: Setup NPM credentials
-          command: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > .npmrc
-      - run:
-          name: Publish package
-          command: npm publish --access=public
