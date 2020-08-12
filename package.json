@@ -9,11 +9,11 @@
     "build:watch": "tsc -w -p .",
     "lint": "eslint --ext .ts .",
     "test": "mocha dist/**/*.spec.js",
-    "test:dev": "tsc-watch --onSuccess \"npm run test\"",
+    "test:dev": "tsc-watch --onSuccess \"yarn test\"",
     "demo": "node dist/demo/index.js",
     "demo:dev": "tsc-watch --onSuccess \"node dist/demo/index.js\" | bunyan",
     "demo:generate": "graphql-codegen --config src/demo/graphql/codegen.yml",
-    "prepublishOnly": "npm run build"
+    "prepublishOnly": "yarn build"
   },
   "repository": {
     "type": "git",
