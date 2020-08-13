@@ -1,6 +1,7 @@
 import { EventEmitter } from "events";
 import { container } from "tsyringe";
 import { ControllerRegistry } from "./registry/controller";
+import { QueueRegistry } from "./registry/queue";
 import { ResolverRegistry } from "./registry/resolver";
 import { WebsocketRegistry } from "./registry/websocket";
 import { LoggerService } from "./service/logger";
@@ -10,6 +11,7 @@ export class Application extends EventEmitter {
 
   readonly registry = {
     controller: container.resolve(ControllerRegistry),
+    queue: container.resolve(QueueRegistry),
     resolver: container.resolve(ResolverRegistry),
     websocket: container.resolve(WebsocketRegistry)
   };

@@ -20,6 +20,10 @@ export class TypeormService {
     this.logger.info({ host }, `connect.db.${options.type}`);
   }
 
+  async close(): Promise<void> {
+    await this.connection?.close();
+  }
+
   getRepository<T extends AnyParamConstructor<P>, P>(model: T): Repository<P> {
     if (!this.connection) {
       throw new Error("Not connected");

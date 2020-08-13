@@ -2,6 +2,32 @@
 
 ## Versions
 
+### 0.6.0
+
+- Implemented queue messaging
+
+### 0.5.3
+
+- Made all `BaseConfigService` fields optional
+
+### 0.5.2
+
+- All internal scripts now use Yarn
+
+### 0.5.1
+
+- Fixed misnamed files
+- Removed deploy step from CI
+
+### 0.5.0
+
+- Switched to Yarn
+- Lots of internal refactoring for new linting rules
+
+### 0.4.5
+
+- Upgraded all dependencies
+
 ### 0.4.4
 
 - Bump some dependencies
