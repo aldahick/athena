@@ -20,8 +20,8 @@ export const guard = (check: AuthCheck): MethodDecorator => (target, key, descri
   ] | [
     ControllerPayload | WebsocketPayload<unknown>
   ]): Promise<unknown> {
-    if (!context) {
-      context = payload as BaseAuthContext;
+    if (context === undefined) {
+      context = (payload as ControllerPayload & WebsocketPayload<unknown>).context;
     }
     if (!await context.isAuthorized(check)) {
       throw HttpError.unauthorized();
