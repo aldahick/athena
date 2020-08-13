@@ -2,6 +2,10 @@
 
 ## Versions
 
+### 0.6.1
+
+- Fixed `@guard()` usage in controllers
+
 ### 0.6.0
 
 - Implemented queue messaging
