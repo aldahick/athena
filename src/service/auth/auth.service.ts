@@ -11,14 +11,14 @@ import { BaseConfigService } from "../config";
 @singleton()
 export class AuthService {
   constructor(
-    private readonly config: BaseConfigService
+    private readonly baseConfig: BaseConfigService
   ) { }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   verifyToken(token: string): {[key: string]: any} | undefined {
     let payload: string | {[key: string]: unknown};
     try {
-      payload = jwt.verify(token, this.config.jwtKey) as string | {[key: string]: unknown};
+      payload = jwt.verify(token, this.jwtKey) as string | {[key: string]: unknown};
     } catch (err) {
       return undefined;
     }
@@ -30,7 +30,7 @@ export class AuthService {
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   signToken(payload: {[key: string]: any}): string {
-    return jwt.sign(payload, this.config.jwtKey);
+    return jwt.sign(payload, this.jwtKey);
   }
 
   // this one's interesting
@@ -67,5 +67,13 @@ export class AuthService {
       }
     }
     return true;
+  }
+
+  private get jwtKey(): string {
+    const { jwtKey } = this.baseConfig;
+    if (jwtKey === undefined) {
+      throw new Error("Missing required environment variable JWT_KEY");
+    }
+    return jwtKey;
   }
 }

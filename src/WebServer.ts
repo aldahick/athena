@@ -20,11 +20,11 @@ export class WebServer {
 
   async start(): Promise<void> {
     await new Promise((resolve, reject) => {
-      this.httpServer = this.express.listen(this.baseConfig.httpPort, (err?: unknown) =>
+      this.httpServer = this.express.listen(this.httpPort, (err?: unknown) =>
         err !== undefined ? reject(err) : resolve()
       );
     });
-    this.logger.info({ port: this.baseConfig.httpPort }, "webServer.start");
+    this.logger.info({ port: this.httpPort }, "webServer.start");
   }
 
   async stop(): Promise<void> {
@@ -37,5 +37,13 @@ export class WebServer {
       );
     });
     this.logger.info("webServer.stop");
+  }
+
+  private get httpPort(): number {
+    const { httpPort } = this.baseConfig;
+    if (httpPort === undefined) {
+      throw new Error("Missing required environment variable HTTP_PORT");
+    }
+    return httpPort;
   }
 }

@@ -8,9 +8,9 @@ dotenv.config();
 export class BaseConfigService {
   readonly environment = configUtils.optional("NODE_ENV") ?? "development";
 
-  readonly httpPort = configUtils.required("HTTP_PORT", Number);
+  readonly httpPort = configUtils.optional("HTTP_PORT", Number);
 
-  readonly jwtKey = configUtils.required("JWT_KEY");
+  readonly jwtKey = configUtils.optional("JWT_KEY");
 
   get inDevelopment(): boolean {
     return this.environment === "development";
