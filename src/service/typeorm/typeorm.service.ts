@@ -5,19 +5,20 @@ import { LoggerService } from "../logger";
 
 @singleton()
 export class TypeormService {
-  private connection?: Connection;
+  connection?: Connection;
 
   constructor(
     private readonly logger: LoggerService
   ) { }
 
-  async init(options: ConnectionOptions): Promise<void> {
+  async init(options: ConnectionOptions): Promise<Connection> {
     this.connection = await createConnection({
       synchronize: true,
       ...options
     });
     const { host } = "url" in options && options.url !== undefined ? new URL(options.url) : { host: "host" in options ? options.host : "" };
     this.logger.info({ host }, `connect.db.${options.type}`);
+    return this.connection;
   }
 
   async close(): Promise<void> {
