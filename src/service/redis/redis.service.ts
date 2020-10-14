@@ -5,9 +5,9 @@ import { LoggerService } from "../logger";
 
 @singleton()
 export class RedisService {
-  private subClient?: Redis.Redis;
+  subClient?: Redis.Redis;
 
-  private pubClient?: Redis.Redis;
+  pubClient?: Redis.Redis;
 
   private readonly subEmitter = new EventEmitter();
 

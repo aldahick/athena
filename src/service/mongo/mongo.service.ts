@@ -9,7 +9,7 @@ const DEFAULT_ID_LENGTH = 16;
 
 @singleton()
 export class MongoService {
-  private connection?: Connection;
+  connection?: Connection;
 
   constructor(
     private readonly logger: LoggerService

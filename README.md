@@ -9,22 +9,6 @@ The only logic in my server-side codebase should be application-specific busines
 
 [Here's the changelog.](https://github.com/aldahick/athena/tree/master/CHANGELOG.md)
 
-## Goals
-
-- [x] HTTP controllers
-  - Usage: [`src/demo/controller`](https://github.com/aldahick/athena/tree/master/src/demo/controller)
-- [x] GraphQL resolvers
-  - Usage: [`src/demo/resolver`](https://github.com/aldahick/athena/tree/master/src/demo/resolver)
-- [x] SQL databases
-  - Usage: [`src/demo/service/database`](https://github.com/aldahick/athena/tree/master/src/demo/service/database)
-- [x] MongoDB databases
-  - Usage: [`src/demo/service/database`](https://github.com/aldahick/athena/tree/master/src/demo/service/database)
-- [x] Authentication / Authorization
-  - Usage:
-    - [`src/demo/manager/auth`](https://github.com/aldahick/athena/tree/master/src/demo/manager/auth)
-    - [`src/demo/resolver/role.resolver.ts`](https://github.com/aldahick/athena/tree/master/src/demo/resolver/role.resolver.ts)
-- More, for sure
-
 ## Usage
 
 See the demo codebase in `src/demo`. (Pay attention to `src/demo/index.ts`, which initializes everything!)
