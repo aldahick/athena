@@ -26,5 +26,8 @@ export const mutation = (type?: string): MethodDecorator =>
 export const resolver = (type: string): MethodDecorator =>
   buildMetadataSetter(() => type);
 
+/**
+ * Can also be used in place of `resolver` for non-method resolvers.
+ */
 export const scalar = (type: string): PropertyDecorator =>
   buildMetadataSetter(() => type) as PropertyDecorator;
