@@ -2,6 +2,21 @@
 
 ## Versions
 
+### 0.7.0
+
+- Switched _back_ from `@hapi/joi` to `joi`
+- Upgraded all packages
+
+### 0.6.3
+
+- Changed `RedisService.{sub,pub}Client` to public
+- Changed `MongoService.connection` to public
+- Audited dependencies
+
+### 0.6.2
+
+- Changed `TypeormService.connection` to public
+
 ### 0.6.1
 
 - Fixed `@guard()` usage in controllers
