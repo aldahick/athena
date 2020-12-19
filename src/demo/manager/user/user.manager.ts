@@ -1,4 +1,5 @@
 import { singleton } from "tsyringe";
+
 import { HttpError } from "../../..";
 import { User } from "../../model/mongo/User";
 import { DatabaseService } from "../../service/database";

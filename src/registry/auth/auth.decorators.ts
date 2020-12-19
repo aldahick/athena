@@ -1,4 +1,5 @@
 import { container } from "tsyringe";
+
 import { HttpError } from "../../util";
 import { ControllerPayload } from "../controller";
 import { WebsocketPayload } from "../websocket";

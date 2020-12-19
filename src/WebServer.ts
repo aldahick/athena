@@ -2,6 +2,7 @@ import * as cors from "cors";
 import * as express from "express";
 import * as http from "http";
 import { singleton } from "tsyringe";
+
 import { BaseConfigService } from "./service/config";
 import { LoggerService } from "./service/logger";
 
@@ -19,7 +20,7 @@ export class WebServer {
   }
 
   async start(): Promise<void> {
-    await new Promise((resolve, reject) => {
+    await new Promise<void>((resolve, reject) => {
       this.httpServer = this.express.listen(this.httpPort, (err?: unknown) =>
         err !== undefined ? reject(err) : resolve()
       );
@@ -28,7 +29,7 @@ export class WebServer {
   }
 
   async stop(): Promise<void> {
-    await new Promise((resolve, reject) => {
+    await new Promise<void>((resolve, reject) => {
       if (!this.httpServer) {
         return resolve();
       }

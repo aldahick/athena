@@ -1,5 +1,6 @@
-import * as joi from "@hapi/joi";
+import * as joi from "joi";
 import { singleton } from "tsyringe";
+
 import { websocketEvent, WebsocketPayload } from "../..";
 
 @singleton()

@@ -1,6 +1,7 @@
 import { Request } from "express";
 import * as _ from "lodash";
 import { container } from "tsyringe";
+
 import { AuthCheck, AuthService, BaseAuthContext } from "../../..";
 import { User } from "../../model/mongo/User";
 import { Role } from "../../model/postgres";

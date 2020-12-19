@@ -2,6 +2,7 @@ import { AccessControl } from "accesscontrol";
 import * as jwt from "jsonwebtoken";
 import * as _ from "lodash";
 import { singleton } from "tsyringe";
+
 import { AuthCheck } from "../../registry/auth";
 import { BaseConfigService } from "../config";
 

@@ -1,4 +1,5 @@
 import { singleton } from "tsyringe";
+
 import { queueEvent, QueuePayload } from "../..";
 import { LoggerService } from "../../service/logger";
 

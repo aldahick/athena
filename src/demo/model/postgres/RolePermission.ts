@@ -1,4 +1,5 @@
 import { Entity, JoinColumn, ManyToOne, PrimaryColumn } from "typeorm";
+
 import { Role } from "./Role";
 
 @Entity()

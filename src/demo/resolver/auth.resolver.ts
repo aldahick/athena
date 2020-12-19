@@ -1,4 +1,5 @@
 import { singleton } from "tsyringe";
+
 import { mutation } from "../..";
 import { IMutation, IMutationCreateAuthTokenArgs } from "../graphql/types";
 import { AuthManager } from "../manager/auth";

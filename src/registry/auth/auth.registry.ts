@@ -1,5 +1,6 @@
 import * as express from "express";
 import { container, singleton } from "tsyringe";
+
 import { AuthService } from "../../service/auth";
 import { LoggerService } from "../../service/logger";
 import { AuthProvider, AuthProviderClass } from "./AuthProvider";

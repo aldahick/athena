@@ -1,6 +1,7 @@
 import { EventEmitter } from "events";
 import * as Redis from "ioredis";
 import { singleton } from "tsyringe";
+
 import { LoggerService } from "../logger";
 
 @singleton()

@@ -1,4 +1,5 @@
 import "reflect-metadata";
+
 import { Application, container, RedisService } from "..";
 import * as controllers from "./controller";
 import * as queueHandlers from "./queue";

@@ -1,5 +1,6 @@
 import { Request } from "express";
 import { singleton } from "tsyringe";
+
 import { AuthProvider, authProvider, AuthService } from "../../..";
 import { User } from "../../model/mongo/User";
 import { DemoAuthContext } from "./DemoAuthContext";

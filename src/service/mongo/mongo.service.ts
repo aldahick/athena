@@ -3,6 +3,7 @@ import { AnyParamConstructor, ReturnModelType } from "@typegoose/typegoose/lib/t
 import { Connection, createConnection } from "mongoose";
 import * as randomstring from "randomstring";
 import { singleton } from "tsyringe";
+
 import { LoggerService } from "../logger";
 
 const DEFAULT_ID_LENGTH = 16;

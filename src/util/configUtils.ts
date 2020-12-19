@@ -1,4 +1,5 @@
 import { container } from "tsyringe";
+
 import { LoggerService } from "../service/logger";
 
 const ERROR_EXIT_CODE = 1;

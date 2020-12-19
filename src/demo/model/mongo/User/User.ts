@@ -1,4 +1,5 @@
 import { prop } from "@typegoose/typegoose";
+
 import { MongoService } from "../../../..";
 
 export class User {

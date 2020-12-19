@@ -1,5 +1,6 @@
 import { AnyParamConstructor } from "@typegoose/typegoose/lib/types";
 import { Request } from "express";
+
 import { BaseAuthContext } from "./BaseAuthContext";
 
 export interface AuthProvider<TokenPayload, Context extends BaseAuthContext> {

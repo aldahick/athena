@@ -1,5 +1,6 @@
-import * as joi from "@hapi/joi";
+import * as joi from "joi";
 import { singleton } from "tsyringe";
+
 import { AuthRegistry } from "../auth";
 import { websocketEvent } from "./websocket.decorators";
 import { WebsocketPayload } from "./WebsocketPayload";

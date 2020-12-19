@@ -1,4 +1,5 @@
-import * as joi from "@hapi/joi";
+import * as joi from "joi";
+
 import { decoratorUtils } from "../../util";
 
 export const WEBSOCKET_METADATA_KEY = "athena.websocket";

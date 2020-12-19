@@ -1,4 +1,5 @@
 import * as express from "express";
+
 import { AuthCheck } from "./AuthCheck";
 
 export interface BaseAuthContext {

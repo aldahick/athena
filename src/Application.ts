@@ -1,5 +1,6 @@
 import { EventEmitter } from "events";
 import { container } from "tsyringe";
+
 import { ControllerRegistry } from "./registry/controller";
 import { QueueRegistry } from "./registry/queue";
 import { ResolverRegistry } from "./registry/resolver";

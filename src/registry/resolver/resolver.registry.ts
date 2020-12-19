@@ -2,6 +2,7 @@ import { ApolloServer } from "apollo-server-express";
 import * as fs from "fs-extra";
 import * as recursiveReaddir from "recursive-readdir";
 import { container, InjectionToken, singleton } from "tsyringe";
+
 import { LoggerService } from "../../service/logger";
 import { decoratorUtils } from "../../util";
 import { WebServer } from "../../WebServer";

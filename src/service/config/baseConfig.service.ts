@@ -1,5 +1,6 @@
 import * as dotenv from "dotenv";
 import { singleton } from "tsyringe";
+
 import { configUtils } from "../../util";
 
 dotenv.config();

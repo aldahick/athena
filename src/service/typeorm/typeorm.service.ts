@@ -1,6 +1,7 @@
 import { AnyParamConstructor } from "@typegoose/typegoose/lib/types";
 import { singleton } from "tsyringe";
 import { Connection, ConnectionOptions, createConnection, Repository } from "typeorm";
+
 import { LoggerService } from "../logger";
 
 @singleton()

@@ -1,4 +1,5 @@
 import { singleton } from "tsyringe";
+
 import { guard, websocketEvent } from "../..";
 import { Role } from "../model/postgres";
 import { DatabaseService } from "../service/database";

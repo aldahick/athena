@@ -1,7 +1,8 @@
-import * as joi from "@hapi/joi";
+import * as joi from "joi";
 import * as _ from "lodash";
 import * as socketIO from "socket.io";
 import { container, InjectionToken, singleton } from "tsyringe";
+
 import { LoggerService } from "../../service/logger";
 import { decoratorUtils } from "../../util";
 import { WebServer } from "../../WebServer";
@@ -19,7 +20,7 @@ type WebsocketHandler = (payload: WebsocketPayload<unknown>) => Promise<unknown>
 
 @singleton()
 export class WebsocketRegistry {
-  io!: SocketIO.Server;
+  io!: socketIO.Server;
 
   private eventHandlers: {
     [eventName: string]: EventHandlerMetadata;
@@ -36,7 +37,7 @@ export class WebsocketRegistry {
     if (!this.webServer.httpServer) {
       throw new Error("Web server must be started before websockets can be registered");
     }
-    this.io = socketIO(this.webServer.httpServer);
+    this.io = new socketIO.Server(this.webServer.httpServer);
 
     const eventHandlers = _.compact(eventHandlerClasses.map(c =>
       container.resolve<unknown>(c as InjectionToken)
