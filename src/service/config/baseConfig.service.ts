@@ -13,6 +13,8 @@ export class BaseConfigService {
 
   readonly jwtKey = configUtils.optional("JWT_KEY");
 
+  readonly uploadLimit = configUtils.optional("UPLOAD_LIMIT");
+
   get inDevelopment(): boolean {
     return this.environment === "development";
   }

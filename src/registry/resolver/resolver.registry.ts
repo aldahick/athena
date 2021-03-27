@@ -3,6 +3,7 @@ import * as fs from "fs-extra";
 import * as recursiveReaddir from "recursive-readdir";
 import { container, InjectionToken, singleton } from "tsyringe";
 
+import { ConfigService } from "../../demo/service/config";
 import { LoggerService } from "../../service/logger";
 import { decoratorUtils } from "../../util";
 import { WebServer } from "../../WebServer";
@@ -15,6 +16,7 @@ type ResolverCallback = (root: unknown, args: unknown, context: unknown) => unkn
 export class ResolverRegistry {
   constructor(
     private readonly authRegistry: AuthRegistry,
+    private readonly config: ConfigService,
     private readonly logger: LoggerService,
     private readonly webServer: WebServer
   ) { }
@@ -52,6 +54,11 @@ export class ResolverRegistry {
       resolvers: resolversMap,
       context: ({ req }): BaseAuthContext => this.authRegistry.createContext(req)
     });
-    apollo.applyMiddleware({ app: this.webServer.express });
+    apollo.applyMiddleware({
+      app: this.webServer.express,
+      bodyParserConfig: {
+        limit: this.config.uploadLimit
+      }
+    });
   }
 }
