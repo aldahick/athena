@@ -2,6 +2,18 @@
 
 ## Versions
 
+### 0.7.3
+
+- Upgraded Mongoose and Typegoose dependencies
+
+### 0.7.2
+
+- Fixed a bug in `ResolverRegistry`
+
+### 0.7.1
+
+- Added `BaseConfigService.uploadLimit`
+
 ### 0.7.0
 
 - Switched _back_ from `@hapi/joi` to `joi`
