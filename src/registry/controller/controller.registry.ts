@@ -36,17 +36,16 @@ export class ControllerRegistry {
   }
 
   private buildRouteHandler(callback: (payload: ControllerPayload) => Promise<unknown>) {
-    return async (req: express.Request, res: express.Response): Promise<void> => {
-      try {
-        const result = await callback({
-          req,
-          res,
-          context: this.authRegistry.createContext(req)
-        });
+    return (req: express.Request, res: express.Response): void => {
+      callback({
+        req,
+        res,
+        context: this.authRegistry.createContext(req)
+      }).then(result => {
         if (result !== undefined) {
           res.send(result);
         }
-      } catch (err) {
+      }).catch(err => {
         this.logger.error(err);
         const httpErr = err instanceof HttpError
           ? err
@@ -57,7 +56,7 @@ export class ControllerRegistry {
         res.status(httpErr.status).send({
           error: httpErr.message
         });
-      }
+      });
     };
   }
 }
