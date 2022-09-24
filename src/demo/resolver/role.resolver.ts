@@ -4,9 +4,7 @@ import { DatabaseService } from "../service/database";
 
 @singleton()
 export class RoleResolver {
-  constructor(
-    private readonly db: DatabaseService
-  ) { }
+  constructor(private readonly db: DatabaseService) {}
 
   @guard({
     resource: "role",

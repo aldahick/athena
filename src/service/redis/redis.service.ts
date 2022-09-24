@@ -12,9 +12,7 @@ export class RedisService {
 
   private readonly subEmitter = new EventEmitter();
 
-  constructor(
-    private readonly logger: LoggerService
-  ) { }
+  constructor(private readonly logger: LoggerService) {}
 
   async init(url: string): Promise<void> {
     this.subClient = new Redis(url, {

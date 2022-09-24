@@ -8,7 +8,7 @@ export class RolePermission {
   roleId!: number;
 
   @JoinColumn({ name: "roleId" })
-  @ManyToOne(() => Role, r => r.permissions, { nullable: false })
+  @ManyToOne(() => Role, (r) => r.permissions, { nullable: false })
   role!: Promise<Role>;
 
   @PrimaryColumn()

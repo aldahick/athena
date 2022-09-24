@@ -11,40 +11,37 @@ export type Scalars = {
 };
 
 export enum ICacheControlScope {
-  Public = 'PUBLIC',
-  Private = 'PRIVATE'
+  Public = "PUBLIC",
+  Private = "PRIVATE"
 }
 
 /** the only one that isn't "extend type" */
 export type IMutation = {
-   __typename?: 'Mutation';
+  __typename?: "Mutation";
   /** obviously you'd normally actually authenticate, but this _is_ a demo */
-  createAuthToken: Scalars['String'];
+  createAuthToken: Scalars["String"];
 };
-
 
 /** the only one that isn't "extend type" */
 export type IMutationCreateAuthTokenArgs = {
-  username: Scalars['String'];
+  username: Scalars["String"];
 };
 
 export type IQuery = {
-   __typename?: 'Query';
-  hello: Scalars['String'];
+  __typename?: "Query";
+  hello: Scalars["String"];
   roles: Array<IRole>;
   users: Array<IUser>;
 };
 
 export type IRole = {
-   __typename?: 'Role';
-  id: Scalars['Int'];
-  name: Scalars['String'];
+  __typename?: "Role";
+  id: Scalars["Int"];
+  name: Scalars["String"];
 };
-
 
 export type IUser = {
-   __typename?: 'User';
-  id: Scalars['String'];
-  username: Scalars['String'];
+  __typename?: "User";
+  id: Scalars["String"];
+  username: Scalars["String"];
 };
-

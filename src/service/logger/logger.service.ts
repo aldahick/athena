@@ -5,7 +5,7 @@ import { singleton } from "tsyringe";
 export class LoggerService {
   logger = bunyan.createLogger({
     name: "athena",
-    level: process.env.LOG_LEVEL as bunyan.LoggerOptions["level"] ?? "info"
+    level: (process.env.LOG_LEVEL as bunyan.LoggerOptions["level"]) ?? "info"
   });
 
   trace = this.logger.trace.bind(this.logger);

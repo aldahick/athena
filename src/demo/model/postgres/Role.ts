@@ -10,7 +10,7 @@ export class Role {
   @Column()
   name!: string;
 
-  @OneToMany(() => RolePermission, rp => rp.role)
+  @OneToMany(() => RolePermission, (rp) => rp.role)
   permissions!: RolePermission[];
 
   constructor(init?: Omit<Role, "id" | "permissions">) {

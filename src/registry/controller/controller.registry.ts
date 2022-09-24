@@ -10,14 +10,10 @@ import { ControllerPayload } from "./ControllerPayload";
 
 @singleton()
 export class ControllerRegistry {
-  constructor(
-    private readonly authRegistry: AuthRegistry,
-    private readonly logger: LoggerService,
-    private readonly webServer: WebServer
-  ) { }
+  constructor(private readonly authRegistry: AuthRegistry, private readonly logger: LoggerService, private readonly webServer: WebServer) {}
 
   register(controllerClasses: unknown[]): void {
-    const controllers = controllerClasses.map(c => container.resolve<Record<string, unknown>>(c as InjectionToken));
+    const controllers = controllerClasses.map((c) => container.resolve<Record<string, unknown>>(c as InjectionToken));
     for (const controller of controllers) {
       if (typeof controller !== "object") {
         continue;
@@ -41,22 +37,19 @@ export class ControllerRegistry {
         req,
         res,
         context: this.authRegistry.createContext(req)
-      }).then(result => {
-        if (result !== undefined) {
-          res.send(result);
-        }
-      }).catch(err => {
-        this.logger.error(err);
-        const httpErr = err instanceof HttpError
-          ? err
-          : HttpError.internalError(err instanceof Error
-            ? err.message
-            : err
-          );
-        res.status(httpErr.status).send({
-          error: httpErr.message
+      })
+        .then((result) => {
+          if (result !== undefined) {
+            res.send(result);
+          }
+        })
+        .catch((err) => {
+          this.logger.error(err);
+          const httpErr = err instanceof HttpError ? err : HttpError.internalError(err instanceof Error ? err.message : err);
+          res.status(httpErr.status).send({
+            error: httpErr.message
+          });
         });
-      });
     };
   }
 }

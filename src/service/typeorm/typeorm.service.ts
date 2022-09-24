@@ -8,9 +8,7 @@ import { LoggerService } from "../logger";
 export class TypeormService {
   connection?: Connection;
 
-  constructor(
-    private readonly logger: LoggerService
-  ) { }
+  constructor(private readonly logger: LoggerService) {}
 
   async init(options: ConnectionOptions): Promise<Connection> {
     this.connection = await createConnection({

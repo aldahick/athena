@@ -7,10 +7,7 @@ import { UserManager } from "../manager/user";
 
 @singleton()
 export class AuthResolver {
-  constructor(
-    private readonly authManager: AuthManager,
-    private readonly userManager: UserManager
-  ) { }
+  constructor(private readonly authManager: AuthManager, private readonly userManager: UserManager) {}
 
   @mutation()
   async createAuthToken(root: unknown, { username }: IMutationCreateAuthTokenArgs): Promise<IMutation["createAuthToken"]> {

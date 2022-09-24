@@ -1,4 +1,4 @@
-import { Request } from "express";
+import { IncomingMessage } from "http";
 import * as _ from "lodash";
 import { container } from "tsyringe";
 
@@ -14,10 +14,7 @@ export class DemoAuthContext implements BaseAuthContext {
 
   private roles?: Role[];
 
-  constructor(
-    readonly req: Request,
-    readonly payload?: DemoTokenPayload
-  ) { }
+  constructor(readonly req: IncomingMessage, readonly payload?: DemoTokenPayload) {}
 
   async user(): Promise<User | undefined> {
     await this.fetchUserAndRoles();
@@ -30,14 +27,17 @@ export class DemoAuthContext implements BaseAuthContext {
       return false;
     }
     const authService = container.resolve(AuthService);
-    return authService.isCheckValid(_.flatten(
-      this.roles.map(role =>
-        role.permissions.map(permission => ({
-          roleName: role.name,
-          ...permission,
-        }))
-      )
-    ), check);
+    return authService.isCheckValid(
+      _.flatten(
+        this.roles.map((role) =>
+          role.permissions.map((permission) => ({
+            roleName: role.name,
+            ...permission
+          }))
+        )
+      ),
+      check
+    );
   }
 
   private async fetchUserAndRoles(): Promise<void> {
@@ -48,10 +48,7 @@ export class DemoAuthContext implements BaseAuthContext {
     // findById() returns Promise<User | null> so it's just dandy here
     this._user = await db.users.findById(this.payload.userId);
     if (this._user) {
-      this.roles = await db.roles.createQueryBuilder("role")
-        .leftJoinAndSelect("role.permissions", "rolePermission")
-        .whereInIds(this._user.roleIds)
-        .getMany();
+      this.roles = await db.roles.createQueryBuilder("role").leftJoinAndSelect("role.permissions", "rolePermission").whereInIds(this._user.roleIds).getMany();
     }
   }
 }

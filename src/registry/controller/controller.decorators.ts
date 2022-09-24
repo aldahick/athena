@@ -8,13 +8,14 @@ export interface ControllerMetadata {
   route: string;
 }
 
-export const controller = (httpMethod: HttpMethod, route: string): MethodDecorator =>
+export const controller =
+  (httpMethod: HttpMethod, route: string): MethodDecorator =>
   (target, key): void => {
     const metadatas: ControllerMetadata[] = decoratorUtils.get(CONTROLLER_METADATA_KEY, target) ?? [];
     metadatas.push({
       methodName: key.toString(),
       route,
-      httpMethod,
+      httpMethod
     });
     Reflect.defineMetadata(CONTROLLER_METADATA_KEY, metadatas, target);
   };

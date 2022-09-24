@@ -12,18 +12,13 @@ export class WebServer {
 
   httpServer?: http.Server;
 
-  constructor(
-    private readonly baseConfig: BaseConfigService,
-    private readonly logger: LoggerService
-  ) {
+  constructor(private readonly baseConfig: BaseConfigService, private readonly logger: LoggerService) {
     this.express.use(cors());
   }
 
   async start(): Promise<void> {
     await new Promise<void>((resolve, reject) => {
-      this.httpServer = this.express.listen(this.httpPort, (err?: unknown) =>
-        err !== undefined ? reject(err) : resolve()
-      );
+      this.httpServer = this.express.listen(this.httpPort, (err?: unknown) => (err !== undefined ? reject(err) : resolve()));
     });
     this.logger.info({ port: this.httpPort }, "webServer.start");
   }
@@ -33,9 +28,7 @@ export class WebServer {
       if (!this.httpServer) {
         return resolve();
       }
-      this.httpServer.close(err =>
-        err ? reject(err) : resolve()
-      );
+      this.httpServer.close((err) => (err ? reject(err) : resolve()));
     });
     this.logger.info("webServer.stop");
   }

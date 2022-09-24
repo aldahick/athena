@@ -10,13 +10,16 @@ export interface WebsocketMetadata {
   validationSchema?: joi.Schema;
 }
 
-export const websocketEvent = (
-  eventName: string,
-  validationSchema?: WebsocketMetadata["validationSchema"]
-): MethodDecorator => (target, key): void => {
-  decoratorUtils.push<WebsocketMetadata>(WEBSOCKET_METADATA_KEY, {
-    eventName,
-    validationSchema,
-    methodName: key.toString()
-  }, target);
-};
+export const websocketEvent =
+  (eventName: string, validationSchema?: WebsocketMetadata["validationSchema"]): MethodDecorator =>
+  (target, key): void => {
+    decoratorUtils.push<WebsocketMetadata>(
+      WEBSOCKET_METADATA_KEY,
+      {
+        eventName,
+        validationSchema,
+        methodName: key.toString()
+      },
+      target
+    );
+  };

@@ -8,30 +8,29 @@ import { AuthCheck } from "./AuthCheck";
 import { AuthProviderClass } from "./AuthProvider";
 import { BaseAuthContext } from "./BaseAuthContext";
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const guard = (check: AuthCheck): MethodDecorator => (target, key, descriptor: TypedPropertyDescriptor<any>): void => {
-  if (typeof target !== "object" || !(key in target)) {
-    return;
-  }
-  const old = (target as {[key: string]: (...args: unknown[]) => unknown})[key as string];
-  descriptor.value = async function(...[payload, args, context]: [
-    unknown,
-    unknown,
-    BaseAuthContext
-  ] | [
-    ControllerPayload | WebsocketPayload<unknown>
-  ]): Promise<unknown> {
-    if (context === undefined) {
-      context = (payload as ControllerPayload & WebsocketPayload<unknown>).context;
-    }
-    if (!await context.isAuthorized(check)) {
-      throw HttpError.unauthorized();
-    }
-    return old.apply(this, [payload, args, context]);
-  };
-};
+type RequestHandler<V> =
+  | ((payload: ControllerPayload | WebsocketPayload<unknown>) => V | Promise<V>)
+  | ((payload: unknown, args: unknown, context: BaseAuthContext) => V | Promise<V>);
 
-export const authProvider = <Provider extends AuthProviderClass>(target: Provider): void => {
-  const authRegistry = container.resolve(AuthRegistry);
+export const guard =
+  <V>(check: AuthCheck): MethodDecorator =>
+  <T extends RequestHandler<V>>(target: unknown, key: string | symbol, descriptor: TypedPropertyDescriptor<T>): void => {
+    if (typeof key === "symbol" || !(target instanceof Object) || !target.hasOwnProperty(key)) {
+      return;
+    }
+    const old = descriptor.value as RequestHandler<V>;
+    descriptor.value = async function (this: typeof target, payload: ControllerPayload | WebsocketPayload<unknown>, args?: unknown, context?: BaseAuthContext): Promise<V> {
+      if (context === undefined) {
+        context = (payload as ControllerPayload & WebsocketPayload<unknown>).context;
+      }
+      if (!(await context.isAuthorized(check))) {
+        throw HttpError.unauthorized();
+      }
+      return old.bind(this)(payload, args, context);
+    };
+  };
+
+export const authProvider = <Provider extends AuthProviderClass<T>, T>(target: Provider): void => {
+  const authRegistry = container.resolve<AuthRegistry<T>>(AuthRegistry);
   authRegistry.addProvider(target);
 };

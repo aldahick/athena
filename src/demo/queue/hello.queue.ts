@@ -5,9 +5,7 @@ import { LoggerService } from "../../service/logger";
 
 @singleton()
 export class HelloQueueHandler {
-  constructor(
-    private readonly logger: LoggerService
-  ) { }
+  constructor(private readonly logger: LoggerService) {}
 
   @queueEvent("hello")
   hello({ data }: QueuePayload<string>): void {

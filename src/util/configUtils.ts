@@ -30,8 +30,8 @@ class ConfigUtils {
     }
     return valueTransformer
       ? valueTransformer(rawValue)
-      // string doesn't *technically* overlap with T but in practice, it will
-      : rawValue as unknown as T;
+      : // string doesn't *technically* overlap with T but in practice, it will
+        (rawValue as unknown as T);
   }
 }
 

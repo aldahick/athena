@@ -26,11 +26,7 @@ export class WebsocketRegistry {
     [eventName: string]: EventHandlerMetadata;
   } = {};
 
-  constructor(
-    private readonly authRegistry: AuthRegistry,
-    private readonly logger: LoggerService,
-    private readonly webServer: WebServer
-  ) { }
+  constructor(private readonly authRegistry: AuthRegistry, private readonly logger: LoggerService, private readonly webServer: WebServer) {}
 
   /** must call this after WebServer.start() */
   register(eventHandlerClasses: unknown[]): void {
@@ -39,9 +35,7 @@ export class WebsocketRegistry {
     }
     this.io = new socketIO.Server(this.webServer.httpServer);
 
-    const eventHandlers = _.compact(eventHandlerClasses.map(c =>
-      container.resolve<unknown>(c as InjectionToken)
-    )).concat([
+    const eventHandlers = _.compact(eventHandlerClasses.map((c) => container.resolve<unknown>(c as InjectionToken))).concat([
       container.resolve(AuthWebsocketHandler)
     ]) as Record<string, unknown>[];
     for (const eventHandler of eventHandlers) {
@@ -58,11 +52,14 @@ export class WebsocketRegistry {
           validationSchema,
           handle: callback.bind(eventHandler) as WebsocketHandler
         };
-        this.logger.trace({
-          eventName,
-          methodName,
-          className: eventHandler.constructor.name,
-        }, "register.websocketEvent");
+        this.logger.trace(
+          {
+            eventName,
+            methodName,
+            className: eventHandler.constructor.name
+          },
+          "register.websocketEvent"
+        );
       }
     }
 
@@ -85,7 +82,12 @@ export class WebsocketRegistry {
     }
   };
 
-  private async fireData({ socket, eventName, data, metadata: { validationSchema, handle } }: {
+  private async fireData({
+    socket,
+    eventName,
+    data,
+    metadata: { validationSchema, handle }
+  }: {
     socket: WebsocketWithContext;
     metadata: EventHandlerMetadata;
     eventName: string;

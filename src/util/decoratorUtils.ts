@@ -10,5 +10,5 @@ export const decoratorUtils = {
     values.push(value);
     Reflect.defineMetadata(metadataKey, values, target);
   },
-  get: <T>(metadataKey: string, target: Object): T | undefined => Reflect.getMetadata(metadataKey, target) as T | undefined,
+  get: <T>(metadataKey: string, target: Object): T | undefined => Reflect.getMetadata(metadataKey, target) as T | undefined
 };

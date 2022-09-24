@@ -7,10 +7,15 @@ export interface QueueMetadata {
   methodName: string;
 }
 
-export const queueEvent = (eventName: string): MethodDecorator =>
+export const queueEvent =
+  (eventName: string): MethodDecorator =>
   (target, key): void => {
-    decoratorUtils.push<QueueMetadata>(QUEUE_METADATA_KEY, {
-      eventName,
-      methodName: key.toString()
-    }, target);
+    decoratorUtils.push<QueueMetadata>(
+      QUEUE_METADATA_KEY,
+      {
+        eventName,
+        methodName: key.toString()
+      },
+      target
+    );
   };

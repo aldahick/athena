@@ -12,11 +12,7 @@ export class DatabaseService {
 
   users!: ReturnModelType<typeof User>;
 
-  constructor(
-    private readonly config: ConfigService,
-    private readonly mongo: MongoService,
-    private readonly typeorm: TypeormService
-  ) { }
+  constructor(private readonly config: ConfigService, private readonly mongo: MongoService, private readonly typeorm: TypeormService) {}
 
   async init(): Promise<void> {
     await this.mongo.init(this.config.mongoUrl);

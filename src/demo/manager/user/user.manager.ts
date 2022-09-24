@@ -6,9 +6,7 @@ import { DatabaseService } from "../../service/database";
 
 @singleton()
 export class UserManager {
-  constructor(
-    private readonly db: DatabaseService
-  ) { }
+  constructor(private readonly db: DatabaseService) {}
 
   /**
    * Per the idea of hiding services from resolvers, this method exposes an interface to the users store

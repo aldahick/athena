@@ -12,9 +12,7 @@ const DEFAULT_ID_LENGTH = 16;
 export class MongoService {
   connection?: Connection;
 
-  constructor(
-    private readonly logger: LoggerService
-  ) { }
+  constructor(private readonly logger: LoggerService) {}
 
   async init(url: string): Promise<void> {
     this.connection = await createConnection(url, {

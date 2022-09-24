@@ -1,4 +1,4 @@
-import { Request } from "express";
+import { IncomingMessage } from "http";
 import { singleton } from "tsyringe";
 
 import { AuthProvider, authProvider, AuthService } from "../../..";
@@ -9,11 +9,9 @@ import { DemoTokenPayload } from "./DemoTokenPayload";
 @authProvider
 @singleton()
 export class AuthManager implements AuthProvider<DemoTokenPayload, DemoAuthContext> {
-  constructor(
-    private readonly authService: AuthService
-  ) { }
+  constructor(private readonly authService: AuthService) {}
 
-  getContext(req: Request, payload?: DemoTokenPayload): DemoAuthContext {
+  getContext(req: IncomingMessage, payload?: DemoTokenPayload): DemoAuthContext {
     return new DemoAuthContext(req, payload);
   }
 

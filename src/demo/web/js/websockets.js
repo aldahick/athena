@@ -2,13 +2,13 @@ let socket;
 
 const createSocket = () => {
   const socket = io("http://localhost:8080");
-  socket.on("athena.error", message => alert(message));
+  socket.on("athena.error", (message) => alert(message));
   return socket;
-}
+};
 
 const waitSocketEvent = (eventName) => {
-  return new Promise(resolve => {
-    socket.on(eventName, data => {
+  return new Promise((resolve) => {
+    socket.on(eventName, (data) => {
       resolve(data);
     });
   });

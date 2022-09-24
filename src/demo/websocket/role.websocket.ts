@@ -6,9 +6,7 @@ import { DatabaseService } from "../service/database";
 
 @singleton()
 export class RoleWebsocketHandler {
-  constructor(
-    private readonly db: DatabaseService
-  ) { }
+  constructor(private readonly db: DatabaseService) {}
 
   @guard({
     resource: "role",

@@ -19,7 +19,7 @@ export class ResolverRegistry {
     private readonly config: BaseConfigService,
     private readonly logger: LoggerService,
     private readonly webServer: WebServer
-  ) { }
+  ) {}
 
   async register(resolverClasses: unknown[], options: { schemaDir: string }): Promise<void> {
     const resolversMap: {
@@ -27,9 +27,7 @@ export class ResolverRegistry {
         [key: string]: ResolverCallback;
       };
     } = {};
-    const resolvers = resolverClasses.map(r =>
-      container.resolve<Record<string, unknown>>(r as InjectionToken)
-    );
+    const resolvers = resolverClasses.map((r) => container.resolve<Record<string, unknown>>(r as InjectionToken));
     for (const resolver of resolvers) {
       const metadatas = decoratorUtils.get<ResolverMetadata[]>(RESOLVER_METADATA_KEY, resolver) ?? [];
       for (const metadata of metadatas) {
@@ -44,11 +42,9 @@ export class ResolverRegistry {
         this.logger.trace({ ...metadata, className: resolver.name }, "register.resolver");
       }
     }
-    const typeDefs = (await Promise.all(
-      (await recursiveReaddir(options.schemaDir))
-        .filter(f => f.endsWith(".gql"))
-        .map(filename => fs.readFile(filename))
-    )).join("\n");
+    const typeDefs = (
+      await Promise.all((await recursiveReaddir(options.schemaDir)).filter((f) => f.endsWith(".gql")).map((filename) => fs.readFile(filename)))
+    ).join("\n");
     const apollo = new ApolloServer({
       typeDefs,
       resolvers: resolversMap,

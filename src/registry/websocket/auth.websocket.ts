@@ -7,9 +7,7 @@ import { WebsocketPayload } from "./WebsocketPayload";
 
 @singleton()
 export class AuthWebsocketHandler {
-  constructor(
-    private readonly authRegistry: AuthRegistry
-  ) { }
+  constructor(private readonly authRegistry: AuthRegistry) {}
 
   @websocketEvent("athena.auth", joi.string().required())
   auth({ data, socket }: WebsocketPayload<string>): boolean {

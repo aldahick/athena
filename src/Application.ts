@@ -9,7 +9,6 @@ import { LoggerService } from "./service/logger";
 import { WebServer } from "./WebServer";
 
 export class Application extends EventEmitter {
-
   readonly registry = {
     controller: container.resolve(ControllerRegistry),
     queue: container.resolve(QueueRegistry),
@@ -21,13 +20,11 @@ export class Application extends EventEmitter {
 
   private readonly logger = container.resolve(LoggerService);
 
-  constructor(
-    { registerStopHandlers = true }: { registerStopHandlers?: boolean } = { }
-  ) {
+  constructor({ registerStopHandlers = true }: { registerStopHandlers?: boolean } = {}) {
     super();
     if (registerStopHandlers) {
-      process.on("uncaughtException", err => this.stop(err));
-      process.on("unhandledRejection", err => this.stop(err));
+      process.on("uncaughtException", (err) => this.stop(err));
+      process.on("unhandledRejection", (err) => this.stop(err));
       process.on("SIGINT", () => this.stop());
     }
   }

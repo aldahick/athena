@@ -1,4 +1,5 @@
 import * as express from "express";
+import { IncomingMessage } from "http";
 import { container, singleton } from "tsyringe";
 
 import { AuthService } from "../../service/auth";
@@ -7,20 +8,20 @@ import { AuthProvider, AuthProviderClass } from "./AuthProvider";
 import { BaseAuthContext } from "./BaseAuthContext";
 
 @singleton()
-export class AuthRegistry {
-  provider?: AuthProvider<unknown, BaseAuthContext>;
+export class AuthRegistry<TokenPayload = unknown> {
+  provider?: AuthProvider<TokenPayload, BaseAuthContext>;
 
-  constructor(
-    private readonly authService: AuthService,
-    private readonly logger: LoggerService
-  ) { }
+  constructor(private readonly authService: AuthService, private readonly logger: LoggerService) {}
 
-  addProvider(provider: AuthProviderClass): void {
+  addProvider(provider: AuthProviderClass<TokenPayload>): void {
     if (this.provider) {
-      this.logger.warn({
-        oldProvider: this.provider.constructor.name,
-        newProvider: provider.name
-      }, "multiple AuthProviders registered");
+      this.logger.warn(
+        {
+          oldProvider: this.provider.constructor.name,
+          newProvider: provider.name
+        },
+        "multiple AuthProviders registered"
+      );
     }
     this.provider = container.resolve(provider);
   }
@@ -33,7 +34,7 @@ export class AuthRegistry {
   }
 
   /** some protocols don't provide a particularly sane way of getting token from request */
-  createContextFromToken(req: express.Request, token: string | undefined): BaseAuthContext {
+  createContextFromToken(req: IncomingMessage, token: string | undefined): BaseAuthContext {
     if (!this.provider) {
       return {
         req,
@@ -48,6 +49,6 @@ export class AuthRegistry {
         // we can just ignore verification errors, treat it as no-auth
       }
     }
-    return this.provider.getContext(req, payload);
+    return this.provider.getContext(req, payload as TokenPayload);
   }
 }
