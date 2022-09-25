@@ -8,7 +8,7 @@ export class DateTimeScalarResolver {
   @scalar("DateTime")
   dateTime = new GraphQLScalarType({
     name: "DateTime",
-    serialize: (date: Date): string => {
+    serialize: (date: unknown): string => {
       if (!(date instanceof Date)) {
         throw new GraphQLError("can't serialize non-Date value as DateTime");
       }

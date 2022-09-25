@@ -6,7 +6,7 @@ import { container, InjectionToken, singleton } from "tsyringe";
 import { LoggerService } from "../../service/logger";
 import { decoratorUtils } from "../../util";
 import { WebServer } from "../../WebServer";
-import { AuthRegistry } from "../auth";
+import { AuthRegistry, BaseAuthContext } from "../auth";
 import { AuthWebsocketHandler } from "./auth.websocket";
 import { WEBSOCKET_METADATA_KEY, WebsocketMetadata } from "./websocket.decorators";
 import { WebsocketPayload } from "./WebsocketPayload";
@@ -66,12 +66,14 @@ export class WebsocketRegistry {
     this.io.on("connection", this.onConnection);
   }
 
-  private readonly onConnection = (socket: WebsocketWithContext): void => {
+  private readonly onConnection = (socket: socketIO.Socket & {
+    context?: BaseAuthContext;
+  }): void => {
     socket.context = this.authRegistry.createContextFromToken(socket.request, undefined);
     for (const [eventName, metadata] of Object.entries(this.eventHandlers)) {
       socket.on(eventName, (data: unknown) => {
         this.fireData({
-          socket,
+          socket: socket as WebsocketWithContext,
           metadata,
           eventName,
           data

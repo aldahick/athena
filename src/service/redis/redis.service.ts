@@ -1,14 +1,14 @@
 import { EventEmitter } from "events";
-import * as Redis from "ioredis";
+import Redis from "ioredis";
 import { singleton } from "tsyringe";
 
 import { LoggerService } from "../logger";
 
 @singleton()
 export class RedisService {
-  subClient?: Redis.Redis;
+  subClient?: Redis;
 
-  pubClient?: Redis.Redis;
+  pubClient?: Redis;
 
   private readonly subEmitter = new EventEmitter();
 

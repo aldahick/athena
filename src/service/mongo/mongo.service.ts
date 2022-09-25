@@ -15,11 +15,8 @@ export class MongoService {
   constructor(private readonly logger: LoggerService) {}
 
   async init(url: string): Promise<void> {
-    this.connection = await createConnection(url, {
-      useCreateIndex: true,
-      useNewUrlParser: true,
-      useUnifiedTopology: true
-    });
+    this.connection = await createConnection(url).asPromise();
+
     const { host } = new URL(url);
     this.logger.info({ host }, "connect.db.mongo");
   }

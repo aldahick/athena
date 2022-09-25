@@ -50,6 +50,7 @@ export class ResolverRegistry {
       resolvers: resolversMap,
       context: ({ req }): BaseAuthContext => this.authRegistry.createContext(req)
     });
+    await apollo.start();
     apollo.applyMiddleware({
       app: this.webServer.express,
       bodyParserConfig: {

@@ -1,14 +1,13 @@
 import { IncomingMessage } from "http";
 import { singleton } from "tsyringe";
 
-import { AuthProvider, authProvider, AuthService } from "../../..";
+import { AuthProvider, AuthService } from "../../..";
 import { User } from "../../model/mongo/User";
 import { DemoAuthContext } from "./DemoAuthContext";
 import { DemoTokenPayload } from "./DemoTokenPayload";
 
-@authProvider
 @singleton()
-export class AuthManager implements AuthProvider<DemoTokenPayload, DemoAuthContext> {
+export class AuthManager implements AuthProvider<DemoTokenPayload> {
   constructor(private readonly authService: AuthService) {}
 
   getContext(req: IncomingMessage, payload?: DemoTokenPayload): DemoAuthContext {

@@ -1,10 +1,10 @@
-import { AnyParamConstructor } from "@typegoose/typegoose/lib/types";
 import { IncomingMessage } from "http";
 
 import { BaseAuthContext } from "./BaseAuthContext";
 
-export interface AuthProvider<TokenPayload, Context extends BaseAuthContext> {
-  getContext: (req: IncomingMessage, tokenPayload: TokenPayload | undefined) => Context;
+export interface AuthProvider<Payload> {
+  getContext: (req: IncomingMessage, tokenPayload?: Payload) => BaseAuthContext;
 }
 
-export type AuthProviderClass<T> = AnyParamConstructor<AuthProvider<T, BaseAuthContext>>;
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export type AuthProviderClass<Payload> = new (...args: any[]) => AuthProvider<Payload>;

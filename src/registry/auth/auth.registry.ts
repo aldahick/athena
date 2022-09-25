@@ -9,7 +9,7 @@ import { BaseAuthContext } from "./BaseAuthContext";
 
 @singleton()
 export class AuthRegistry<TokenPayload = unknown> {
-  provider?: AuthProvider<TokenPayload, BaseAuthContext>;
+  provider?: AuthProvider<TokenPayload>;
 
   constructor(private readonly authService: AuthService, private readonly logger: LoggerService) {}
 
