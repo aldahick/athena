@@ -1,6 +1,6 @@
 {
   "name": "@athenajs/core",
-  "version": "1.0.0-beta5",
+  "version": "1.0.0-beta6",
   "description": "Framework for GraphQL and REST APIs",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
