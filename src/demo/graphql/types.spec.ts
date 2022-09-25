@@ -1,10 +1,15 @@
 import "reflect-metadata";
 
+import { container } from "tsyringe";
+
 import { ResolverRegistry } from "../../registry/resolver";
 
-const resolverRegistry = ResolverRegistry;
+let resolverRegistry: ResolverRegistry;
 
 describe("demo graphql schema", () => {
+  beforeEach(() => {
+    resolverRegistry = container.resolve(ResolverRegistry);
+  });
   it("should validate successfully", async () => {
     await expect(resolverRegistry.validate(`${__dirname}/../../../src/demo/graphql`)).resolves.toEqual(undefined);
   });

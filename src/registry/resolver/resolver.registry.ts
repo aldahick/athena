@@ -40,7 +40,7 @@ export class ResolverRegistry {
         this.logger.trace({ ...metadata, className: resolver.name }, "register.resolver");
       }
     }
-    const apollo = await ResolverRegistry.createServer(options.schemaDir, {
+    const apollo = await this.createServer(options.schemaDir, {
       resolvers: resolversMap,
       context: ({ req }): BaseAuthContext => this.authRegistry.createContext(req)
     });
@@ -53,7 +53,7 @@ export class ResolverRegistry {
     });
   }
 
-  static async validate(schemaDir: string): Promise<GraphQLError | undefined> {
+  async validate(schemaDir: string): Promise<GraphQLError | undefined> {
     try {
       await this.createServer(schemaDir);
     } catch (err: unknown) {
@@ -64,7 +64,7 @@ export class ResolverRegistry {
     }
   }
 
-  private static async createServer(schemaDir: string, options?: Partial<Config<ExpressContext>>): Promise<ApolloServer> {
+  private async createServer(schemaDir: string, options?: Partial<Config<ExpressContext>>): Promise<ApolloServer> {
     const typeDefs = (
       await Promise.all((await recursiveReaddir(schemaDir)).filter((f) => f.endsWith(".gql")).map((filename) => fs.readFile(filename)))
     ).join("\n");
