@@ -1,6 +1,6 @@
 import { AnyParamConstructor } from "@typegoose/typegoose/lib/types";
 import { singleton } from "tsyringe";
-import { ConnectionOptions, DataSource, ObjectLiteral, Repository } from "typeorm";
+import { DataSource, DataSourceOptions, ObjectLiteral, Repository } from "typeorm";
 
 import { LoggerService } from "../logger";
 
@@ -10,7 +10,7 @@ export class TypeormService {
 
   constructor(private readonly logger: LoggerService) {}
 
-  async init(options: ConnectionOptions): Promise<DataSource> {
+  async init(options: DataSourceOptions): Promise<DataSource> {
     this.connection = await new DataSource(options).initialize();
     const { host } = "url" in options && options.url !== undefined ? new URL(options.url) : { host: "host" in options ? options.host : "" };
     this.logger.info({ host }, `connect.db.${options.type}`);

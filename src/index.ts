@@ -15,4 +15,6 @@ export * from "./service/redis";
 export * from "./service/typeorm";
 export * from "./util";
 export * from "./WebServer";
+export * as tg from "@typegoose/typegoose";
 export { container, singleton } from "tsyringe";
+export * as orm from "typeorm";
