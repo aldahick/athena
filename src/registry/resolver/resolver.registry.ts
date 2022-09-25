@@ -1,5 +1,6 @@
-import { ApolloServer } from "apollo-server-express";
+import { ApolloServer, Config, ExpressContext } from "apollo-server-express";
 import * as fs from "fs-extra";
+import { GraphQLError } from "graphql";
 import * as recursiveReaddir from "recursive-readdir";
 import { container, InjectionToken, singleton } from "tsyringe";
 
@@ -11,6 +12,7 @@ import { AuthRegistry, BaseAuthContext } from "../auth";
 import { RESOLVER_METADATA_KEY, ResolverMetadata } from "./resolver.decorators";
 
 type ResolverCallback = (root: unknown, args: unknown, context: unknown) => unknown;
+type Resolvers = Record<string, Record<string, ResolverCallback>>;
 
 @singleton()
 export class ResolverRegistry {
@@ -22,11 +24,7 @@ export class ResolverRegistry {
   ) {}
 
   async register(resolverClasses: unknown[], options: { schemaDir: string }): Promise<void> {
-    const resolversMap: {
-      [key: string]: {
-        [key: string]: ResolverCallback;
-      };
-    } = {};
+    const resolversMap: Resolvers = {};
     const resolvers = resolverClasses.map((r) => container.resolve<Record<string, unknown>>(r as InjectionToken));
     for (const resolver of resolvers) {
       const metadatas = decoratorUtils.get<ResolverMetadata[]>(RESOLVER_METADATA_KEY, resolver) ?? [];
@@ -42,11 +40,7 @@ export class ResolverRegistry {
         this.logger.trace({ ...metadata, className: resolver.name }, "register.resolver");
       }
     }
-    const typeDefs = (
-      await Promise.all((await recursiveReaddir(options.schemaDir)).filter((f) => f.endsWith(".gql")).map((filename) => fs.readFile(filename)))
-    ).join("\n");
-    const apollo = new ApolloServer({
-      typeDefs,
+    const apollo = await ResolverRegistry.createServer(options.schemaDir, {
       resolvers: resolversMap,
       context: ({ req }): BaseAuthContext => this.authRegistry.createContext(req)
     });
@@ -56,6 +50,27 @@ export class ResolverRegistry {
       bodyParserConfig: {
         limit: this.config.uploadLimit
       }
+    });
+  }
+
+  static async validate(schemaDir: string): Promise<GraphQLError | undefined> {
+    try {
+      await this.createServer(schemaDir);
+    } catch (err: unknown) {
+      if (err instanceof GraphQLError) {
+        return err;
+      }
+      throw err;
+    }
+  }
+
+  private static async createServer(schemaDir: string, options?: Partial<Config<ExpressContext>>): Promise<ApolloServer> {
+    const typeDefs = (
+      await Promise.all((await recursiveReaddir(schemaDir)).filter((f) => f.endsWith(".gql")).map((filename) => fs.readFile(filename)))
+    ).join("\n");
+    return new ApolloServer({
+      typeDefs,
+      ...options ?? {},
     });
   }
 }
