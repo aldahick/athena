@@ -17,5 +17,7 @@
   "ignorePatterns": [
     "*.js"
   ],
-  "rules": {}
+  "rules": {
+    "prettier/prettier": "warn"
+  }
 }
