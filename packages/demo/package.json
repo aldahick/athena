@@ -1,0 +1,12 @@
+{
+  "name": "@athenajs/types",
+  "version": "0.0.1",
+  "main": "dist/main.js",
+  "type": "module",
+  "scripts": {
+    "dev": "tsc-watch --onSuccess 'node --enable-source-maps dist/index.js'"
+  },
+  "dependencies": {
+    "@athenajs/core": "workspace:*"
+  }
+}

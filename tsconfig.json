@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "target": "es2022",
+    "module": "node16",
+    "moduleResolution": "node16",
+    "declaration": true,
+    "inlineSourceMap": true,
+    "incremental": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "noImplicitAny": true,
+    "useUnknownInCatchVariables": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true
+  }
+}
