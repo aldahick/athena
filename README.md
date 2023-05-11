@@ -51,8 +51,11 @@ import { resolve } from "path";
 
 @injectable()
 export class Config extends BaseConfig {
-  // for example, to specify the directories containing your GraphQL schema, override like so:
-  readonly graphqlSchemaDirs = [resolve(getModuleDir(import.meta), '../schema')];
+  // for example, to specify the directories containing your GQL schema, override like so:
+  readonly graphqlSchemaDirs = [resolve(getModuleDir(import.meta), "../schema")];
+  // or, for new fields altogether, use this.optional & this.required to read/verify environment variables
+  readonly databaseUrl: string = this.required("DATABASE_URL");
+  readonly environment: string | undefined = this.optional("NODE_ENV");
 }
 ```
 
@@ -66,9 +69,13 @@ It's simple to inject dependencies into constructors, thanks to [`tsyringe`](htt
  * }
  */
 import { resolver } from "@athenajs/core";
+import { Config } from "./config.js";
 
 @resolver()
 export class HelloResolver {
+  // inject dependencies by including them as constructor params
+  constructor(private config: Config) { }
+
   @resolveQuery()
   async hello(): Promise<string> {
     return "Hello, world!";
@@ -77,7 +84,7 @@ export class HelloResolver {
   // If you don't want to name your methods after the fields they resolve, don't!
   @resolveField("Query.hello")
   async resolveHello(): Promise<string> {
-    return "Hello, resolved world!";
+    return `Hello, resolved world! Running in environment: ${this.config.environment}`;
   }
 }
 ```
