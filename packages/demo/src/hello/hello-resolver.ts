@@ -1,4 +1,4 @@
-import { resolver, resolveQuery } from "@athenajs/core";
+import { resolveQuery, resolver } from "@athenajs/core";
 
 @resolver()
 export class HelloResolver {

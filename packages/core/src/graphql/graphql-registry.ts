@@ -1,12 +1,12 @@
 import { promises as fs } from "node:fs";
 
-import { injectable, injectAll } from "@aldahick/tsyringe";
+import { injectable } from "@aldahick/tsyringe";
 import { ApolloServerOptions, BaseContext } from "@apollo/server";
-import { recursiveReaddir } from "@athenajs/utils";
+import { assign, recursiveReaddir } from "@athenajs/utils";
 import { GraphQLFieldResolver } from "graphql";
 
 import { BaseConfig } from "../config.js";
-import { getResolverInfo, resolverToken } from "./graphql-decorators.js";
+import { getResolverKeys, injectResolvers } from "./graphql-decorators.js";
 
 export type TypeDefs = Exclude<
   ApolloServerOptions<BaseContext>["typeDefs"],
@@ -24,7 +24,7 @@ export class GraphQLRegistry {
 
   constructor(
     private readonly config: BaseConfig,
-    @injectAll(resolverToken) private readonly resolverInstances: object[]
+    @injectResolvers() private readonly resolverInstances: object[]
   ) {}
 
   async getTypeDefs(): Promise<TypeDefs> {
@@ -32,7 +32,7 @@ export class GraphQLRegistry {
       return this.typeDefs;
     }
     const schemaPaths = await Promise.all(
-      this.config.graphql.schemaDirs.map(recursiveReaddir)
+      this.config.graphqlSchemaDirs.map(recursiveReaddir)
     );
     return (this.typeDefs = await Promise.all(
       schemaPaths.flat().map((path) => fs.readFile(path, "utf-8"))
@@ -44,11 +44,14 @@ export class GraphQLRegistry {
     if (this.resolvers) {
       return this.resolvers;
     }
-    Object.fromEntries(
-      this.resolverInstances.flatMap((instance) => {
-        const keys = getResolverInfo(instance);
-        return Object.entries(keys).map([]);
-      })
-    );
+    this.resolvers = {};
+    for (const instance of this.resolverInstances) {
+      const resolverInfo = getResolverKeys(instance);
+      for (const [typeName, resolverKey] of Object.entries(resolverInfo)) {
+        const resolver = instance[resolverKey as never];
+        assign(this.resolvers, typeName, resolver);
+      }
+    }
+    return this.resolvers;
   }
 }

@@ -1,9 +1,9 @@
+import { injectable } from "@aldahick/tsyringe";
 import { ApolloServer, BaseContext } from "@apollo/server";
 import fastifyApollo, {
   fastifyApolloDrainPlugin,
 } from "@as-integrations/fastify";
 import fastify from "fastify";
-import { injectable } from "tsyringe";
 
 import { BaseConfig } from "../config.js";
 import { GraphQLRegistry } from "./graphql-registry.js";

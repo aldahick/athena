@@ -1,18 +1,22 @@
-import { injectable, registry } from "@aldahick/tsyringe";
+import { injectable, injectAll, registry } from "../container.js";
 
 /** Set on classes, to mark its resolver method names */
 const RESOLVER_KEYS_KEY = "athena.graphql.ResolverKeys";
 /** Set on methods, to mark the type name they handle */
 const FIELD_RESOLVER_KEY = "athena.graphql.FieldResolver";
 
-export const resolverToken = Symbol("AthenaResolver");
+const resolverToken = Symbol("AthenaResolver");
+
+export const injectResolvers = (): ParameterDecorator =>
+  injectAll(resolverToken);
+
 /**
  * Registers a class as an Athena resolver.
  */
-export const resolver: () => ClassDecorator = () => (target) => {
+export const resolver = (): ClassDecorator => (target) => {
   const constructor = target as unknown as new () => unknown;
   injectable()(constructor);
-  registry([{ token: resolverToken, useClass: constructor }]);
+  registry([{ token: resolverToken, useClass: constructor }])(target);
 };
 
 /**
@@ -21,10 +25,13 @@ export const resolver: () => ClassDecorator = () => (target) => {
  * @returns key: GraphQL type name, value: field resolver method key
  */
 export const getResolverKeys = (target: object): Record<string, string> => {
-  const resolverKeys: (string | symbol)[] = Reflect.getOwnMetadata(
+  const resolverKeys: (string | symbol)[] | undefined = Reflect.getMetadata(
     RESOLVER_KEYS_KEY,
     target
   );
+  if (!resolverKeys) {
+    return {};
+  }
   return Object.fromEntries(
     resolverKeys.map((key) => {
       const typeName = getResolverTypeName(target, key);
@@ -42,8 +49,7 @@ export const getResolverKeys = (target: object): Record<string, string> => {
 export const getResolverTypeName = (
   target: object,
   key: string | symbol
-): string | undefined =>
-  Reflect.getOwnMetadata(FIELD_RESOLVER_KEY, target, key);
+): string | undefined => Reflect.getMetadata(FIELD_RESOLVER_KEY, target, key);
 
 /**
  * Registers a method (on a resolver) to handle a specific GraphQL field.
@@ -58,7 +64,7 @@ export const resolveField: (typeName?: string) => MethodDecorator =
 
     // add field resolver's method name to its class's resolver keys
     const resolverKeys: (string | symbol)[] =
-      Reflect.getOwnMetadata(RESOLVER_KEYS_KEY, target) ?? [];
+      Reflect.getMetadata(RESOLVER_KEYS_KEY, target) ?? [];
     Reflect.defineMetadata(
       RESOLVER_KEYS_KEY,
       resolverKeys.concat([propertyKey]),

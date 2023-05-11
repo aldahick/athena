@@ -1,7 +1,7 @@
+import { injectable } from "@aldahick/tsyringe";
 import process from "process";
-import { injectable } from "tsyringe";
 
-import { GraphQLServer } from "./index.js";
+import { GraphQLServer } from "./graphql/index.js";
 import { Logger } from "./logger.js";
 
 @injectable()

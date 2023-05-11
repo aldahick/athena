@@ -4,9 +4,16 @@
   "main": "dist/main.js",
   "type": "module",
   "scripts": {
-    "dev": "tsc-watch --onSuccess 'node --enable-source-maps dist/index.js'"
+    "dev": "tsc-watch --onSuccess 'node --enable-source-maps dist/main.js'"
   },
   "dependencies": {
-    "@athenajs/core": "workspace:*"
+    "@athenajs/core": "workspace:*",
+    "@athenajs/utils": "workspace:*",
+    "reflect-metadata": "0.1.13"
+  },
+  "devDependencies": {
+    "@types/node": "20.1.2",
+    "tsc-watch": "6.0.4",
+    "typescript": "5.0.4"
   }
 }
