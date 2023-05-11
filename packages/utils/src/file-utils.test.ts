@@ -1,8 +1,9 @@
+import assert from "node:assert";
+import { resolve } from "node:path";
 import { describe, it } from "node:test";
+
 import { recursiveReaddir } from "./file-utils.js";
 import { getModuleDir } from "./module-utils.js";
-import { resolve } from "node:path";
-import assert from "node:assert";
 
 describe("file-utils", () => {
   describe("#recursiveReaddir", () => {

@@ -8,6 +8,7 @@
   },
   "plugins": [
     "@typescript-eslint/eslint-plugin",
+    "simple-import-sort",
     "prettier"
   ],
   "extends": [
@@ -18,6 +19,9 @@
     "*.js"
   ],
   "rules": {
-    "prettier/prettier": "warn"
+    "prettier/prettier": "warn",
+    "simple-import-sort/imports": "warn",
+    "simple-import-sort/exports": "warn",
+    "@typescript-eslint/await-thenable": "warn"
   }
 }

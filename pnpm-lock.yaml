@@ -19,6 +19,9 @@ importers:
       eslint-plugin-prettier:
         specifier: 4.2.1
         version: 4.2.1(eslint-config-prettier@8.8.0)(eslint@8.40.0)(prettier@2.8.8)
+      eslint-plugin-simple-import-sort:
+        specifier: 10.0.0
+        version: 10.0.0(eslint@8.40.0)
       jest:
         specifier: 29.5.0
         version: 29.5.0
@@ -34,6 +37,9 @@ importers:
 
   packages/core:
     dependencies:
+      '@aldahick/tsyringe':
+        specifier: 4.7.1
+        version: 4.7.1
       '@apollo/server':
         specifier: 4.7.1
         version: 4.7.1(graphql@16.6.0)
@@ -49,9 +55,6 @@ importers:
       graphql:
         specifier: 16.6.0
         version: 16.6.0
-      inversify:
-        specifier: 6.0.1
-        version: 6.0.1
       reflect-metadata:
         specifier: 0.1.13
         version: 0.1.13
@@ -69,8 +72,6 @@ importers:
         specifier: workspace:*
         version: link:../core
 
-  packages/server-express: {}
-
   packages/utils:
     devDependencies:
       '@types/node':
@@ -78,6 +79,13 @@ importers:
         version: 20.1.2
 
 packages:
+
+  /@aldahick/tsyringe@4.7.1:
+    resolution: {integrity: sha512-RxQ2QBz8u3wDRwer17Bne/SUq8KLTo8peMM9IZxe/ir4IIRZVRD4yvoFHlLB1+aXKzY6KeP97IPdRHK/P/+2sA==}
+    engines: {node: '>= 6.0.0'}
+    dependencies:
+      tslib: 2.5.0
+    dev: false
 
   /@ampproject/remapping@2.2.1:
     resolution: {integrity: sha512-lFMjJTrFL3j7L9yBxwYfCq2k6qqwHyzuUl/XBnif78PWTJYyL/dfowQHWE3sp6U6ZzqWiiIZnpTMO96zhkjwtg==}
@@ -2031,6 +2039,14 @@ packages:
       prettier-linter-helpers: 1.0.0
     dev: true
 
+  /eslint-plugin-simple-import-sort@10.0.0(eslint@8.40.0):
+    resolution: {integrity: sha512-AeTvO9UCMSNzIHRkg8S6c3RPy5YEwKWSQPx3DYghLedo2ZQxowPFLGDN1AZ2evfg6r6mjBSZSLxLFsWSu3acsw==}
+    peerDependencies:
+      eslint: '>=5.0.0'
+    dependencies:
+      eslint: 8.40.0
+    dev: true
+
   /eslint-scope@5.1.1:
     resolution: {integrity: sha512-2NxwbF/hZ0KpepYN0cNbo+FN6XoK7GaHlQhgx/hIZl6Va0bF45RQOOwhLIy8lQDbuCiadSLCBnH2CFYquit5bw==}
     engines: {node: '>=8.0.0'}
@@ -2614,10 +2630,6 @@ packages:
 
   /inherits@2.0.4:
     resolution: {integrity: sha512-k/vGaX4/Yla3WzyMCvTQOXYeIHvqOKtnqBduzTHpzpQZzAskKMhZ2K+EnBiSM9zGSoIFeMpXKxa4dYeZIQqewQ==}
-
-  /inversify@6.0.1:
-    resolution: {integrity: sha512-B3ex30927698TJENHR++8FfEaJGqoWOgI6ZY5Ht/nLUsFCwHn6akbwtnUAPCgUepAnTpe2qHxhDNjoKLyz6rgQ==}
-    dev: false
 
   /ipaddr.js@1.9.1:
     resolution: {integrity: sha512-0KI/607xoxSToH7GjN1FfSbLoU0+btTicjsQSWQlh/hZykN8KpmMf7uYwPW3R+akZ6R/w18ZlXSHBYXiYUPO3g==}
