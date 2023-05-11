@@ -1,6 +1,8 @@
 # athena
 
-A modular backend framework for those who like the latest runtimes. (Also aims to provide a stable, sane API - WIP.)
+A modular backend framework for those who like the latest runtimes. (Also aims to provide a stable, sane API - all very much WIP.)
+
+The functioning, older version of this project (`typeorm`, `express`, etc) is in the [`main`](https://github.com/aldahick/athena/tree/main) branch (for now).
 
 ## Checklist
 
@@ -8,7 +10,8 @@ TODO
 
 - [ ] GraphQL
 - [ ] ORM
-- [ ] 
+- [ ] CI
+- [ ] CD
 
 ## Features
 
