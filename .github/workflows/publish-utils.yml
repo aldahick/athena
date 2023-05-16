@@ -2,7 +2,7 @@ name: Publish @athenajs/utils
 on:
   push:
     tags:
-      - utils_v**
+      - utils-v**
     paths:
       - packages/utils/**
 jobs:

@@ -8,7 +8,8 @@
   "scripts": {
     "build": "tsc",
     "lint": "eslint src",
-    "test": "node --test dist"
+    "test": "node --test dist",
+    "postversion": "bash ../../scripts/hooks/postversion.sh"
   },
   "devDependencies": {
     "@types/node": "20.1.2"
