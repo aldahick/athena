@@ -18,7 +18,7 @@ jobs:
       - run: pnpm install
       - run: pnpm build
         working-directory: packages/utils
-      - run: pnpm publish
+      - run: pnpm publish --no-git-checks
         working-directory: packages/utils
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
