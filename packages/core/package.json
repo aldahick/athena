@@ -6,7 +6,7 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
-    "build": "tsc",
+    "build": "cd ../utils && pnpm build && cd ../core && tsc",
     "lint": "eslint src",
     "preversion": "pnpm build",
     "postversion": "bash ../../scripts/hooks/postversion.sh core"
