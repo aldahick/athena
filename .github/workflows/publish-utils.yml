@@ -17,6 +17,8 @@ jobs:
           version: 8
       - run: pnpm install
       - run: pnpm build
+        working-directory: packages/utils
       - run: pnpm publish
+        working-directory: packages/utils
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
