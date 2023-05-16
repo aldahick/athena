@@ -1,7 +1,7 @@
 import assert from "node:assert";
 import { describe, it } from "node:test";
 
-import { assign } from "./object-utils.js";
+import { assign, omit } from "./object-utils.js";
 
 describe("object-utils", () => {
   describe("#assign", () => {
@@ -22,6 +22,15 @@ describe("object-utils", () => {
       const expected = 7;
       assign(obj, "a.b", expected);
       assert.strictEqual(obj.a.b, expected);
+    });
+  });
+
+  describe("#omit", () => {
+    it("should omit all keys provided", () => {
+      const obj = { x: 2, y: 3 };
+      const expected = { x: 2 };
+      const actual = omit(obj, "y");
+      assert.deepStrictEqual(actual, expected);
     });
   });
 });

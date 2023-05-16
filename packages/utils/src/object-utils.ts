@@ -20,3 +20,11 @@ export const assign = (target: object, key: string, value: unknown): void => {
     current = current[keyPart];
   });
 };
+
+export const omit = <T extends object, K extends keyof T>(
+  target: T,
+  ...keys: K[]
+): Omit<T, K> =>
+  Object.fromEntries(
+    Object.entries(target).filter(([key]) => !keys.includes(key as K))
+  ) as Omit<T, K>;
