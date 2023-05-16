@@ -1,18 +1,17 @@
 # athena
 
-A modular backend framework for those who like the latest runtimes. (Also aims to provide a stable, sane API - all very much WIP.)
-
-The functioning, older version of this project (`typeorm`, `express`, etc) is in the [`main`](https://github.com/aldahick/athena/tree/main) branch (for now).
+A modular backend framework atop Apollo and Fastify. Inspired heavily by [Nest](https://nestjs.com/); just simpler and more focused on performance.
 
 ## Features
 
-- [GraphQL](https://graphql.org/)
-- It's all [ES modules](https://nodejs.org/api/esm.html)!
+- [GraphQL](./docs/graphql.md)
+- [Authentication](./docs/auth.md#Authentication) and [authorization](./docs/auth.md#Authorization)
+- It's [ES modules](https://nodejs.org/api/esm.html) all the way down
 
 ### To Do
 
 - [x] GraphQL
-- [ ] ORM
+- [ ] Auth
 - [ ] CI
 - [ ] CD
 
@@ -25,9 +24,9 @@ npm install --save @athenajs/core reflect-metadata
 npm install --save-dev @types/node typescript
 ```
 
-Make sure your tsconfig has `experimentalDecorators: true` and `emitDecoratorMetadata: true`.
+Make sure your tsconfig has `"experimentalDecorators": true` and `"emitDecoratorMetadata": true`. To use ES modules, either set `"type": "module"` in your `package.json`, or name your files `.mts` instead of `.ts`.
 
-Instantiate and start the server (using ES modules, not CommonJS):
+Instantiate and start the server:
 
 ```typescript
 import { container, Application, Config } from "@athenajs/core";

@@ -1,4 +1,5 @@
 {
+  // Base tsconfig for each subpackage
   "compilerOptions": {
     "target": "es2022",
     "module": "node16",
