@@ -1,0 +1,19 @@
+export const chunk = <T>(items: T[], size: number): T[][] => {
+  const chunks: T[][] = [];
+  for (let i = 0; i < items.length; i += size) {
+    chunks.push(items.slice(i, i + size));
+  }
+  return chunks;
+};
+
+export const sortBy = <T extends object>(
+  items: T[],
+  comparator: keyof T | ((a: T) => string)
+) => {
+  if (typeof comparator === "function") {
+    return items.sort((a, b) => comparator(a).localeCompare(comparator(b)));
+  }
+  return items.sort((a, b) =>
+    (a[comparator] as string).localeCompare(b[comparator] as string)
+  );
+};
