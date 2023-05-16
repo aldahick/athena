@@ -9,6 +9,7 @@
     "build": "tsc",
     "lint": "eslint src",
     "test": "node --test dist",
+    "preversion": "pnpm build",
     "postversion": "bash ../../scripts/hooks/postversion.sh utils"
   },
   "devDependencies": {
