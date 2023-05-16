@@ -10,10 +10,10 @@ A modular backend framework atop Apollo and Fastify. Inspired heavily by [Nest](
 
 ### To Do
 
-- [x] GraphQL
+- [x] [GraphQL](./packages/core/src/graphql)
 - [ ] Auth
 - [ ] CI
-- [ ] CD
+- [x] [CD](./.github/workflows/publish-package.yml)
 
 ## Usage
 

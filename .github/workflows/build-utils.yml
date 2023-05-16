@@ -1,0 +1,10 @@
+name: Build @athenajs/utils
+on:
+  push:
+    paths:
+      - packages/utils/**
+jobs:
+  publish:
+    uses: ./.github/workflows/build-package.yml
+    with:
+      directory: packages/utils
