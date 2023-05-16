@@ -19,3 +19,5 @@ jobs:
       - run: pnpm install
       - run: pnpm build
         working-directory: ${{ inputs.directory }}
+      - run: pnpm lint
+        working-directory: ${{ inputs.directory }}

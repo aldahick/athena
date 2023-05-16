@@ -1,0 +1,10 @@
+name: Build @athenajs/demo
+on:
+  push:
+    paths:
+      - packages/demo/**
+jobs:
+  publish:
+    uses: ./.github/workflows/build-package.yml
+    with:
+      directory: packages/demo
