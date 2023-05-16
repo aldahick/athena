@@ -1,6 +1,6 @@
 {
   "name": "@athenajs/utils",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "license": "MIT",
   "type": "module",
   "main": "dist/index.js",
@@ -9,7 +9,7 @@
     "build": "tsc",
     "lint": "eslint src",
     "test": "node --test dist",
-    "postversion": "bash ../../scripts/hooks/postversion.sh"
+    "postversion": "bash ../../scripts/hooks/postversion.sh utils"
   },
   "devDependencies": {
     "@types/node": "20.1.2"
