@@ -1,12 +1,12 @@
-name: Publish @athenajs/utils
+name: Publish @athenajs/core
 on:
   push:
     tags:
-      - utils-v**
+      - core-v**
 jobs:
   publish:
     uses: ./.github/workflows/publish-package.yml
     with:
-      directory: packages/utils
+      directory: packages/core
     secrets:
       npmToken: ${{ secrets.NPM_TOKEN }}

@@ -93,3 +93,5 @@ See the [demo](./packages/demo) package for a complete example.
 ## Development
 
 We use the [Node test runner](https://nodejs.org/api/test.html#running-tests-from-the-command-line), so make sure to install Node.JS v18.13 / v19.2 or higher.
+
+To publish new versions, run `pnpm version <new-version>` in the appropriate package directory; a new Git tag will be pushed, and the CI will publish the package automatically (see statuses [here](https://github.com/aldahick/athena/actions)).

@@ -1,0 +1,28 @@
+on:
+  workflow_call:
+    inputs:
+      directory:
+        required: true
+        type: string
+    secrets:
+      npmToken:
+        required: true
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '18.x'
+          registry-url: 'https://registry.npmjs.org'
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 8
+      - run: pnpm install
+      - run: pnpm build
+        working-directory: ${{ inputs.directory }}
+      - run: pnpm publish --no-git-checks
+        working-directory: ${{ inputs.directory }}
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.npmToken }}
