@@ -6,6 +6,11 @@ export const chunk = <T>(items: T[], size: number): T[][] => {
   return chunks;
 };
 
+export const compact = <T>(items: T[]): Exclude<T, null | undefined>[] =>
+  items.filter(
+    (i): i is Exclude<T, null | undefined> => i !== undefined && i !== null
+  );
+
 export const sortBy = <T extends object>(
   items: T[],
   comparator: keyof T | ((a: T) => string)
