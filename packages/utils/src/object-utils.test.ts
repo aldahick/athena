@@ -1,7 +1,7 @@
 import assert from "node:assert";
 import { describe, it } from "node:test";
 
-import { assign, omit } from "./object-utils.js";
+import { assign, groupBy, omit } from "./object-utils.js";
 
 describe("object-utils", () => {
   describe("#assign", () => {
@@ -22,6 +22,34 @@ describe("object-utils", () => {
       const expected = 7;
       assign(obj, "a.b", expected);
       assert.strictEqual(obj.a.b, expected);
+    });
+  });
+
+  describe("#groupBy", () => {
+    const items = [
+      { a: 1, b: 10 },
+      { a: 2, b: 12 },
+      { a: 2, b: 15 },
+    ];
+    it("should return items grouped by key", () => {
+      const actual = groupBy(items, (i) => i.a);
+      const expected = new Map([
+        [1, [items[0]]],
+        [2, [items[1], items[2]]],
+      ]);
+      assert.deepStrictEqual(actual, expected);
+    });
+    it("should map values grouped by key when toValue is provided", () => {
+      const actual = groupBy(
+        items,
+        (i) => i.a,
+        (i) => i.b
+      );
+      const expected = new Map([
+        [1, [10]],
+        [2, [12, 15]],
+      ]);
+      assert.deepStrictEqual(actual, expected);
     });
   });
 
