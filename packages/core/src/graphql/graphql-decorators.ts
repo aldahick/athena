@@ -26,19 +26,20 @@ export const resolver = (): ClassDecorator => (target) => {
  * @see {@link resolver}
  * @returns key: GraphQL type name, value: field resolver method key
  */
-export const getResolverKeys = (target: object): Record<string, string> => {
+export const getResolverKeys = (
+  target: object
+): Map<string, string | symbol> => {
   const resolverKeys: (string | symbol)[] | undefined = Reflect.getMetadata(
     RESOLVER_KEYS_KEY,
     target
   );
-  if (!resolverKeys) {
-    return {};
-  }
-  return Object.fromEntries(
-    resolverKeys.map((key) => {
-      const typeName = getResolverTypeName(target, key);
-      return [typeName, key];
-    })
+  return new Map(
+    resolverKeys
+      ?.map((key) => {
+        const typeName = getResolverTypeName(target, key);
+        return key && typeName ? [typeName, key] : undefined;
+      })
+      .filter((pair): pair is [string, string | symbol] => !!pair)
   );
 };
 
@@ -79,7 +80,9 @@ export const resolveField =
     }
     if (batch) {
       /* eslint-disable @typescript-eslint/no-explicit-any */
-      const batchResolver = createBatchResolver(descriptor.value as any);
+      const batchResolver = createBatchResolver(
+        descriptor.value.bind(target) as any
+      );
       descriptor.value = batchResolver as any;
       /* eslint-enable @typescript-eslint/no-explicit-any */
     }

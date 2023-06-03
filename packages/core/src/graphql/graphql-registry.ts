@@ -53,8 +53,13 @@ export class GraphQLRegistry {
     this.resolvers = {};
     for (const instance of this.resolverInstances) {
       const resolverInfo = getResolverKeys(instance);
-      for (const [typeName, resolverKey] of Object.entries(resolverInfo)) {
-        const resolver = instance[resolverKey as never];
+      for (const [typeName, resolverKey] of resolverInfo.entries()) {
+        const resolver = (
+          instance[resolverKey as never] as GraphQLFieldResolver<
+            unknown,
+            unknown
+          >
+        ).bind(instance);
         assign(this.resolvers, typeName, resolver);
       }
     }
