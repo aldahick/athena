@@ -1,1 +1,6 @@
-export { container, injectable, injectAll, registry } from "@aldahick/tsyringe";
+export {
+  container,
+  singleton as injectable,
+  injectAll,
+  registry,
+} from "@aldahick/tsyringe";
