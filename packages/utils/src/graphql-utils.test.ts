@@ -1,7 +1,7 @@
 import assert from "node:assert";
 import { describe, it } from "node:test";
 
-import gql, { OperationDefinitionNode } from "graphql";
+import gql from "graphql";
 
 import {
   extractOperationNames,

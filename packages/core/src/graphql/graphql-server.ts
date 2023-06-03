@@ -6,6 +6,7 @@ import fastifyApollo, {
 import fastify from "fastify";
 
 import { BaseConfig } from "../config.js";
+import { Logger } from "../logger.js";
 import { GraphQLRegistry } from "./graphql-registry.js";
 
 @injectable()
@@ -15,19 +16,24 @@ export class GraphQLServer {
 
   constructor(
     private readonly config: BaseConfig,
+    private readonly logger: Logger,
     private readonly registry: GraphQLRegistry
   ) {}
 
   async start(): Promise<void> {
     this.fastify = fastify();
+    const typeDefs = await this.registry.getTypeDefs();
+    const resolvers = this.registry.getResolvers();
     this.apollo = new ApolloServer({
-      typeDefs: await this.registry.getTypeDefs(),
-      resolvers: this.registry.getResolvers(),
+      typeDefs,
+      resolvers,
       plugins: [fastifyApolloDrainPlugin(this.fastify)],
     });
     await this.apollo.start();
     await this.fastify.register(fastifyApollo(this.apollo));
-    await this.fastify.listen({ port: this.config.http.port });
+    const { port } = this.config.http;
+    await this.fastify.listen({ port });
+    this.logger.info("listening on port " + port);
   }
 
   async stop(): Promise<void> {

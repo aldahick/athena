@@ -6,6 +6,7 @@ import { assign, recursiveReaddir } from "@athenajs/utils";
 import { GraphQLFieldResolver } from "graphql";
 
 import { BaseConfig } from "../config.js";
+import { Logger } from "../logger.js";
 import { getResolverKeys, injectResolvers } from "./graphql-decorators.js";
 
 export type TypeDefs = Exclude<
@@ -24,6 +25,7 @@ export class GraphQLRegistry {
 
   constructor(
     private readonly config: BaseConfig,
+    private readonly logger: Logger,
     @injectResolvers() private readonly resolverInstances: object[]
   ) {}
 
@@ -31,8 +33,12 @@ export class GraphQLRegistry {
     if (this.typeDefs) {
       return this.typeDefs;
     }
+    this.logger.debug(
+      "loading graphql type definitions from " +
+        this.config.graphqlSchemaDirs.join(", ")
+    );
     const schemaPaths = await Promise.all(
-      this.config.graphqlSchemaDirs.map(recursiveReaddir)
+      this.config.graphqlSchemaDirs.map((d) => recursiveReaddir(d))
     );
     return (this.typeDefs = await Promise.all(
       schemaPaths.flat().map((path) => fs.readFile(path, "utf-8"))
