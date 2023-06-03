@@ -3,11 +3,11 @@ import { createBatchResolver } from "graphql-resolve-batch";
 import { injectable, injectAll, registry } from "../container.js";
 
 /** Set on classes, to mark its resolver method names */
-const RESOLVER_KEYS_KEY = Symbol("athena.graphql.ResolverKeys");
+const RESOLVER_KEYS_KEY = Symbol("ResolverKeys");
 /** Set on methods, to mark the type name they handle */
-const FIELD_RESOLVER_KEY = Symbol("athena.graphql.FieldResolver");
+const FIELD_RESOLVER_KEY = Symbol("FieldResolver");
 
-const resolverToken = Symbol("athena.graphql.Resolver");
+const resolverToken = Symbol("Resolver");
 
 export const injectResolvers = (): ParameterDecorator =>
   injectAll(resolverToken);
