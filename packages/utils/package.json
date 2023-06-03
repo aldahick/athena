@@ -12,6 +12,9 @@
     "preversion": "pnpm build",
     "postversion": "bash ../../scripts/hooks/postversion.sh utils"
   },
+  "dependencies": {
+    "graphql": "16.6.0"
+  },
   "devDependencies": {
     "@types/node": "20.1.2"
   }

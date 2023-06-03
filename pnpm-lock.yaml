@@ -1,4 +1,8 @@
-lockfileVersion: '6.0'
+lockfileVersion: '6.1'
+
+settings:
+  autoInstallPeers: true
+  excludeLinksFromLockfile: false
 
 importers:
 
@@ -92,6 +96,10 @@ importers:
         version: 5.0.4
 
   packages/utils:
+    dependencies:
+      graphql:
+        specifier: 16.6.0
+        version: 16.6.0
     devDependencies:
       '@types/node':
         specifier: 20.1.2
