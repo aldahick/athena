@@ -1,12 +1,15 @@
 {
-  "name": "@athenajs/types",
+  "name": "@athenajs/demo",
   "version": "0.0.1",
   "main": "dist/main.js",
   "type": "module",
   "scripts": {
     "start": "node --enable-source-maps dist/main.js",
     "build": "tsc",
-    "dev": "tsc-watch --onSuccess 'node --enable-source-maps dist/main.js'"
+    "build:full": "cd ../core && pnpm build:full && cd ../demo && pnpm build",
+    "dev": "tsc-watch --onSuccess 'node --enable-source-maps dist/main.js'",
+    "generate": "graphql-codegen --config codegen.graphql.yml",
+    "lint": "eslint src"
   },
   "dependencies": {
     "@athenajs/core": "workspace:*",
@@ -14,6 +17,9 @@
     "reflect-metadata": "0.1.13"
   },
   "devDependencies": {
+    "@graphql-codegen/cli": "4.0.1",
+    "@graphql-codegen/typescript": "4.0.0",
+    "@graphql-codegen/typescript-operations": "4.0.0",
     "@types/node": "20.1.2",
     "tsc-watch": "6.0.4",
     "typescript": "5.0.4"

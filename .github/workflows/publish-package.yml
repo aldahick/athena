@@ -1,7 +1,11 @@
-name: Publish package with PNPM
+name: publish-package
 on:
   workflow_call:
     inputs:
+      build-script:
+        required: false
+        type: string
+        default: build
       directory:
         required: true
         type: string
@@ -9,7 +13,7 @@ on:
       npmToken:
         required: true
 jobs:
-  publish:
+  publish-package:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -21,7 +25,7 @@ jobs:
         with:
           version: 8
       - run: pnpm install
-      - run: pnpm build
+      - run: pnpm ${{ inputs.build-script }}
         working-directory: ${{ inputs.directory }}
       - run: pnpm publish --no-git-checks
         working-directory: ${{ inputs.directory }}

@@ -1,12 +1,16 @@
-name: Build package with PNPM
+name: build-package
 on:
   workflow_call:
     inputs:
+      build-script:
+        required: false
+        type: string
+        default: build
       directory:
         required: true
         type: string
 jobs:
-  publish:
+  build-package:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -17,7 +21,7 @@ jobs:
         with:
           version: 8
       - run: pnpm install
-      - run: pnpm build
+      - run: pnpm ${{ inputs.build-script }}
         working-directory: ${{ inputs.directory }}
       - run: pnpm lint
         working-directory: ${{ inputs.directory }}

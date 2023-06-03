@@ -6,7 +6,8 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
-    "build": "cd ../utils && pnpm build && cd ../core && tsc",
+    "build": "tsc",
+    "build:full": "cd ../utils && pnpm build && cd ../core && pnpm build",
     "lint": "eslint src",
     "preversion": "pnpm build",
     "postversion": "bash ../../scripts/hooks/postversion.sh core"
@@ -19,10 +20,12 @@
     "dotenv": "16.0.3",
     "fastify": "4.17.0",
     "graphql": "16.6.0",
+    "graphql-resolve-batch": "1.0.3",
     "reflect-metadata": "0.1.13",
     "winston": "3.8.2"
   },
   "devDependencies": {
+    "@types/graphql-resolve-batch": "1.1.6",
     "@types/node": "20.1.2"
   }
 }

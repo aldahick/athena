@@ -1,12 +1,13 @@
-name: Publish @athenajs/core
+name: publish-core
 on:
   push:
     tags:
       - core-v**
 jobs:
-  publish:
+  publish-core-package:
     uses: ./.github/workflows/publish-package.yml
     with:
+      build-script: build:full
       directory: packages/core
     secrets:
       npmToken: ${{ secrets.NPM_TOKEN }}

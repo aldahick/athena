@@ -1,10 +1,11 @@
-name: Build @athenajs/core
+name: build-core
 on:
   push:
     paths:
       - packages/core/**
 jobs:
-  publish:
+  build-core-package:
     uses: ./.github/workflows/build-package.yml
     with:
+      build-script: build:full
       directory: packages/core

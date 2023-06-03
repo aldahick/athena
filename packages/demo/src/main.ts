@@ -1,5 +1,6 @@
 import "reflect-metadata";
 import "./hello/index.js";
+import "./user/index.js";
 
 import { Application, BaseConfig, container, Logger } from "@athenajs/core";
 
@@ -9,7 +10,6 @@ async function main() {
   container.register(BaseConfig, Config);
   container.registerInstance(Logger, new Logger({}));
   const app = container.resolve(Application);
-  // console.log((app as any).server);
   await app.start();
 }
 

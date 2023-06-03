@@ -1,0 +1,11 @@
+overwrite: true
+schema:
+  - ./schema/*.gql
+generates:
+  src/graphql.ts:
+    plugins:
+      - "typescript"
+      - "typescript-operations"
+    config:
+      maybeValue: T | undefined
+      typesPrefix: I

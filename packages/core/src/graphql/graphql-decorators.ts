@@ -1,11 +1,13 @@
+import { createBatchResolver } from "graphql-resolve-batch";
+
 import { injectable, injectAll, registry } from "../container.js";
 
 /** Set on classes, to mark its resolver method names */
-const RESOLVER_KEYS_KEY = "athena.graphql.ResolverKeys";
+const RESOLVER_KEYS_KEY = Symbol("athena.graphql.ResolverKeys");
 /** Set on methods, to mark the type name they handle */
-const FIELD_RESOLVER_KEY = "athena.graphql.FieldResolver";
+const FIELD_RESOLVER_KEY = Symbol("athena.graphql.FieldResolver");
 
-const resolverToken = Symbol("AthenaResolver");
+const resolverToken = Symbol("athena.graphql.Resolver");
 
 export const injectResolvers = (): ParameterDecorator =>
   injectAll(resolverToken);
@@ -51,15 +53,37 @@ export const getResolverTypeName = (
   key: string | symbol
 ): string | undefined => Reflect.getMetadata(FIELD_RESOLVER_KEY, target, key);
 
+const makeDefaultTypeName = (
+  target: object,
+  propertyKey: string | symbol
+): string => `${target.constructor.name}.${propertyKey.toString()}`;
+
 /**
  * Registers a method (on a resolver) to handle a specific GraphQL field.
+ * @todo improve batch docs
  * @see {@link resolver}
  * @param typeName Defaults to `${ClassName}.${methodName}`
+ * @param batch If true, a batch resolver is registered.
+ * It should return resolved values in the same order as the provided Root values.
+ * The signature of your method should be:
+ * (Root[], Args, Context, GraphQLResolveInfo) => Promise<Root[Key][]>
  */
-export const resolveField: (typeName?: string) => MethodDecorator =
-  (typeName) => (target, propertyKey) => {
+export const resolveField =
+  (typeName?: string, batch = false): MethodDecorator =>
+  (target, propertyKey, descriptor) => {
+    typeName ??= makeDefaultTypeName(target, propertyKey);
+    if (typeof descriptor.value !== "function") {
+      throw new Error(
+        `Cannot use a non-function type to resolve a GraphQL field: ${typeName}`
+      );
+    }
+    if (batch) {
+      /* eslint-disable @typescript-eslint/no-explicit-any */
+      const batchResolver = createBatchResolver(descriptor.value as any);
+      descriptor.value = batchResolver as any;
+      /* eslint-enable @typescript-eslint/no-explicit-any */
+    }
     // set field resolver's type name
-    typeName ??= `${target.constructor.name}.${propertyKey.toString()}`;
     Reflect.defineMetadata(FIELD_RESOLVER_KEY, typeName, target, propertyKey);
 
     // add field resolver's method name to its class's resolver keys
@@ -77,8 +101,9 @@ export const resolveField: (typeName?: string) => MethodDecorator =
  * @see {@link resolveField}
  * @param queryName Defaults to method name
  */
-export const resolveQuery: (queryName?: string) => MethodDecorator =
-  (queryName) => (target, propertyKey, descriptor) => {
+export const resolveQuery =
+  (queryName?: string): MethodDecorator =>
+  (target, propertyKey, descriptor) => {
     queryName ??= propertyKey.toString();
     resolveField(`Query.${queryName}`)(target, propertyKey, descriptor);
   };
@@ -88,8 +113,9 @@ export const resolveQuery: (queryName?: string) => MethodDecorator =
  * @see {@link resolveField}
  * @param mutationName Defaults to method name
  */
-export const resolveMutation: (queryName?: string) => MethodDecorator =
-  (queryName) => (target, propertyKey, descriptor) => {
-    queryName ??= propertyKey.toString();
-    resolveField(`Mutation.${queryName}`)(target, propertyKey, descriptor);
+export const resolveMutation =
+  (mutationName?: string): MethodDecorator =>
+  (target, propertyKey, descriptor) => {
+    mutationName ??= propertyKey.toString();
+    resolveField(`Mutation.${mutationName}`)(target, propertyKey, descriptor);
   };

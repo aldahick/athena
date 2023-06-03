@@ -1,10 +1,10 @@
-name: Publish @athenajs/utils
+name: publish-utils
 on:
   push:
     tags:
       - utils-v**
 jobs:
-  publish:
+  publish-utils-package:
     uses: ./.github/workflows/publish-package.yml
     with:
       directory: packages/utils
