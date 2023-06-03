@@ -1,9 +1,11 @@
-import { createBatchResolver } from "graphql-resolve-batch";
+import { compact } from "@athenajs/utils";
 
 import { injectable, injectAll, registry } from "../container.js";
 
 /** Set on classes, to mark its resolver method names */
 const RESOLVER_KEYS_KEY = Symbol("ResolverKeys");
+/** Set on methods, to mark whether they should be executed as batch resolvers or not */
+const FIELD_RESOLVER_BATCH_KEY = Symbol("FieldResolverBatch");
 /** Set on methods, to mark the type name they handle */
 const FIELD_RESOLVER_KEY = Symbol("FieldResolver");
 
@@ -24,24 +26,34 @@ export const resolver = (): ClassDecorator => (target) => {
 /**
  * @param target An instance of a resolver class, with methods defined
  * @see {@link resolver}
- * @returns key: GraphQL type name, value: field resolver method key
+ * @returns key: GraphQL type name, value: field resolver method key and batch
  */
-export const getResolverKeys = (
+export const getResolverInfo = (
   target: object
-): Map<string, string | symbol> => {
-  const resolverKeys: (string | symbol)[] | undefined = Reflect.getMetadata(
-    RESOLVER_KEYS_KEY,
-    target
-  );
+): Map<string, { key: string | symbol; batch: boolean }> => {
+  const keys: (string | symbol)[] =
+    Reflect.getMetadata(RESOLVER_KEYS_KEY, target) ?? [];
   return new Map(
-    resolverKeys
-      ?.map((key) => {
+    compact(
+      keys.map((key) => {
         const typeName = getResolverTypeName(target, key);
-        return key && typeName ? [typeName, key] : undefined;
+        if (key && typeName) {
+          const batch = getResolverBatch(target, key);
+          return [typeName, { key, batch }];
+        }
       })
-      .filter((pair): pair is [string, string | symbol] => !!pair)
+    )
   );
 };
+
+/**
+ * @see {@link getResolverTypeName}
+ * @returns whether the resolver should be executed in batch or not
+ */
+export const getResolverBatch = (
+  target: object,
+  key: string | symbol
+): boolean => !!Reflect.getMetadata(FIELD_RESOLVER_BATCH_KEY, target, key);
 
 /**
  * @param target An instance of a resolver class, with a method named `key`
@@ -79,12 +91,12 @@ export const resolveField =
       );
     }
     if (batch) {
-      /* eslint-disable @typescript-eslint/no-explicit-any */
-      const batchResolver = createBatchResolver(
-        descriptor.value.bind(target) as any
+      Reflect.defineMetadata(
+        FIELD_RESOLVER_BATCH_KEY,
+        true,
+        target,
+        propertyKey
       );
-      descriptor.value = batchResolver as any;
-      /* eslint-enable @typescript-eslint/no-explicit-any */
     }
     // set field resolver's type name
     Reflect.defineMetadata(FIELD_RESOLVER_KEY, typeName, target, propertyKey);

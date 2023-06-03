@@ -4,10 +4,11 @@ import { injectable } from "@aldahick/tsyringe";
 import { ApolloServerOptions, BaseContext } from "@apollo/server";
 import { assign, recursiveReaddir } from "@athenajs/utils";
 import { GraphQLFieldResolver } from "graphql";
+import { createBatchResolver } from "graphql-resolve-batch";
 
 import { BaseConfig } from "../config.js";
 import { Logger } from "../logger.js";
-import { getResolverKeys, injectResolvers } from "./graphql-decorators.js";
+import { getResolverInfo, injectResolvers } from "./graphql-decorators.js";
 
 export type TypeDefs = Exclude<
   ApolloServerOptions<BaseContext>["typeDefs"],
@@ -52,14 +53,13 @@ export class GraphQLRegistry {
     }
     this.resolvers = {};
     for (const instance of this.resolverInstances) {
-      const resolverInfo = getResolverKeys(instance);
-      for (const [typeName, resolverKey] of resolverInfo.entries()) {
-        const resolver = (
-          instance[resolverKey as never] as GraphQLFieldResolver<
-            unknown,
-            unknown
-          >
-        ).bind(instance);
+      const resolverInfo = getResolverInfo(instance);
+      for (const [typeName, { key, batch }] of resolverInfo.entries()) {
+        // eslint-disable-next-line @typescript-eslint/ban-types
+        let resolver = (instance[key as never] as Function).bind(instance);
+        if (batch) {
+          resolver = createBatchResolver(resolver);
+        }
         assign(this.resolvers, typeName, resolver);
       }
     }
