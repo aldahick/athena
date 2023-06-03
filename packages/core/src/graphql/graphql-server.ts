@@ -3,6 +3,7 @@ import { ApolloServer, BaseContext } from "@apollo/server";
 import fastifyApollo, {
   fastifyApolloDrainPlugin,
 } from "@as-integrations/fastify";
+import fastifyCors from "@fastify/cors";
 import fastify from "fastify";
 
 import { BaseConfig } from "../config.js";
@@ -30,6 +31,7 @@ export class GraphQLServer {
       plugins: [fastifyApolloDrainPlugin(this.fastify)],
     });
     await this.apollo.start();
+    await this.fastify.register(fastifyCors);
     await this.fastify.register(fastifyApollo(this.apollo));
     const { port } = this.config.http;
     await this.fastify.listen({ port });
