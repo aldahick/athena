@@ -13,6 +13,9 @@
     "preversion": "pnpm build",
     "test": "c8 node --enable-source-maps --test dist"
   },
+  "repository": {
+    "url": "git+https://github.com/aldahick/athena"
+  },
   "c8": {
     "100": true,
     "all": true,
