@@ -9,10 +9,11 @@ const FIELD_RESOLVER_BATCH_KEY = Symbol("FieldResolverBatch");
 /** Set on methods, to mark the type name they handle */
 const FIELD_RESOLVER_KEY = Symbol("FieldResolver");
 
-const resolverToken = Symbol("Resolver");
-
-export const injectResolvers = (): ParameterDecorator =>
-  injectAll(resolverToken);
+/**
+ * Exported for testing only.
+ * @see {@link injectResolvers} and {@link resolver} to fetch and register resolvers, respectively
+ */
+export const resolverToken = Symbol("Resolver");
 
 /**
  * Registers a class as an Athena resolver.
@@ -23,53 +24,32 @@ export const resolver = (): ClassDecorator => (target) => {
   registry([{ token: resolverToken, useClass: constructor }])(target);
 };
 
-/**
- * @param target An instance of a resolver class, with methods defined
- * @see {@link resolver}
- * @returns key: GraphQL type name, value: field resolver method key and batch
- */
-export const getResolverInfo = (
-  target: object
-): Map<string, { key: string | symbol; batch: boolean }> => {
-  const keys: (string | symbol)[] =
-    Reflect.getMetadata(RESOLVER_KEYS_KEY, target) ?? [];
-  return new Map(
-    compact(
-      keys.map((key) => {
-        const typeName = getResolverTypeName(target, key);
-        if (key && typeName) {
-          const batch = getResolverBatch(target, key);
-          return [typeName, { key, batch }];
-        }
-      })
-    )
-  );
-};
+export const injectResolvers = (): ParameterDecorator =>
+  injectAll(resolverToken);
 
 /**
- * @see {@link getResolverTypeName}
- * @returns whether the resolver should be executed in batch or not
- */
-export const getResolverBatch = (
-  target: object,
-  key: string | symbol
-): boolean => !!Reflect.getMetadata(FIELD_RESOLVER_BATCH_KEY, target, key);
-
-/**
- * @param target An instance of a resolver class, with a method named `key`
- * @param key The name of the resolver method
- * @returns the defined type name associated with the given resolver method (if any)
+ * Convenience method for resolveField(`Query.${queryName}`)
  * @see {@link resolveField}
+ * @param queryName Defaults to method name
  */
-export const getResolverTypeName = (
-  target: object,
-  key: string | symbol
-): string | undefined => Reflect.getMetadata(FIELD_RESOLVER_KEY, target, key);
+export const resolveQuery =
+  (queryName?: string): MethodDecorator =>
+  (target, propertyKey, descriptor) => {
+    queryName ??= propertyKey.toString();
+    resolveField(`Query.${queryName}`)(target, propertyKey, descriptor);
+  };
 
-const makeDefaultTypeName = (
-  target: object,
-  propertyKey: string | symbol
-): string => `${target.constructor.name}.${propertyKey.toString()}`;
+/**
+ * Convenience method for resolveField(`Mutation.${queryName}`)
+ * @see {@link resolveField}
+ * @param mutationName Defaults to method name
+ */
+export const resolveMutation =
+  (mutationName?: string): MethodDecorator =>
+  (target, propertyKey, descriptor) => {
+    mutationName ??= propertyKey.toString();
+    resolveField(`Mutation.${mutationName}`)(target, propertyKey, descriptor);
+  };
 
 /**
  * Registers a method (on a resolver) to handle a specific GraphQL field.
@@ -112,25 +92,56 @@ export const resolveField =
   };
 
 /**
- * Convenience method for resolveField(`Query.${queryName}`)
- * @see {@link resolveField}
- * @param queryName Defaults to method name
+ * @param target An instance of a resolver class, with methods defined
+ * @see {@link resolver}
+ * @returns key: GraphQL type name, value: field resolver method key and batch
  */
-export const resolveQuery =
-  (queryName?: string): MethodDecorator =>
-  (target, propertyKey, descriptor) => {
-    queryName ??= propertyKey.toString();
-    resolveField(`Query.${queryName}`)(target, propertyKey, descriptor);
-  };
+export const getResolverInfo = (
+  target: object
+): Map<string, { key: string | symbol; batch: boolean }> => {
+  const keys: (string | symbol)[] = Reflect.getMetadata(
+    RESOLVER_KEYS_KEY,
+    target
+  );
+  if (!keys) {
+    throw new Error(
+      "Cannot get resolver info for unregistered class: " + target
+    );
+  }
+  return new Map(
+    compact(
+      keys.map((key) => {
+        const typeName = getResolverTypeName(target, key);
+        if (key && typeName) {
+          const batch = getResolverBatch(target, key);
+          return [typeName, { key, batch }];
+        }
+      })
+    )
+  );
+};
 
 /**
- * Convenience method for resolveField(`Mutation.${queryName}`)
- * @see {@link resolveField}
- * @param mutationName Defaults to method name
+ * @see {@link getResolverTypeName}
+ * @returns whether the resolver should be executed in batch or not
  */
-export const resolveMutation =
-  (mutationName?: string): MethodDecorator =>
-  (target, propertyKey, descriptor) => {
-    mutationName ??= propertyKey.toString();
-    resolveField(`Mutation.${mutationName}`)(target, propertyKey, descriptor);
-  };
+export const getResolverBatch = (
+  target: object,
+  key: string | symbol
+): boolean => !!Reflect.getMetadata(FIELD_RESOLVER_BATCH_KEY, target, key);
+
+/**
+ * @param target An instance of a resolver class, with a method named `key`
+ * @param key The name of the resolver method
+ * @returns the defined type name associated with the given resolver method (if any)
+ * @see {@link resolveField}
+ */
+export const getResolverTypeName = (
+  target: object,
+  key: string | symbol
+): string | undefined => Reflect.getMetadata(FIELD_RESOLVER_KEY, target, key);
+
+const makeDefaultTypeName = (
+  target: object,
+  propertyKey: string | symbol
+): string => `${target.constructor.name}.${propertyKey.toString()}`;
