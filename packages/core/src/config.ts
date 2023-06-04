@@ -3,19 +3,17 @@ import "dotenv/config.js";
 import process from "node:process";
 
 /**
- * To add fields,
- * TODO
+ * To define your config, extend this class and use this.optional/required
  */
-export class BaseConfig {
+export abstract class BaseConfig {
   /**
-   * override this! for example:
+   * examples:
    * [path.resolve(athenaUtils.getModuleDir(import.meta), '../graphql')]
-   * or [path.resolve(process.cwd(), 'graphql')]
+   * [path.resolve(process.cwd(), 'graphql')]
    */
-  readonly graphqlSchemaDirs: string[] = [];
-  readonly http = {
-    port: Number(this.required("HTTP_PORT")),
-  };
+  abstract graphqlSchemaDirs: string[];
+  abstract http: { port: number };
+
   protected optional(key: string): string | undefined {
     return process.env[key];
   }

@@ -22,6 +22,7 @@
     "exclude-after-remap": true,
     "exclude": [
       "src/graphql.ts",
+      "src/index.ts",
       "src/*/index.ts",
       "src/*.test.ts",
       "src/*/*.test.ts",
