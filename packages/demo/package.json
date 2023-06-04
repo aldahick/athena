@@ -10,7 +10,14 @@
     "generate": "graphql-codegen --config codegen.graphql.yml",
     "lint": "eslint src",
     "start": "node --enable-source-maps dist/main.js",
-    "test": "c8 --100 node --test dist"
+    "test": "c8 node --test dist"
+  },
+  "c8": {
+    "note": "100% code coverage is usually unnecessary. This is a demo project.",
+    "100": true,
+    "all": true,
+    "exclude-after-remap": true,
+    "exclude": ["src/graphql.ts", "src/*/index.ts", "src/*.test.ts", "src/*/*.test.ts", "dist/*"]
   },
   "dependencies": {
     "@athenajs/core": "workspace:*",

@@ -3,10 +3,7 @@ import { describe, it } from "node:test";
 
 import gql, { FieldNode, GraphQLResolveInfo } from "graphql";
 
-import {
-  extractOperationNames,
-  extractSelectedFields,
-} from "./graphql-utils.js";
+import { extractOperationNames, extractSelectedFields } from "./index.js";
 
 describe("graphql-utils", () => {
   describe("#extractSelectedFields", () => {
