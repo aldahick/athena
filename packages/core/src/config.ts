@@ -2,13 +2,10 @@ import "dotenv/config.js";
 
 import process from "node:process";
 
-import { injectable } from "@aldahick/tsyringe";
-
 /**
  * To add fields,
  * TODO
  */
-@injectable()
 export class BaseConfig {
   /**
    * override this! for example:

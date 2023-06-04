@@ -10,7 +10,7 @@
     "generate": "graphql-codegen --config codegen.graphql.yml",
     "lint": "eslint src",
     "start": "node --enable-source-maps dist/main.js",
-    "test": "c8 node --test dist"
+    "test": "c8 node --enable-source-maps --test dist"
   },
   "c8": {
     "note": "100% code coverage is usually unnecessary. This is a demo project.",

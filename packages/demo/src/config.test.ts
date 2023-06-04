@@ -6,6 +6,7 @@ import { recursiveReaddir } from "@athenajs/utils";
 import { Config } from "./config.js";
 
 describe("config", () => {
+  process.env.HTTP_PORT = "8080";
   const config = new Config();
   describe("#graphqlSchemaDirs", () => {
     it("should point to a dir containing graphql files", async () => {

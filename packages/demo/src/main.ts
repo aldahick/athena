@@ -8,8 +8,10 @@ import { isModuleMain } from "@athenajs/utils";
 import { Config } from "./config.js";
 
 export const main = async (): Promise<Application> => {
-  container.register(BaseConfig, Config);
   container.registerInstance(Logger, new Logger({}));
+  const config = new Config();
+  container.registerInstance(Config, config);
+  container.registerSingleton(BaseConfig, Config);
   const app = container.resolve(Application);
   await app.start();
   return app;

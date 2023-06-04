@@ -11,7 +11,13 @@
     "lint": "eslint src",
     "postversion": "bash ../../scripts/hooks/postversion.sh core",
     "preversion": "pnpm build",
-    "test": "c8 --100 --all node --test dist"
+    "test": "c8 node --enable-source-maps --test dist"
+  },
+  "c8": {
+    "100": true,
+    "all": true,
+    "exclude-after-remap": true,
+    "exclude": ["src/graphql.ts", "src/*/index.ts", "src/*.test.ts", "src/*/*.test.ts", "dist/*"]
   },
   "dependencies": {
     "@aldahick/tsyringe": "4.7.1",

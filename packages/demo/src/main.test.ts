@@ -1,14 +1,13 @@
 import assert from "node:assert";
 import { describe, it } from "node:test";
 
-import { container } from "@athenajs/core";
-
 import { Config } from "./config.js";
 import { main } from "./main.js";
 
 describe("main", () => {
   it("should start a working GraphQL server", async () => {
-    const config = container.resolve(Config);
+    process.env.HTTP_PORT = "8080";
+    const config = new Config();
     const app = await main();
     try {
       const res = await fetch(`http://localhost:${config.http.port}/graphql`, {
