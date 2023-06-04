@@ -1,6 +1,6 @@
 {
   "name": "@athenajs/utils",
-  "version": "0.0.10",
+  "version": "0.0.11",
   "license": "MIT",
   "type": "module",
   "main": "dist/index.js",
@@ -16,7 +16,11 @@
     "100": true,
     "all": true,
     "exclude-after-remap": true,
-    "exclude": ["src/index.ts", "src/*.test.ts", "dist/*"]
+    "exclude": [
+      "src/index.ts",
+      "src/*.test.ts",
+      "dist/*"
+    ]
   },
   "dependencies": {
     "graphql": "16.6.0"
