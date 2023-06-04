@@ -1,21 +1,29 @@
 # athena
 
-A modular backend framework atop Apollo and Fastify. Inspired heavily by [Nest](https://nestjs.com/); just simpler and more focused on performance.
+A modular backend framework atop Apollo and Fastify. Simpler and more opinionated than its inspiration, [Nest](https://nestjs.org).
 
 ## Features
 
 - [GraphQL](./docs/graphql.md)
+- [ES modules](https://nodejs.org/api/esm.html) all the way down
+<!--
+- [Database](./docs/database.md) integration(s) (orchid-orm)
 - [Authentication](./docs/auth.md#Authentication) and [authorization](./docs/auth.md#Authorization)
-- It's [ES modules](https://nodejs.org/api/esm.html) all the way down
+-->
 
 ### To Do
 
-- [x] [GraphQL](./packages/core/src/graphql)
+- [x] [GraphQL](./packages/demo/src/hello/hello-resolver.ts)
+  - [x] [Simple batch resolvers](./packages/demo/src/user/user-resolver.ts)
+- [x] [CI](./.github/workflows/build-package.yml) / [CD](./.github/workflows/publish-package.yml)
 - [ ] Auth
-- [ ] CI
-- [x] [CD](./.github/workflows/publish-package.yml)
+  - [ ] JWT
+  - [ ] OAuth
+- [ ] ORM
+- [ ] Improve init process
+  - Remove manual DI registration (either more decorators or better initial config)
 
-## Usage
+## Getting Started
 
 Install dependencies:
 
@@ -33,6 +41,7 @@ import { container, Application, Config } from "@athenajs/core";
 import { Config } from "./config.js";
 
 async function main() {
+  container.register(Logger, new Logger({ /* any pino logger options here */ }));
   container.register(BaseConfig, Config);
   const app = container.resolve(Application);
   await app.start();
@@ -52,7 +61,7 @@ import { resolve } from "path";
 export class Config extends BaseConfig {
   // for example, to specify the directories containing your GQL schema, override like so:
   readonly graphqlSchemaDirs = [resolve(getModuleDir(import.meta), "../schema")];
-  // or, for new fields altogether, use this.optional & this.required to read/verify environment variables
+  // or, for new fields altogether, you can use this.optional & this.required to read/verify environment variables
   readonly databaseUrl: string = this.required("DATABASE_URL");
   readonly environment: string | undefined = this.optional("NODE_ENV");
 }
@@ -88,10 +97,10 @@ export class HelloResolver {
 }
 ```
 
-See the [demo](./packages/demo) package for a complete example.
+See the [demo](./packages/demo) package for a complete example<!--, including database and auth-->.
 
 ## Development
 
-We use the [Node test runner](https://nodejs.org/api/test.html#running-tests-from-the-command-line), so make sure to install Node.JS v18.13 / v19.2 or higher. If you're creating new versions, you'll want to use PNPM so that dependencies are resolved before publish.
+We use the [Node test runner](https://nodejs.org/api/test.html#running-tests-from-the-command-line), so make sure to install Node.JS v18.13 / v19.2 or higher.
 
 To publish new versions, run `pnpm version <new-version>` in the appropriate package directory; a new Git tag will be pushed, and the CI will publish the package automatically (see statuses [here](https://github.com/aldahick/athena/actions)).
