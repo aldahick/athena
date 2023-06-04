@@ -21,6 +21,8 @@ jobs:
         with:
           version: 8
       - run: pnpm install
+      - run: pnpm test
+        working-directory: ${{ inputs.directory }}
       - run: pnpm ${{ inputs.build-script }}
         working-directory: ${{ inputs.directory }}
       - run: pnpm lint

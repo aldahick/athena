@@ -5,6 +5,18 @@ import { chunk, compact, sortBy } from "./array-utils.js";
 
 describe("array-utils", () => {
   describe("#chunk", () => {
+    it("should throw given invalid chunk size", () => {
+      const input = [1, 2, 3, 4];
+      assert.throws(() => chunk(input, 8.5));
+      assert.throws(() => chunk(input, 0));
+      assert.throws(() => chunk(input, -500));
+    });
+    it("should return the full array if chunk size > array length", () => {
+      const input = [1, 2, 3, 4];
+      const expected = [input];
+      const actual = chunk(input, input.length + 1);
+      assert.deepStrictEqual(actual, expected);
+    });
     it("should chunk even arrays", () => {
       const input = [1, 2, 3, 4];
       const expected = [

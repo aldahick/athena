@@ -8,7 +8,7 @@
   "scripts": {
     "build": "tsc",
     "lint": "eslint src",
-    "test": "node --test dist",
+    "test": "c8 --100 node --test dist",
     "preversion": "pnpm build",
     "postversion": "bash ../../scripts/hooks/postversion.sh utils"
   },
@@ -16,6 +16,7 @@
     "graphql": "16.6.0"
   },
   "devDependencies": {
-    "@types/node": "20.1.2"
+    "@types/node": "20.1.2",
+    "c8": "7.14.0"
   }
 }
