@@ -1,6 +1,6 @@
 {
   "name": "@athenajs/core",
-  "version": "0.0.10",
+  "version": "0.0.11",
   "license": "MIT",
   "type": "module",
   "main": "dist/index.js",
@@ -17,7 +17,13 @@
     "100": true,
     "all": true,
     "exclude-after-remap": true,
-    "exclude": ["src/graphql.ts", "src/*/index.ts", "src/*.test.ts", "src/*/*.test.ts", "dist/*"]
+    "exclude": [
+      "src/graphql.ts",
+      "src/*/index.ts",
+      "src/*.test.ts",
+      "src/*/*.test.ts",
+      "dist/*"
+    ]
   },
   "dependencies": {
     "@aldahick/tsyringe": "4.7.1",
