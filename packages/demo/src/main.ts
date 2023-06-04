@@ -3,14 +3,19 @@ import "./hello/index.js";
 import "./user/index.js";
 
 import { Application, BaseConfig, container, Logger } from "@athenajs/core";
+import { isModuleMain } from "@athenajs/utils";
 
 import { Config } from "./config.js";
 
-async function main() {
+export const main = async (): Promise<Application> => {
   container.register(BaseConfig, Config);
   container.registerInstance(Logger, new Logger({}));
   const app = container.resolve(Application);
   await app.start();
-}
+  return app;
+};
 
-await main();
+/* c8 ignore next 3 */
+if (isModuleMain(import.meta)) {
+  await main();
+}
