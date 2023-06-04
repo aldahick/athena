@@ -4,12 +4,13 @@
   "main": "dist/main.js",
   "type": "module",
   "scripts": {
-    "start": "node --enable-source-maps dist/main.js",
-    "build": "tsc",
     "build:full": "cd ../core && pnpm build:full && cd ../demo && pnpm build",
+    "build": "tsc",
     "dev": "tsc-watch --onSuccess 'node --enable-source-maps dist/main.js'",
     "generate": "graphql-codegen --config codegen.graphql.yml",
-    "lint": "eslint src"
+    "lint": "eslint src",
+    "start": "node --enable-source-maps dist/main.js",
+    "test": "c8 --100 node --test dist"
   },
   "dependencies": {
     "@athenajs/core": "workspace:*",
@@ -21,6 +22,7 @@
     "@graphql-codegen/typescript": "4.0.0",
     "@graphql-codegen/typescript-operations": "4.0.0",
     "@types/node": "20.1.2",
+    "c8": "7.14.0",
     "tsc-watch": "6.0.4",
     "typescript": "5.0.4"
   }

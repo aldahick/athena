@@ -6,11 +6,11 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
-    "build": "tsc",
     "build:full": "cd ../utils && pnpm build && cd ../core && pnpm build",
+    "build": "tsc",
     "lint": "eslint src",
-    "preversion": "pnpm build",
-    "postversion": "bash ../../scripts/hooks/postversion.sh core"
+    "postversion": "bash ../../scripts/hooks/postversion.sh core",
+    "preversion": "pnpm build"
   },
   "dependencies": {
     "@aldahick/tsyringe": "4.7.1",
