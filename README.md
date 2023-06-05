@@ -35,27 +35,22 @@ Make sure your tsconfig has `"experimentalDecorators": true` and `"emitDecorator
 Instantiate and start the server:
 
 ```typescript
-import { container, Application, Config } from "@athenajs/core";
-import { Config } from "./config.js";
+import { createApp } from "@athenajs/core";
+import "./config.js";
+import "./hello-resolver.ts";
 
-async function main() {
-  container.register(Logger, new Logger({ /* any pino logger options here */ }));
-  container.register(BaseConfig, Config);
-  const app = container.resolve(Application);
-  await app.start();
-}
-
-await main();
+const app = createApp();
+await app.start();
 ```
 
 Since Athena relies on dependency injection rather heavily, you accomplish configuration by extending `BaseConfig`. The following code is the same `./config.js` imported above. (Note the additional dependency on `@athenajs/utils`, for convenience's sake.)
 
 ```typescript
-import { BaseConfig, injectable } from "@athenajs/core";
+import { BaseConfig, config } from "@athenajs/core";
 import { getModuleDir } from "@athenajs/utils";
 import { resolve } from "path";
 
-@injectable()
+@config()
 export class Config extends BaseConfig {
   // for example, to specify the directories containing your GQL schema, override like so:
   readonly graphqlSchemaDirs = [resolve(getModuleDir(import.meta), "../schema")];
