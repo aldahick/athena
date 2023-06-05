@@ -20,8 +20,6 @@ A modular backend framework atop Apollo and Fastify. Simpler and more opinionate
   - [ ] JWT
   - [ ] OAuth
 - [ ] ORM
-- [ ] Improve init process
-  - Remove manual DI registration (either more decorators or better initial config)
 
 ## Getting Started
 
