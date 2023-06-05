@@ -1,6 +1,6 @@
-import { injectable } from "@aldahick/tsyringe";
 import process from "process";
 
+import { container, injectable } from "./container.js";
 import { GraphQLServer } from "./graphql/index.js";
 import { Logger } from "./logger.js";
 
@@ -23,7 +23,26 @@ export class Application {
     process.on("SIGINT", this.stop);
   };
 
-  private handleError = (err: Error): void => {
+  readonly handleError = (err: Error): void => {
     this.logger.error("uncaught error: " + err.stack);
   };
 }
+
+export const createApp = (): Application => {
+  try {
+    return container.resolve(Application);
+  } catch (err) {
+    if (err instanceof Error) {
+      if (
+        err.message.includes(
+          'Attempted to resolve unregistered dependency token: "Symbol(Resolver)"'
+        )
+      ) {
+        throw new Error(
+          "Cannot find any resolvers - make sure they're imported by your main file!"
+        );
+      }
+    }
+    throw err;
+  }
+};

@@ -6,7 +6,7 @@ import { assign, recursiveReaddir } from "@athenajs/utils";
 import { GraphQLFieldResolver } from "graphql";
 import { createBatchResolver } from "graphql-resolve-batch";
 
-import { BaseConfig } from "../config.js";
+import { BaseConfig, injectConfig } from "../config.js";
 import { Logger } from "../logger.js";
 import { getResolverInfo, injectResolvers } from "./graphql-decorators.js";
 
@@ -22,18 +22,13 @@ export type Resolvers = Record<
 
 @injectable()
 export class GraphQLRegistry {
-  private typeDefs?: TypeDefs;
-
   constructor(
-    private readonly config: BaseConfig,
+    @injectConfig() private readonly config: BaseConfig,
     private readonly logger: Logger,
     @injectResolvers() private readonly resolverInstances: object[]
   ) {}
 
   async getTypeDefs(): Promise<TypeDefs> {
-    if (this.typeDefs) {
-      return this.typeDefs;
-    }
     this.logger.debug(
       "loading graphql type definitions from " +
         this.config.graphqlSchemaDirs.join(", ")
@@ -41,17 +36,13 @@ export class GraphQLRegistry {
     const schemaPaths = await Promise.all(
       this.config.graphqlSchemaDirs.map((d) => recursiveReaddir(d))
     );
-    return (this.typeDefs = await Promise.all(
+    return Promise.all(
       schemaPaths.flat().map((path) => fs.readFile(path, "utf-8"))
-    ));
+    );
   }
 
-  private resolvers?: Resolvers;
   getResolvers(): Resolvers {
-    if (this.resolvers) {
-      return this.resolvers;
-    }
-    this.resolvers = {};
+    const resolvers: Resolvers = {};
     for (const instance of this.resolverInstances) {
       const resolverInfo = getResolverInfo(instance);
       for (const [typeName, { key, batch }] of resolverInfo.entries()) {
@@ -60,9 +51,9 @@ export class GraphQLRegistry {
         if (batch) {
           resolver = createBatchResolver(resolver);
         }
-        assign(this.resolvers, typeName, resolver);
+        assign(resolvers, typeName, resolver);
       }
     }
-    return this.resolvers;
+    return resolvers;
   }
 }

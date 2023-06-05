@@ -1,3 +1,5 @@
+import "reflect-metadata";
+
 import assert from "node:assert";
 import { beforeEach, describe, it } from "node:test";
 

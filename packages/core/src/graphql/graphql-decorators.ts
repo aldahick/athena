@@ -105,7 +105,7 @@ export const getResolverInfo = (
   );
   if (!keys) {
     throw new Error(
-      "Cannot get resolver info for unregistered class: " + target
+      `Cannot initialize resolver class with no registered methods: ${target.constructor.name}. Make sure they're marked with @resolveField or a similar decorator.`
     );
   }
   return new Map(

@@ -1,4 +1,4 @@
-import { container, injectable } from "@aldahick/tsyringe";
+import { injectable } from "@aldahick/tsyringe";
 import { ApolloServer, BaseContext } from "@apollo/server";
 import fastifyApollo, {
   fastifyApolloDrainPlugin,
@@ -6,9 +6,9 @@ import fastifyApollo, {
 import fastifyCors from "@fastify/cors";
 import fastify from "fastify";
 
-import { BaseConfig } from "../config.js";
+import { BaseConfig, injectConfig } from "../config.js";
 import { Logger } from "../logger.js";
-import { ContextGenerator } from "./graphql-context.js";
+import { resolveContextGenerator } from "./graphql-context.js";
 import { GraphQLRegistry } from "./graphql-registry.js";
 
 @injectable()
@@ -17,7 +17,7 @@ export class GraphQLServer<Context extends BaseContext = BaseContext> {
   private apollo?: ApolloServer<Context>;
 
   constructor(
-    private readonly config: BaseConfig,
+    @injectConfig() private readonly config: BaseConfig,
     private readonly logger: Logger,
     private readonly registry: GraphQLRegistry
   ) {}
@@ -34,12 +34,10 @@ export class GraphQLServer<Context extends BaseContext = BaseContext> {
     await this.apollo.start();
     await this.fastify.register(fastifyCors);
 
-    const contextGenerator = container.isRegistered(ContextGenerator)
-      ? container.resolve<ContextGenerator>(ContextGenerator)
-      : undefined;
+    const contextGenerator = resolveContextGenerator();
     await this.fastify.register(fastifyApollo(this.apollo), {
       context: async (req) =>
-        (await contextGenerator?.(req)) ?? ({} as Context),
+        (await contextGenerator?.generateContext(req)) as Context,
     });
     const { port } = this.config.http;
     await this.fastify.listen({ port });
