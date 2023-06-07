@@ -1,6 +1,6 @@
 import { IncomingHttpHeaders } from "http";
 
-import { container, injectable, registry } from "../container.js";
+import { container, makeRegistryDecorator } from "../container.js";
 
 export interface ContextRequest {
   headers: IncomingHttpHeaders;
@@ -12,11 +12,10 @@ export interface ContextGenerator {
 
 export const contextGeneratorToken = Symbol("GraphQLContextGenerator");
 
-export const contextGenerator = (): ClassDecorator => (target) => {
-  const constructor = target as unknown as new () => unknown;
-  injectable()(constructor);
-  registry([{ token: contextGeneratorToken, useClass: constructor }])(target);
-};
+/**
+ * Registers a class to provide a GraphQL context. Make sure it implements {@link ContextGenerator}
+ */
+export const contextGenerator = makeRegistryDecorator(contextGeneratorToken);
 
 export const resolveContextGenerator = (): ContextGenerator | undefined =>
   container.isRegistered(contextGeneratorToken)

@@ -2,18 +2,15 @@ import "dotenv/config.js";
 
 import process from "node:process";
 
-import { injectable } from "@aldahick/tsyringe";
-
-import { inject, registry } from "./container.js";
+import { inject, makeRegistryDecorator } from "./container.js";
 import { LoggerOptions } from "./logger.js";
 
 const configToken = Symbol("Config");
 
-export const config = (): ClassDecorator => (target) => {
-  const constructor = target as unknown as new () => unknown;
-  injectable()(constructor);
-  registry([{ token: configToken, useClass: constructor }])(target);
-};
+/**
+ * Registers a class to provide config to the server. It should extend {@link BaseConfig}
+ */
+export const config = makeRegistryDecorator(configToken);
 
 export const injectConfig = (): ParameterDecorator => inject(configToken);
 

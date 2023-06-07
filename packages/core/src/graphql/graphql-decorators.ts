@@ -1,6 +1,6 @@
 import { compact } from "@athenajs/utils";
 
-import { injectable, injectAll, registry } from "../container.js";
+import { injectAll, makeRegistryDecorator } from "../container.js";
 
 /** Set on classes, to mark its resolver method names */
 const RESOLVER_KEYS_KEY = Symbol("ResolverKeys");
@@ -18,11 +18,7 @@ export const resolverToken = Symbol("Resolver");
 /**
  * Registers a class as an Athena resolver.
  */
-export const resolver = (): ClassDecorator => (target) => {
-  const constructor = target as unknown as new () => unknown;
-  injectable()(constructor);
-  registry([{ token: resolverToken, useClass: constructor }])(target);
-};
+export const resolver = makeRegistryDecorator(resolverToken);
 
 export const injectResolvers = (): ParameterDecorator =>
   injectAll(resolverToken);
