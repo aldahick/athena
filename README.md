@@ -1,5 +1,8 @@
 # athena
 
+![NPM version badge](https://img.shields.io/npm/v/@athenajs/core)
+![Github workflow status badge](https://github.com/aldahick/athena/actions/workflows/build-core.yml/badge.svg)
+
 A modular backend framework atop Apollo and Fastify. Simpler and more opinionated than its inspiration, [Nest](https://nestjs.org).
 
 ## Features
