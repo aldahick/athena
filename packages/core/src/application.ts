@@ -2,19 +2,27 @@ import process from "process";
 
 import { container, injectable } from "./container.js";
 import { GraphQLServer } from "./graphql/index.js";
+import { HttpServer } from "./http/index.js";
 import { Logger } from "./logger.js";
 
 @injectable()
 export class Application {
-  constructor(private logger: Logger, private server: GraphQLServer) {}
+  constructor(
+    private logger: Logger,
+    private readonly httpServer: HttpServer,
+    private readonly graphqlServer: GraphQLServer<object>
+  ) {}
 
   readonly start = async (): Promise<void> => {
     this.registerErrorHandlers();
-    await this.server.start();
+    const fastify = await this.httpServer.init();
+    await this.graphqlServer.start(fastify);
+    await this.httpServer.start();
   };
 
   readonly stop = async (): Promise<void> => {
-    await this.server.stop();
+    await this.graphqlServer.stop();
+    await this.httpServer.stop();
   };
 
   private registerErrorHandlers = (): void => {
@@ -28,21 +36,4 @@ export class Application {
   };
 }
 
-export const createApp = (): Application => {
-  try {
-    return container.resolve(Application);
-  } catch (err) {
-    if (err instanceof Error) {
-      if (
-        err.message.includes(
-          'Attempted to resolve unregistered dependency token: "Symbol(Resolver)"'
-        )
-      ) {
-        throw new Error(
-          "Cannot find any resolvers - make sure they're imported by your main file!"
-        );
-      }
-    }
-    throw err;
-  }
-};
+export const createApp = (): Application => container.resolve(Application);

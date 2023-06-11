@@ -5,6 +5,7 @@ import { beforeEach, describe, it } from "node:test";
 
 import { getModuleDir } from "@athenajs/utils";
 import assert from "assert";
+import { FastifyReply, FastifyRequest } from "fastify";
 import path from "path";
 
 import { createApp } from "./application.js";
@@ -14,7 +15,10 @@ import {
   ContextGenerator,
   contextGenerator,
   ContextRequest,
+  controller,
+  get,
   Logger,
+  post,
   resolveField,
   resolveQuery,
   resolver,
@@ -45,8 +49,11 @@ describe("application", () => {
       }
       initConfig();
       const app = createApp();
-      await app.start();
-      await app.stop();
+      try {
+        await app.start();
+      } finally {
+        await app.stop();
+      }
     });
 
     it("should register batch resolvers", async () => {
@@ -59,8 +66,11 @@ describe("application", () => {
       }
       initConfig();
       const app = createApp();
-      await app.start();
-      await app.stop();
+      try {
+        await app.start();
+      } finally {
+        await app.stop();
+      }
     });
 
     it("should register context generator", async () => {
@@ -101,9 +111,30 @@ describe("application", () => {
       }
     });
 
-    it("should throw without any resolvers", () => {
-      initConfig();
-      assert.throws(() => createApp());
+    it("should register http controllers", async () => {
+      @controller()
+      class HelloController {
+        @get("/hello")
+        async hello(): Promise<{ hello: string }> {
+          return { hello: "hello, world!" };
+        }
+        @post("/hello")
+        async postHello(): Promise<void> {
+          return;
+        }
+      }
+      const Config = initConfig();
+      const app = createApp();
+      await app.start();
+      const config = container.resolve(Config);
+      try {
+        const res = await fetch(`http://localhost:${config.http.port}/hello`, {
+          method: "GET",
+        }).then((r) => r.json());
+        assert.deepStrictEqual(res, { hello: "hello, world!" });
+      } finally {
+        await app.stop();
+      }
     });
 
     it("should throw most errors unmodified", () => {

@@ -3,17 +3,19 @@ import "reflect-metadata";
 import assert from "node:assert";
 import { beforeEach, describe, it } from "node:test";
 
-import { container, injectable } from "../container.js";
+import { GraphQLScalarType } from "graphql";
+
+import { container } from "../container.js";
 import {
-  getResolverBatch,
-  getResolverInfo,
-  getResolverTypeName,
-  injectResolvers,
+  getResolverInfos,
+  getResolverInstances,
   resolveField,
   resolveMutation,
   resolveQuery,
   resolver,
+  ResolverInfo,
   resolverToken,
+  resolveScalar,
 } from "./graphql-decorators.js";
 
 describe("graphql-decorators", () => {
@@ -41,20 +43,24 @@ describe("graphql-decorators", () => {
     beforeEach(() => container.reset());
 
     it("should register a field resolver with specified name", () => {
-      const expected = "Query.hello";
+      const expected = [
+        { typeName: "Query.hello", propertyKey: "resolve", batch: false },
+      ] satisfies ResolverInfo[];
       @resolver()
       class HelloResolver {
-        @resolveField(expected)
+        @resolveField("Query.hello")
         resolve() {
           return;
         }
       }
-      const actual = getResolverTypeName(new HelloResolver(), "resolve");
-      assert.strictEqual(actual, expected);
+      const actual = getResolverInfos(new HelloResolver());
+      assert.deepStrictEqual(actual, expected);
     });
 
     it("should register a field resolver with default name", () => {
-      const expected = "Query.hello";
+      const expected = [
+        { typeName: "Query.hello", propertyKey: "hello", batch: false },
+      ] satisfies ResolverInfo[];
       @resolver()
       class Query {
         @resolveField()
@@ -62,8 +68,8 @@ describe("graphql-decorators", () => {
           return;
         }
       }
-      const actual = getResolverTypeName(new Query(), "hello");
-      assert.strictEqual(actual, expected);
+      const actual = getResolverInfos(new Query());
+      assert.deepStrictEqual(actual, expected);
     });
 
     it("should throw when somehow decorating a non-function", () => {
@@ -83,15 +89,22 @@ describe("graphql-decorators", () => {
     });
 
     it("should register a field resolver with batch enabled", () => {
+      const expected = [
+        {
+          typeName: "User.profile",
+          propertyKey: "batchProfile",
+          batch: true,
+        },
+      ] satisfies ResolverInfo[];
       @resolver()
       class UserResolver {
-        @resolveField("profile", true)
+        @resolveField("User.profile", true)
         async batchProfile() {
           return;
         }
       }
-      const actual = getResolverBatch(new UserResolver(), "batchProfile");
-      assert.strictEqual(actual, true);
+      const actual = getResolverInfos(new UserResolver());
+      assert.deepStrictEqual(actual, expected);
     });
   });
 
@@ -99,7 +112,9 @@ describe("graphql-decorators", () => {
     beforeEach(() => container.reset());
 
     it("should register a query resolver with specified name", () => {
-      const expected = "Query.hello";
+      const expected = [
+        { typeName: "Query.hello", propertyKey: "resolve", batch: false },
+      ] satisfies ResolverInfo[];
       @resolver()
       class HelloResolver {
         @resolveQuery("hello")
@@ -107,12 +122,14 @@ describe("graphql-decorators", () => {
           return;
         }
       }
-      const actual = getResolverTypeName(new HelloResolver(), "resolve");
-      assert.strictEqual(actual, expected);
+      const actual = getResolverInfos(new HelloResolver());
+      assert.deepStrictEqual(actual, expected);
     });
 
     it("should register a query resolver with default name", () => {
-      const expected = "Query.hello";
+      const expected = [
+        { typeName: "Query.hello", propertyKey: "hello", batch: false },
+      ] satisfies ResolverInfo[];
       @resolver()
       class HelloResolver {
         @resolveQuery()
@@ -120,8 +137,8 @@ describe("graphql-decorators", () => {
           return;
         }
       }
-      const actual = getResolverTypeName(new HelloResolver(), "hello");
-      assert.strictEqual(actual, expected);
+      const actual = getResolverInfos(new HelloResolver());
+      assert.deepStrictEqual(actual, expected);
     });
   });
 
@@ -129,7 +146,13 @@ describe("graphql-decorators", () => {
     beforeEach(() => container.reset());
 
     it("should register a mutation resolver with specified name", () => {
-      const expected = "Mutation.hello";
+      const expected = [
+        {
+          typeName: "Mutation.hello",
+          propertyKey: "mutateHello",
+          batch: false,
+        },
+      ] satisfies ResolverInfo[];
       @resolver()
       class HelloResolver {
         @resolveMutation("hello")
@@ -137,12 +160,14 @@ describe("graphql-decorators", () => {
           return;
         }
       }
-      const actual = getResolverTypeName(new HelloResolver(), "mutateHello");
-      assert.strictEqual(actual, expected);
+      const actual = getResolverInfos(new HelloResolver());
+      assert.deepStrictEqual(actual, expected);
     });
 
     it("should register a mutation resolver with default name", () => {
-      const expected = "Mutation.hello";
+      const expected = [
+        { typeName: "Mutation.hello", propertyKey: "hello", batch: false },
+      ] satisfies ResolverInfo[];
       @resolver()
       class HelloResolver {
         @resolveMutation()
@@ -150,12 +175,31 @@ describe("graphql-decorators", () => {
           return;
         }
       }
-      const actual = getResolverTypeName(new HelloResolver(), "hello");
-      assert.strictEqual(actual, expected);
+      const actual = getResolverInfos(new HelloResolver());
+      assert.deepStrictEqual(actual, expected);
     });
   });
 
-  describe("#injectResolvers", () => {
+  describe("#resolveScalar", () => {
+    beforeEach(() => container.reset());
+
+    it("should register a scalar resolver", () => {
+      const expected = [
+        { typeName: "Date", propertyKey: "date", batch: false },
+      ] satisfies ResolverInfo[];
+      @resolver()
+      class DateResolver {
+        @resolveScalar("Date")
+        date = new GraphQLScalarType({
+          name: "Date",
+        });
+      }
+      const actual = getResolverInfos(new DateResolver());
+      assert.deepStrictEqual(actual, expected);
+    });
+  });
+
+  describe("#getResolverInstances", () => {
     beforeEach(() => container.reset());
 
     it("should provide all registered resolvers", () => {
@@ -163,19 +207,14 @@ describe("graphql-decorators", () => {
       class HelloResolver {}
       @resolver()
       class GoodbyeResolver {}
-      @injectable()
-      class ResolverConsumer {
-        constructor(@injectResolvers() public resolvers: object[]) {}
-      }
 
       const expected = [HelloResolver, GoodbyeResolver];
-      const consumer = container.resolve(ResolverConsumer);
-      const actual = consumer.resolvers.map((r) => r.constructor);
+      const actual = getResolverInstances().map((r) => r.constructor);
       assert.deepStrictEqual(actual, expected);
     });
   });
 
-  describe("#getResolverInfo", () => {
+  describe("#getResolverInfos", () => {
     beforeEach(() => container.reset());
 
     it("should return info about all defined resolvers on the target class", () => {
@@ -195,18 +234,25 @@ describe("graphql-decorators", () => {
         }
       }
 
-      const expected = new Map([
-        ["Query.users", { key: "fetchMany", batch: false }],
-        ["Mutation.createUser", { key: "create", batch: false }],
-        ["User.profile", { key: "profile", batch: true }],
-      ]);
-      const actual = getResolverInfo(new UserResolver());
+      const expected = [
+        {
+          typeName: "Query.users",
+          propertyKey: "fetchMany",
+          batch: false,
+        },
+        {
+          typeName: "Mutation.createUser",
+          propertyKey: "create",
+          batch: false,
+        },
+        {
+          typeName: "User.profile",
+          propertyKey: "profile",
+          batch: true,
+        },
+      ] satisfies ResolverInfo[];
+      const actual = getResolverInfos(new UserResolver());
       assert.deepStrictEqual(actual, expected);
-    });
-
-    it("should throw for an unregistered target class", () => {
-      class UserResolver {}
-      assert.throws(() => getResolverInfo(UserResolver));
     });
   });
 });
