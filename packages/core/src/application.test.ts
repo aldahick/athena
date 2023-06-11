@@ -17,6 +17,8 @@ import {
   ContextRequest,
   controller,
   get,
+  HttpRequest,
+  HttpResponse,
   Logger,
   post,
   resolveField,
@@ -73,7 +75,15 @@ describe("application", () => {
       }
     });
 
-    it("should register context generator", async () => {
+    it("should register context generator for http and graphql", async () => {
+      @controller()
+      class HelloController {
+        @get("/hello")
+        hello(req: HttpRequest, res: HttpResponse, context: object): object {
+          assert.deepStrictEqual(context, { test: "context" });
+          return { hello: "hello, world!" };
+        }
+      }
       @resolver()
       class HelloResolver {
         @resolveQuery()
@@ -94,18 +104,19 @@ describe("application", () => {
       const app = createApp();
       await app.start();
       const config = container.resolve(Config);
+      const baseUrl = `http://localhost:${config.http.port}/`;
       try {
-        const res = await fetch(
-          `http://localhost:${config.http.port}/graphql`,
-          {
-            method: "POST",
-            body: JSON.stringify({ query: "query { hello }" }),
-            headers: {
-              "Content-Type": "application/json",
-            },
-          }
-        ).then((r) => r.json());
+        let res = await fetch(`${baseUrl}graphql`, {
+          method: "POST",
+          body: JSON.stringify({ query: "query { hello }" }),
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }).then((r) => r.json());
         assert.deepStrictEqual(res, { data: { hello: "hello, world!" } });
+
+        res = await fetch(`${baseUrl}hello`).then((r) => r.json());
+        assert.deepStrictEqual(res, { hello: "hello, world!" });
       } finally {
         await app.stop();
       }

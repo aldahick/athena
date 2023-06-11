@@ -1,13 +1,21 @@
 import { injectable } from "@aldahick/tsyringe";
 import fastifyCors from "@fastify/cors";
-import fastify, { FastifyInstance } from "fastify";
+import fastify, { FastifyInstance, RouteHandler } from "fastify";
 
 import { BaseConfig, injectConfig } from "../config.js";
+import { resolveContextGenerator } from "../index.js";
 import { Logger } from "../logger.js";
 import {
   getControllerInfos,
   getControllerInstances,
 } from "./http-decorators.js";
+import { HttpRequest, HttpResponse } from "./index.js";
+
+type HttpHandler<Context> = (
+  req: HttpRequest,
+  res: HttpResponse,
+  context: Context
+) => Promise<unknown>;
 
 @injectable()
 export class HttpServer {
@@ -29,7 +37,10 @@ export class HttpServer {
         this.logger.debug(
           `registering http controller ${controllerName} for route ${info.route}`
         );
-        this.fastify[info.method](info.route, callback.bind(instance));
+        this.fastify[info.method](
+          info.route,
+          this.buildRequestHandler(callback.bind(instance))
+        );
       }
     }
     await this.fastify.register(fastifyCors);
@@ -44,5 +55,15 @@ export class HttpServer {
 
   async stop(): Promise<void> {
     await this.fastify?.close();
+  }
+
+  private buildRequestHandler<Context>(
+    callback: HttpHandler<Context>
+  ): RouteHandler {
+    const contextGenerator = resolveContextGenerator();
+    return async (req, res) => {
+      const context = (await contextGenerator?.generateContext(req)) as Context;
+      return callback(req, res, context);
+    };
   }
 }
