@@ -18,6 +18,7 @@ A modular backend framework atop Apollo and Fastify. Simpler and more opinionate
 
 - [x] [GraphQL](./packages/demo/src/hello/hello-resolver.ts)
   - [x] [Simple batch resolvers](./packages/demo/src/user/user-resolver.ts)
+- [x] [HTTP](./packages/demo/src/hello/hello-controller.ts)
 - [x] [CI](./.github/workflows/build-package.yml) / [CD](./.github/workflows/publish-package.yml)
 - [ ] Auth
   - [ ] JWT
@@ -93,7 +94,7 @@ export class HelloResolver {
 }
 ```
 
-See the [demo](./packages/demo) package for a complete example<!--, including database and auth-->.
+See the [demo](./packages/demo) package for a complete example, including HTTP routes.
 
 ## Development
 
