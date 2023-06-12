@@ -74,7 +74,8 @@ export class GraphQLServer<Context extends BaseContext = BaseContext> {
       for (const info of getResolverInfos(instance)) {
         // eslint-disable-next-line @typescript-eslint/ban-types
         const callback = instance[info.propertyKey as never] as Function;
-        let resolver = callback.bind(instance);
+        let resolver =
+          typeof callback === "function" ? callback.bind(instance) : callback;
         if (info.batch) {
           resolver = createBatchResolver(resolver);
         }

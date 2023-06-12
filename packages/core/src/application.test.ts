@@ -76,6 +76,7 @@ describe("application", () => {
     });
 
     it("should register context generator for http and graphql", async () => {
+      // TODO split into several tests
       @controller()
       class HelloController {
         @get("/hello")
