@@ -16,24 +16,30 @@
     "url": "git+https://github.com/aldahick/athena"
   },
   "c8": {
-    "note": "100% code coverage is usually unnecessary. This is a demo project.",
     "100": true,
+    "note": "100% code coverage is usually unnecessary. This is a demo project.",
     "all": true,
     "exclude-after-remap": true,
-    "exclude": ["src/graphql.ts", "src/*/index.ts", "src/*.test.ts", "src/*/*.test.ts", "dist/*"]
+    "exclude": [
+      "src/graphql.ts",
+      "src/*/index.ts",
+      "src/*.test.ts",
+      "src/*/*.test.ts",
+      "dist/*"
+    ]
   },
   "dependencies": {
     "@athenajs/core": "workspace:*",
     "@athenajs/utils": "workspace:*",
-    "reflect-metadata": "0.1.13"
+    "reflect-metadata": "^0.1.13"
   },
   "devDependencies": {
-    "@graphql-codegen/cli": "4.0.1",
-    "@graphql-codegen/typescript": "4.0.0",
-    "@graphql-codegen/typescript-operations": "4.0.0",
-    "@types/node": "20.1.2",
-    "c8": "7.14.0",
-    "tsc-watch": "6.0.4",
-    "typescript": "5.0.4"
+    "@graphql-codegen/cli": "^4.0.1",
+    "@graphql-codegen/typescript": "^4.0.1",
+    "@graphql-codegen/typescript-operations": "^4.0.1",
+    "@types/node": "^20.3.1",
+    "c8": "^7.14.0",
+    "tsc-watch": "^6.0.4",
+    "typescript": "^5.1.3"
   }
 }
