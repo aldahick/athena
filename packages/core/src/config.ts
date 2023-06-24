@@ -24,7 +24,11 @@ export abstract class BaseConfig {
    * [path.resolve(process.cwd(), 'graphql')]
    */
   abstract graphqlSchemaDirs: string[];
-  abstract http: { port: number };
+  abstract http: {
+    /** Defaults to "0.0.0.0" */
+    host?: string;
+    port: number;
+  };
   log?: LoggerOptions;
 
   protected optional(key: string): string | undefined {
