@@ -8,9 +8,9 @@ describe("hello-controller", () => {
   const helloController = new HelloController();
   describe("#hello", () => {
     it("should return a polite, understated greeting", async () => {
-      const expected = { hello: "hello, world!" };
+      const expected = { hello: "Hello, world!" };
       const actual = await helloController.hello();
-      assert.strictEqual(actual, expected);
+      assert.deepStrictEqual(actual, expected);
     });
   });
 });
