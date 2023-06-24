@@ -41,7 +41,7 @@ Instantiate and start the server:
 ```typescript
 import { createApp } from "@athenajs/core";
 import "./config.js";
-import "./hello-resolver.ts";
+import "./hello-resolver.js";
 
 const app = createApp();
 await app.start();
