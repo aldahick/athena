@@ -6,6 +6,7 @@ import { beforeEach, describe, it } from "node:test";
 import { getModuleDir } from "@athenajs/utils";
 import assert from "assert";
 import { FastifyReply, FastifyRequest } from "fastify";
+import { GraphQLScalarType } from "graphql";
 import path from "path";
 
 import { createApp } from "./application.js";
@@ -24,17 +25,22 @@ import {
   resolveField,
   resolveQuery,
   resolver,
+  resolveScalar,
 } from "./index.js";
 
 describe("application", () => {
   describe("#createApp", async () => {
     beforeEach(() => container.reset());
 
-    const initConfig = (): new () => BaseConfig => {
+    const initConfig = (testName = "base"): new () => BaseConfig => {
       @config()
       class Config extends BaseConfig {
         graphqlSchemaDirs = [
-          path.join(getModuleDir(import.meta), "../test/application/schema"),
+          path.join(
+            getModuleDir(import.meta),
+            "../test/application/schema",
+            testName
+          ),
         ];
         http = { port: 8080 };
       }
@@ -144,6 +150,46 @@ describe("application", () => {
           method: "GET",
         }).then((r) => r.json());
         assert.deepStrictEqual(res, { hello: "hello, world!" });
+      } finally {
+        await app.stop();
+      }
+    });
+
+    it("should register scalar resolvers", async () => {
+      // for simplicity's sake, we assume tests will only be run within a calendar day. :)
+      const today = new Date();
+      @resolver()
+      class DateResolver {
+        @resolveQuery()
+        async today(): Promise<Date> {
+          return today;
+        }
+
+        @resolveScalar("Date")
+        dateScalar = new GraphQLScalarType({
+          name: "Date",
+          serialize: (value: unknown): string => {
+            if (value instanceof Date) {
+              return value.toISOString();
+            }
+            throw new Error(`Cannot serialize unknown value ${value} as date`);
+          },
+        });
+      }
+      const Config = initConfig("scalar");
+      const app = createApp();
+      await app.start();
+      const config = container.resolve(Config);
+      const baseUrl = `http://localhost:${config.http.port}/`;
+      try {
+        const res = await fetch(`${baseUrl}graphql`, {
+          method: "POST",
+          body: JSON.stringify({ query: "query { today }" }),
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }).then((r) => r.json());
+        assert.deepStrictEqual(res, { data: { today: today.toISOString() } });
       } finally {
         await app.stop();
       }
