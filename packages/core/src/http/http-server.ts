@@ -20,7 +20,7 @@ type HttpHandler<Context> = (
 
 @injectable()
 export class HttpServer {
-  private fastify?: FastifyInstance;
+  private fastify = fastify();
 
   constructor(
     @injectConfig() private readonly config: BaseConfig,
@@ -28,12 +28,12 @@ export class HttpServer {
   ) {}
 
   async init(): Promise<FastifyInstance> {
-    this.fastify = fastify();
+    await this.fastify.register(fastifyCors);
     await this.fastify.register(fastifyMultipart);
     for (const instance of getControllerInstances()) {
       for (const info of getControllerInfos(instance)) {
-        // eslint-disable-next-line @typescript-eslint/ban-types
-        const callback = instance[info.propertyKey as never] as Function;
+        const callback: HttpHandler<unknown> =
+          instance[info.propertyKey as never];
         const controllerName =
           instance.constructor.name + "." + info.propertyKey.toString();
         this.logger.debug(
@@ -45,18 +45,17 @@ export class HttpServer {
         );
       }
     }
-    await this.fastify.register(fastifyCors);
     return this.fastify;
   }
 
   async start(): Promise<void> {
-    const { host = "0.0.0.0", port } = this.config.http;
-    await this.fastify?.listen({ port, host });
+    const { host, port } = this.config.http;
+    await this.fastify.listen({ port, host });
     this.logger.info(`listening on port ${port}`);
   }
 
   async stop(): Promise<void> {
-    await this.fastify?.close();
+    await this.fastify.close();
   }
 
   private buildRequestHandler<Context>(

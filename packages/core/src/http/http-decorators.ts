@@ -51,10 +51,16 @@ export const httpRoute =
         `Cannot use a non-function type as an HTTP controller: ${method} ${route}`,
       );
     }
-    addControllerInfo(target, { method, route, propertyKey });
+    addControllerInfo(target, {
+      method,
+      route,
+      propertyKey,
+    });
   };
 
-export const get = (route: string): MethodDecorator =>
+export type HttpRouteDecorator = (route: string) => MethodDecorator;
+
+export const get: HttpRouteDecorator = (route) =>
   httpRoute(HttpMethod.GET, route);
-export const post = (route: string): MethodDecorator =>
+export const post: HttpRouteDecorator = (route): MethodDecorator =>
   httpRoute(HttpMethod.POST, route);
