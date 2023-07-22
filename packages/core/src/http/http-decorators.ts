@@ -48,7 +48,7 @@ export const httpRoute =
   (target, propertyKey, descriptor) => {
     if (typeof descriptor.value !== "function") {
       throw new Error(
-        `Cannot use a non-function type as an HTTP controller: ${method} ${route}`
+        `Cannot use a non-function type as an HTTP controller: ${method} ${route}`,
       );
     }
     addControllerInfo(target, { method, route, propertyKey });

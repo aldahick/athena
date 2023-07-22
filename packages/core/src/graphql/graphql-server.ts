@@ -34,7 +34,7 @@ export class GraphQLServer<Context extends BaseContext = BaseContext> {
 
   constructor(
     @injectConfig() private readonly config: BaseConfig,
-    private readonly logger: Logger
+    private readonly logger: Logger,
   ) {}
 
   async start(fastify: FastifyInstance) {
@@ -58,13 +58,13 @@ export class GraphQLServer<Context extends BaseContext = BaseContext> {
   async getTypeDefs(): Promise<TypeDefs> {
     this.logger.debug(
       "loading graphql type definitions from " +
-        this.config.graphqlSchemaDirs.join(", ")
+        this.config.graphqlSchemaDirs.join(", "),
     );
     const schemaPaths = await Promise.all(
-      this.config.graphqlSchemaDirs.map((d) => recursiveReaddir(d))
+      this.config.graphqlSchemaDirs.map((d) => recursiveReaddir(d)),
     );
     return Promise.all(
-      schemaPaths.flat().map((path) => fs.readFile(path, "utf-8"))
+      schemaPaths.flat().map((path) => fs.readFile(path, "utf-8")),
     );
   }
 

@@ -82,7 +82,7 @@ export const resolveField =
   (target, propertyKey, descriptor) => {
     if (typeof descriptor.value !== "function") {
       throw new Error(
-        `Cannot use a non-function type to resolve a GraphQL field: ${typeName}`
+        `Cannot use a non-function type to resolve a GraphQL field: ${typeName}`,
       );
     }
     addResolverInfo(target, {
@@ -94,5 +94,5 @@ export const resolveField =
 
 const makeDefaultTypeName = (
   target: object,
-  propertyKey: string | symbol
+  propertyKey: string | symbol,
 ): string => `${target.constructor.name}.${propertyKey.toString()}`;

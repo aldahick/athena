@@ -10,7 +10,7 @@ export class Application {
   constructor(
     private logger: Logger,
     private readonly httpServer: HttpServer,
-    private readonly graphqlServer: GraphQLServer<object>
+    private readonly graphqlServer: GraphQLServer<object>,
   ) {}
 
   readonly start = async (): Promise<void> => {

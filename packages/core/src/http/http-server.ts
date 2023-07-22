@@ -1,5 +1,6 @@
 import { injectable } from "@aldahick/tsyringe";
 import fastifyCors from "@fastify/cors";
+import fastifyMultipart from "@fastify/multipart";
 import fastify, { FastifyInstance, RouteHandler } from "fastify";
 
 import { BaseConfig, injectConfig } from "../config.js";
@@ -14,7 +15,7 @@ import { HttpRequest, HttpResponse } from "./index.js";
 type HttpHandler<Context> = (
   req: HttpRequest,
   res: HttpResponse,
-  context: Context
+  context: Context,
 ) => Promise<unknown>;
 
 @injectable()
@@ -23,11 +24,12 @@ export class HttpServer {
 
   constructor(
     @injectConfig() private readonly config: BaseConfig,
-    private readonly logger: Logger
+    private readonly logger: Logger,
   ) {}
 
   async init(): Promise<FastifyInstance> {
     this.fastify = fastify();
+    await this.fastify.register(fastifyMultipart);
     for (const instance of getControllerInstances()) {
       for (const info of getControllerInfos(instance)) {
         // eslint-disable-next-line @typescript-eslint/ban-types
@@ -35,11 +37,11 @@ export class HttpServer {
         const controllerName =
           instance.constructor.name + "." + info.propertyKey.toString();
         this.logger.debug(
-          `registering http controller ${controllerName} for route ${info.route}`
+          `registering http controller ${controllerName} for route ${info.route}`,
         );
         this.fastify[info.method](
           info.route,
-          this.buildRequestHandler(callback.bind(instance))
+          this.buildRequestHandler(callback.bind(instance)),
         );
       }
     }
@@ -58,7 +60,7 @@ export class HttpServer {
   }
 
   private buildRequestHandler<Context>(
-    callback: HttpHandler<Context>
+    callback: HttpHandler<Context>,
   ): RouteHandler {
     const contextGenerator = resolveContextGenerator();
     return async (req, res) => {

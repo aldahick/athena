@@ -39,7 +39,7 @@ describe("application", () => {
           path.join(
             getModuleDir(import.meta),
             "../test/application/schema",
-            testName
+            testName,
           ),
         ];
         http = { port: 8080 };
@@ -102,7 +102,7 @@ describe("application", () => {
       @contextGenerator()
       class TestContextGenerator implements ContextGenerator {
         async generateContext(
-          req: ContextRequest
+          req: ContextRequest,
         ): Promise<object | undefined> {
           return { test: "context" };
         }

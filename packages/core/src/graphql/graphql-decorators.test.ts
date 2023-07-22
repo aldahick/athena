@@ -80,7 +80,7 @@ describe("graphql-decorators", () => {
       const helloResolver = new HelloResolver();
       const descriptor = Object.getOwnPropertyDescriptor(
         helloResolver,
-        "hello"
+        "hello",
       );
       if (!descriptor) {
         throw new Error("somehow missing descriptor");

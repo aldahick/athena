@@ -19,7 +19,7 @@ describe("http-decorators", () => {
       const helloController = new HelloController();
       const descriptor = Object.getOwnPropertyDescriptor(
         helloController,
-        "hello"
+        "hello",
       );
       if (!descriptor) {
         throw new Error("somehow missing descriptor");
@@ -28,8 +28,8 @@ describe("http-decorators", () => {
         httpRoute(HttpMethod.GET, "/hello")(
           helloController,
           "hello",
-          descriptor
-        )
+          descriptor,
+        ),
       );
     });
   });
