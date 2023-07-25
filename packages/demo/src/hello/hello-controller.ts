@@ -1,19 +1,9 @@
-import {
-  controller,
-  get,
-  HttpRequest,
-  HttpResponse,
-  post,
-} from "@athenajs/core";
+import { controller, get, HttpRequest, post } from "@athenajs/core";
 
 @controller()
 export class HelloController {
   @get("/hello")
-  async hello(
-    req?: HttpRequest,
-    res?: HttpResponse,
-  ): Promise<{ hello: string }> {
-    console.log("responding to request", req?.id, "sent:", res?.sent);
+  async hello(): Promise<{ hello: string }> {
     return { hello: "Hello, world!" };
   }
 
