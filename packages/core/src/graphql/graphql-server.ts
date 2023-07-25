@@ -31,6 +31,7 @@ export type Resolvers = Record<
 @injectable()
 export class GraphQLServer<Context extends BaseContext = BaseContext> {
   private apollo?: ApolloServer<Context>;
+  private started = false;
 
   constructor(
     @injectConfig() private readonly config: BaseConfig,
@@ -38,6 +39,9 @@ export class GraphQLServer<Context extends BaseContext = BaseContext> {
   ) {}
 
   async start(fastify: FastifyInstance) {
+    if (this.started) {
+      return;
+    }
     this.apollo = new ApolloServer({
       typeDefs: await this.getTypeDefs(),
       resolvers: this.getResolvers(),
@@ -49,10 +53,12 @@ export class GraphQLServer<Context extends BaseContext = BaseContext> {
       context: async (req) =>
         (await contextGenerator?.generateContext(req)) as Context,
     });
+    this.started = true;
   }
 
   async stop(): Promise<void> {
     await this.apollo?.stop();
+    this.apollo = undefined;
   }
 
   async getTypeDefs(): Promise<TypeDefs> {

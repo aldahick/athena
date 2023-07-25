@@ -20,7 +20,7 @@ type HttpHandler<Context> = (
 
 @injectable()
 export class HttpServer {
-  private fastify = fastify();
+  private fastify?: FastifyInstance;
 
   constructor(
     @injectConfig() private readonly config: BaseConfig,
@@ -28,6 +28,7 @@ export class HttpServer {
   ) {}
 
   async init(): Promise<FastifyInstance> {
+    this.fastify = fastify();
     await this.fastify.register(fastifyCors);
     await this.fastify.register(fastifyMultipart);
     for (const instance of getControllerInstances()) {
@@ -50,12 +51,13 @@ export class HttpServer {
 
   async start(): Promise<void> {
     const { host = "localhost", port } = this.config.http;
-    await this.fastify.listen({ port, host });
+    await this.fastify?.listen({ port, host });
     this.logger.info(`listening on port ${port}`);
   }
 
   async stop(): Promise<void> {
-    await this.fastify.close();
+    await this.fastify?.close();
+    this.fastify = undefined;
   }
 
   private buildRequestHandler<Context>(

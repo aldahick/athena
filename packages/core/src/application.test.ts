@@ -64,6 +64,25 @@ describe("application", () => {
       }
     });
 
+    it("should start and stop multiple times", async () => {
+      @resolver()
+      class HelloResolver {
+        @resolveQuery()
+        hello() {
+          return "hello, world!";
+        }
+      }
+      initConfig();
+      const app = createApp();
+      for (let i = 0; i < 5; i++) {
+        try {
+          await app.start();
+        } finally {
+          await app.stop();
+        }
+      }
+    });
+
     it("should register batch resolvers", async () => {
       @resolver()
       class HelloResolver {
