@@ -23,12 +23,19 @@ export class Application {
   readonly stop = async (): Promise<void> => {
     await this.graphqlServer.stop();
     await this.httpServer.stop();
+    this.unregisterErrorHandlers();
   };
 
   private registerErrorHandlers = (): void => {
     process.on("uncaughtException", this.handleError);
     process.on("unhandledRejection", this.handleError);
     process.on("SIGINT", this.stop);
+  };
+
+  private unregisterErrorHandlers = (): void => {
+    process.off("uncaughtException", this.handleError);
+    process.off("unhandledRejection", this.handleError);
+    process.off("SIGINT", this.stop);
   };
 
   readonly handleError = (err: Error): void => {

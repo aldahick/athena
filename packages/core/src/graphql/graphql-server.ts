@@ -12,7 +12,7 @@ import { createBatchResolver } from "graphql-resolve-batch";
 
 import { BaseConfig, injectConfig } from "../config.js";
 import { Logger } from "../logger.js";
-import { resolveContextGenerator } from "./graphql-context.js";
+import { ContextRequest, resolveContextGenerator } from "./graphql-context.js";
 import {
   getResolverInfos,
   getResolverInstances,
@@ -50,8 +50,11 @@ export class GraphQLServer<Context extends BaseContext = BaseContext> {
     await this.apollo.start();
     const contextGenerator = resolveContextGenerator();
     await fastify.register(fastifyApollo(this.apollo), {
-      context: async (req) =>
-        (await contextGenerator?.generateContext(req)) as Context,
+      context: async (req) => {
+        return (await contextGenerator?.generateContext(
+          req as ContextRequest,
+        )) as Context;
+      },
     });
     this.started = true;
   }

@@ -4,6 +4,7 @@ import { container, makeRegistryDecorator } from "../container.js";
 
 export interface ContextRequest {
   headers: IncomingHttpHeaders;
+  query: Record<string, string>;
 }
 
 export interface ContextGenerator {

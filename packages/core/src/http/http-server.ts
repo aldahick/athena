@@ -4,7 +4,7 @@ import fastifyMultipart from "@fastify/multipart";
 import fastify, { FastifyInstance, RouteHandler } from "fastify";
 
 import { BaseConfig, injectConfig } from "../config.js";
-import { resolveContextGenerator } from "../index.js";
+import { ContextRequest, resolveContextGenerator } from "../index.js";
 import { Logger } from "../logger.js";
 import {
   getControllerInfos,
@@ -65,7 +65,9 @@ export class HttpServer {
   ): RouteHandler {
     const contextGenerator = resolveContextGenerator();
     return async (req, res) => {
-      const context = (await contextGenerator?.generateContext(req)) as Context;
+      const context = (await contextGenerator?.generateContext(
+        req as ContextRequest,
+      )) as Context;
       return callback(req, res, context);
     };
   }
