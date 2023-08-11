@@ -1,11 +1,13 @@
+import { randomBytes } from "crypto";
 import { promises as fs } from "fs";
-import { resolve } from "path";
+import { tmpdir } from "os";
+import { join, resolve } from "path";
 
 import { chunk } from "./array-utils.js";
 
 export const recursiveReaddir = async (
   path: string,
-  chunkSize = 100
+  chunkSize = 100,
 ): Promise<string[]> => {
   const rootChildren = await fs.readdir(path);
   let allChildren: string[] = [];
@@ -15,9 +17,12 @@ export const recursiveReaddir = async (
         const childPath = resolve(path, childFile);
         const stats = await fs.stat(childPath);
         return stats.isDirectory() ? recursiveReaddir(childPath) : [childPath];
-      })
+      }),
     );
     allChildren = allChildren.concat(resolvedChildren.flat());
   }
   return allChildren;
 };
+
+export const tempFile = (nameLength = 16) =>
+  join(tmpdir(), randomBytes(nameLength / 2).toString("hex"));

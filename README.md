@@ -39,6 +39,7 @@ Make sure your tsconfig has `"experimentalDecorators": true` and `"emitDecorator
 Instantiate and start the server:
 
 ```typescript
+import "reflect-metadata";
 import { createApp } from "@athenajs/core";
 import "./config.js";
 import "./hello-resolver.js";
