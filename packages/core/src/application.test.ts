@@ -6,11 +6,12 @@ import { beforeEach, describe, it } from "node:test";
 import { getModuleDir } from "@athenajs/utils";
 import assert from "assert";
 import { FastifyReply, FastifyRequest } from "fastify";
-import { GraphQLScalarType } from "graphql";
+import { FormattedExecutionResult, GraphQLScalarType } from "graphql";
 import path from "path";
 
 import { createApp } from "./application.js";
 import { BaseConfig, config } from "./config.js";
+import { resolveConfig } from "./config.js";
 import {
   container,
   ContextGenerator,
@@ -27,6 +28,19 @@ import {
   resolver,
   resolveScalar,
 } from "./index.js";
+
+export const fetchTestGraphql = async (query: string) => {
+  const config = resolveConfig();
+  const baseUrl = `http://localhost:${config.http.port}/`;
+  const res: FormattedExecutionResult = await fetch(`${baseUrl}graphql`, {
+    method: "POST",
+    body: JSON.stringify({ query }),
+    headers: {
+      "Content-Type": "application/json",
+    },
+  }).then((r) => r.json());
+  return [res, baseUrl] as const;
+};
 
 describe("application", () => {
   describe("#createApp", async () => {
@@ -120,29 +134,19 @@ describe("application", () => {
       }
       @contextGenerator()
       class TestContextGenerator implements ContextGenerator {
-        async generateContext(
-          req: ContextRequest,
-        ): Promise<object | undefined> {
+        async generateContext(req: ContextRequest): Promise<object> {
           return { test: "context" };
         }
       }
-      const Config = initConfig();
+      initConfig();
       const app = createApp();
       await app.start();
-      const config = container.resolve(Config);
-      const baseUrl = `http://localhost:${config.http.port}/`;
       try {
-        let res = await fetch(`${baseUrl}graphql`, {
-          method: "POST",
-          body: JSON.stringify({ query: "query { hello }" }),
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }).then((r) => r.json());
+        const [res, baseUrl] = await fetchTestGraphql(`query { hello }`);
         assert.deepStrictEqual(res, { data: { hello: "hello, world!" } });
 
-        res = await fetch(`${baseUrl}hello`).then((r) => r.json());
-        assert.deepStrictEqual(res, { hello: "hello, world!" });
+        const restRes = await fetch(`${baseUrl}hello`).then((r) => r.json());
+        assert.deepStrictEqual(restRes, { hello: "hello, world!" });
       } finally {
         await app.stop();
       }
@@ -160,10 +164,10 @@ describe("application", () => {
           return;
         }
       }
-      const Config = initConfig();
+      initConfig();
       const app = createApp();
       await app.start();
-      const config = container.resolve(Config);
+      const config = resolveConfig();
       try {
         const res = await fetch(`http://localhost:${config.http.port}/hello`, {
           method: "GET",
@@ -195,19 +199,11 @@ describe("application", () => {
           },
         });
       }
-      const Config = initConfig("scalar");
+      initConfig("scalar");
       const app = createApp();
       await app.start();
-      const config = container.resolve(Config);
-      const baseUrl = `http://localhost:${config.http.port}/`;
       try {
-        const res = await fetch(`${baseUrl}graphql`, {
-          method: "POST",
-          body: JSON.stringify({ query: "query { today }" }),
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }).then((r) => r.json());
+        const [res] = await fetchTestGraphql(`query { today }`);
         assert.deepStrictEqual(res, { data: { today: today.toISOString() } });
       } finally {
         await app.stop();
@@ -225,9 +221,7 @@ describe("application", () => {
 
     it("should log uncaught errors", () => {
       class TestLogger extends Logger {
-        error = (): Logger => {
-          return this;
-        };
+        error = () => this;
       }
       @resolver()
       class HelloResolver {
@@ -241,6 +235,59 @@ describe("application", () => {
       container.registerInstance(Logger, new TestLogger(config));
       const app = createApp();
       app.handleError(new Error());
+    });
+
+    it.only("should catch and log resolver errors", async () => {
+      class TestLogger extends Logger {
+        calls = 0;
+        error = () => {
+          this.calls++;
+          return this;
+        };
+      }
+      @resolver()
+      class ErrorResolver {
+        @resolveQuery()
+        error() {
+          throw new Error("normal error");
+        }
+        @resolveQuery()
+        errorStackless() {
+          const err = new Error("stackless error");
+          delete err.stack;
+          throw err;
+        }
+        @resolveQuery()
+        errorString() {
+          throw "string error";
+        }
+        @resolveQuery()
+        errorNumber() {
+          throw -1;
+        }
+      }
+      const Config = initConfig("error");
+      const config = container.resolve(Config);
+      const logger = new TestLogger(config);
+      container.registerInstance(Logger, logger);
+      const app = createApp();
+      await app.start();
+      const cases = [
+        ["error", "normal error"],
+        ["errorStackless", "stackless error"],
+        ["errorString", "string error"],
+        ["errorNumber", "unknown error"],
+      ];
+      try {
+        for (const [query, expected] of cases) {
+          const [res] = await fetchTestGraphql(`query { ${query} }`);
+          assert.strictEqual(res.errors?.length, 1);
+          assert.strictEqual(res.errors?.[0].message, expected);
+        }
+        assert.strictEqual(logger.calls, cases.length);
+      } finally {
+        await app.stop();
+      }
     });
   });
 });

@@ -1,0 +1,6 @@
+type Query {
+  error: Boolean!
+  errorStackless: Boolean!
+  errorString: Boolean!
+  errorNumber: Boolean!
+}

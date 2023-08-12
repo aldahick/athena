@@ -16,6 +16,7 @@ import { ContextRequest, resolveContextGenerator } from "./graphql-context.js";
 import {
   getResolverInfos,
   getResolverInstances,
+  ResolverInfo,
 } from "./graphql-decorators.js";
 
 export type TypeDefs = Exclude<
@@ -81,16 +82,40 @@ export class GraphQLServer<Context extends BaseContext = BaseContext> {
     const resolvers: Resolvers = {};
     for (const instance of getResolverInstances()) {
       for (const info of getResolverInfos(instance)) {
-        // eslint-disable-next-line @typescript-eslint/ban-types
-        const callback = instance[info.propertyKey as never] as Function;
-        let resolver =
-          typeof callback === "function" ? callback.bind(instance) : callback;
-        if (info.batch) {
-          resolver = createBatchResolver(resolver);
-        }
+        const resolver = this.makeResolver(
+          instance[info.propertyKey as never],
+          info,
+        );
         assign(resolvers, info.typeName, resolver);
       }
     }
     return resolvers;
+  }
+
+  // TODO implement error handling for scalar resolvers
+  makeResolver(callback: unknown, info: ResolverInfo) {
+    if (typeof callback !== "function") {
+      return callback;
+    }
+    const resolver = async (...args: unknown[]) => {
+      try {
+        return await callback(...args);
+      } catch (err) {
+        let message = "unknown error";
+        if (err instanceof Error) {
+          message = err.stack || err.message;
+        } else {
+          if (err && (typeof err === "object" || typeof err === "string")) {
+            message = err?.toString();
+          }
+          err = new Error(message);
+        }
+        this.logger.error(
+          `an error occurred in GraphQL resolver ${info.typeName}: ${message}`,
+        );
+        throw err;
+      }
+    };
+    return info.batch ? createBatchResolver(resolver) : resolver;
   }
 }

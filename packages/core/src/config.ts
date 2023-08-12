@@ -2,7 +2,7 @@ import "dotenv/config.js";
 
 import process from "node:process";
 
-import { inject, makeRegistryDecorator } from "./container.js";
+import { container, inject, makeRegistryDecorator } from "./container.js";
 import { LoggerOptions } from "./logger.js";
 
 const configToken = Symbol("Config");
@@ -13,6 +13,7 @@ const configToken = Symbol("Config");
 export const config = makeRegistryDecorator(configToken);
 
 export const injectConfig = (): ParameterDecorator => inject(configToken);
+export const resolveConfig = (): BaseConfig => container.resolve(configToken);
 
 /**
  * To define your config, extend this class and use this.optional/required
