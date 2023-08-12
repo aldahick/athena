@@ -82,10 +82,7 @@ export class GraphQLServer<Context extends BaseContext = BaseContext> {
     const resolvers: Resolvers = {};
     for (const instance of getResolverInstances()) {
       for (const info of getResolverInfos(instance)) {
-        const resolver = this.makeResolver(
-          instance[info.propertyKey as never],
-          info,
-        );
+        const resolver = this.makeResolver(instance, info);
         assign(resolvers, info.typeName, resolver);
       }
     }
@@ -93,11 +90,13 @@ export class GraphQLServer<Context extends BaseContext = BaseContext> {
   }
 
   // TODO implement error handling for scalar resolvers
-  makeResolver(callback: unknown, info: ResolverInfo) {
-    if (typeof callback !== "function") {
-      return callback;
+  makeResolver(instance: object, info: ResolverInfo) {
+    const resolver = instance[info.propertyKey as never] as unknown;
+    if (typeof resolver !== "function") {
+      return resolver;
     }
-    const resolver = async (...args: unknown[]) => {
+    const callback = resolver.bind(instance);
+    const resolve = async (...args: unknown[]) => {
       try {
         return await callback(...args);
       } catch (err) {
@@ -116,6 +115,6 @@ export class GraphQLServer<Context extends BaseContext = BaseContext> {
         throw err;
       }
     };
-    return info.batch ? createBatchResolver(resolver) : resolver;
+    return info.batch ? createBatchResolver(resolve) : resolve;
   }
 }

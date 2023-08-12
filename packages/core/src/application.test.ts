@@ -237,7 +237,7 @@ describe("application", () => {
       app.handleError(new Error());
     });
 
-    it.only("should catch and log resolver errors", async () => {
+    it("should catch and log resolver errors", async () => {
       class TestLogger extends Logger {
         calls = 0;
         error = () => {
@@ -285,6 +285,26 @@ describe("application", () => {
           assert.strictEqual(res.errors?.[0].message, expected);
         }
         assert.strictEqual(logger.calls, cases.length);
+      } finally {
+        await app.stop();
+      }
+    });
+
+    it("should allow 'this' access in resolvers", async () => {
+      @resolver()
+      class HelloResolver {
+        private greeting = "hello, world";
+        @resolveQuery()
+        hello() {
+          return this.greeting;
+        }
+      }
+      initConfig();
+      const app = createApp();
+      await app.start();
+      try {
+        const [res] = await fetchTestGraphql(`query { hello }`);
+        assert.strictEqual(res.data?.hello, "hello, world");
       } finally {
         await app.stop();
       }
