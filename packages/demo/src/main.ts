@@ -1,6 +1,5 @@
 import "reflect-metadata";
 import "./config.js";
-import "./error/index.js";
 import "./hello/index.js";
 import "./user/index.js";
 
