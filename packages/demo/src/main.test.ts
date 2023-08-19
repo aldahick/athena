@@ -18,7 +18,6 @@ export const withTestApp = async (
     await callback(`http://localhost:${config.http.port}`, app);
   } finally {
     await app.stop();
-    console.log("stopped");
   }
 };
 

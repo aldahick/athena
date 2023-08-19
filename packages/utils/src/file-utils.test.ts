@@ -28,7 +28,6 @@ describe("file-utils", () => {
   describe("#tempFile", () => {
     it("should return an absolute path", () => {
       const actual = tempFile();
-      console.log(actual);
       assert.strict(actual.startsWith(tmpdir()));
       assert.strictEqual(actual.length, 21);
     });
