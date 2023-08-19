@@ -8,5 +8,7 @@ jobs:
     uses: ./.github/workflows/publish-package.yml
     with:
       directory: packages/utils
+      package: "@athenajs/utils"
     secrets:
       npmToken: ${{ secrets.NPM_TOKEN }}
+      slackToken: ${{ secrets.SLACK_TOKEN }}

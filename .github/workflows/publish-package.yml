@@ -11,8 +11,13 @@ on:
       directory:
         required: true
         type: string
+      package:
+        required: true
+        type: string
     secrets:
       npmToken:
+        required: true
+      slackToken:
         required: true
 jobs:
   publish-package:
@@ -33,3 +38,10 @@ jobs:
         working-directory: ${{ inputs.directory }}
         env:
           NODE_AUTH_TOKEN: ${{ secrets.npmToken }}
+      - uses: slackapi/slack-github-action@v1.24.0
+        with:
+          channel-id: 'GTA20JT0C'
+          # For posting a simple plain text message
+          slack-message: "Published ${{ inputs.package }}@${{ github.ref_name }} to NPM: https://npmjs.com/package/${{ inputs.package }}"
+        env:
+          SLACK_BOT_TOKEN: ${{ secrets.slackToken }}

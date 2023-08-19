@@ -9,5 +9,7 @@ jobs:
     with:
       build-script: build:full
       directory: packages/core
+      package: "@athenajs/core"
     secrets:
       npmToken: ${{ secrets.NPM_TOKEN }}
+      slackToken: ${{ secrets.SLACK_TOKEN }}
