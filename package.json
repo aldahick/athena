@@ -22,10 +22,8 @@
     "typescript": "5.1.6"
   },
   "pnpm": {
-    "auditConfig": {
-      "ignoreCves": [
-        "CVE-2022-25883"
-      ]
+    "overrides": {
+      "semver@>=6.0.0 <6.3.1": ">=6.3.1"
     }
   }
 }

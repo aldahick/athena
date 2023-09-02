@@ -31,21 +31,21 @@
   },
   "dependencies": {
     "@aldahick/tsyringe": "^4.7.1",
-    "@apollo/server": "^4.7.4",
-    "@as-integrations/fastify": "^1.3.2",
+    "@apollo/server": "^4.9.3",
+    "@as-integrations/fastify": "^2.1.0",
     "@athenajs/utils": "workspace:^",
     "@fastify/cors": "^8.3.0",
-    "@fastify/multipart": "^7.7.2",
+    "@fastify/multipart": "^7.7.3",
     "dotenv": "^16.3.1",
-    "fastify": "^4.18.0",
-    "graphql": "^16.7.1",
+    "fastify": "^4.22.2",
+    "graphql": "^16.8.0",
     "graphql-resolve-batch": "^1.0.3",
     "reflect-metadata": "^0.1.13",
-    "winston": "^3.9.0"
+    "winston": "^3.10.0"
   },
   "devDependencies": {
     "@types/graphql-resolve-batch": "^1.1.6",
-    "@types/node": "^20.3.1",
-    "c8": "^7.14.0"
+    "@types/node": "^20.5.8",
+    "c8": "^8.0.1"
   }
 }
