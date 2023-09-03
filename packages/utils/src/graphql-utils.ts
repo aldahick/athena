@@ -9,7 +9,7 @@ import {
 } from "graphql";
 
 export const extractSelectedFields = (
-  nodes: readonly (SelectionNode | DefinitionNode)[] | GraphQLResolveInfo
+  nodes: readonly (SelectionNode | DefinitionNode)[] | GraphQLResolveInfo,
 ): string[] => {
   if ("fieldNodes" in nodes) {
     return extractSelectedFields(nodes.fieldNodes);
@@ -30,10 +30,10 @@ export const extractOperationNames = (document: DocumentNode): string[] =>
   document.definitions
     .filter(
       (v: DefinitionNode): v is OperationDefinitionNode =>
-        v.kind === Kind.OPERATION_DEFINITION
+        v.kind === Kind.OPERATION_DEFINITION,
     )
     .flatMap((d) =>
       d.selectionSet.selections
         .filter((s: SelectionNode): s is FieldNode => s.kind === Kind.FIELD)
-        .map((s) => `${d.operation}.${s.name.value}`)
+        .map((s) => `${d.operation}.${s.name.value}`),
     );

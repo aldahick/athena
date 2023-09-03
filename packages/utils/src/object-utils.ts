@@ -24,7 +24,7 @@ export const assign = (target: object, key: string, value: unknown): void => {
 export const groupBy = <Item, Key extends string | number, Value = Item>(
   items: Item[],
   toKey: (item: Item) => Key,
-  toValue?: (item: Item) => Value
+  toValue?: (item: Item) => Value,
 ): Map<Key, Value[]> => {
   const grouped = new Map<Key, Value[]>();
   for (const item of items) {
@@ -45,5 +45,5 @@ export const omit = <T extends object, K extends keyof T>(
   ...keys: K[]
 ): Omit<T, K> =>
   Object.fromEntries(
-    Object.entries(target).filter(([key]) => !keys.includes(key as K))
+    Object.entries(target).filter(([key]) => !keys.includes(key as K)),
   ) as Omit<T, K>;

@@ -12,13 +12,13 @@ describe("config", () => {
     it("should point to a dir containing graphql files", async () => {
       const files = (
         await Promise.all(
-          config.graphqlSchemaDirs.map((dir) => recursiveReaddir(dir))
+          config.graphqlSchemaDirs.map((dir) => recursiveReaddir(dir)),
         )
       ).flat();
       assert.strictEqual(files.length > 0, true);
       assert.strictEqual(
         files.every((f) => f.endsWith(".gql")),
-        true
+        true,
       );
     });
   });

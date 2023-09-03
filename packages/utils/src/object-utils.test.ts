@@ -43,7 +43,7 @@ describe("object-utils", () => {
       const actual = groupBy(
         items,
         (i) => i.a,
-        (i) => i.b
+        (i) => i.b,
       );
       const expected = new Map([
         [1, [10]],
