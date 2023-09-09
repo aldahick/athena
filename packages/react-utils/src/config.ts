@@ -9,7 +9,7 @@ export const getConfigFromAttributes = () => {
     attrNames
       .filter((name) => name.startsWith(attributePrefix))
       .map((name) => [
-        name.slice(attributePrefix.length),
+        name.slice(attributePrefix.length).toLocaleUpperCase(),
         document.body.getAttribute(name) ?? "",
       ]),
   );
