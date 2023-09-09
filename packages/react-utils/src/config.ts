@@ -13,8 +13,8 @@ export const getConfigFromAttributes = () => {
         document.body.getAttribute(name) ?? "",
       ]),
   );
-  const envConfig = (import.meta as unknown as { env: Record<string, string> })
-    .env;
+  const envConfig =
+    (import.meta as unknown as { env?: Record<string, string> }).env ?? {};
   const slicedEnvConfig = Object.fromEntries(
     Object.entries(envConfig)
       .filter(([key]) => key.startsWith("VITE_"))
