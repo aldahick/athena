@@ -5,7 +5,7 @@ import { before, describe, it } from "node:test";
 
 import { getModuleDir } from "@athenajs/utils";
 
-import { addHtmlConfigAttributes } from "./config.js";
+import { addHtmlConfigAttributes } from "./config-node.js";
 
 describe("config", () => {
   describe("addHtmlConfigAttributes", () => {
@@ -15,6 +15,7 @@ describe("config", () => {
     });
 
     it("should populate the body tag with env name attributes", async () => {
+      process.env.VAR_1 = "test";
       const outputHtmlPath = path.join(testDir, "index-output.html");
       await addHtmlConfigAttributes(
         path.join(testDir, "index.html"),

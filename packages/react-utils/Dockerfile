@@ -19,6 +19,6 @@ COPY --from=builder dist dist
 COPY scripts scripts
 
 RUN echo -e '#!/bin/sh\
-node node_modules/@athenajs/react-utils/dist/config.js\
+node node_modules/@athenajs/react-utils/dist/config-node.js\
 serve -s dist -l 0.0.0.0:\$PORT' > serve.sh
 CMD ["sh", "serve.sh"]
