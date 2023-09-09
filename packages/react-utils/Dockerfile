@@ -16,7 +16,6 @@ FROM node:18-alpine AS server
 RUN npm i -g serve
 
 COPY --from=builder dist dist
-COPY scripts scripts
 
 RUN echo -e '#!/bin/sh\
 node node_modules/@athenajs/react-utils/dist/config-node.js\
