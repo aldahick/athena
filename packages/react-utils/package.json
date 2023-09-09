@@ -16,7 +16,7 @@
     "url": "git+https://github.com/aldahick/athena"
   },
   "devDependencies": {
-    "@types/node": "^20.5.8",
-    "@athenajs/utils": "workspace:^"
+    "@athenajs/utils": "workspace:^",
+    "@types/node": "^20.5.8"
   }
 }

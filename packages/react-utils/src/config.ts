@@ -13,5 +13,8 @@ export const getConfigFromAttributes = () => {
         document.body.getAttribute(name) ?? "",
       ]),
   );
-  return { ...attributeConfig, ...process.env };
+  return {
+    ...attributeConfig,
+    ...(import.meta as unknown as { env: Record<string, string> }).env,
+  };
 };
