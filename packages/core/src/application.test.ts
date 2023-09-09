@@ -281,7 +281,7 @@ describe("application", () => {
         for (const [query, expected] of cases) {
           const [res] = await fetchTestGraphql(`query { ${query} }`);
           assert.strictEqual(res.errors?.length, 1);
-          assert.strictEqual(res.errors?.[0].message, expected);
+          assert.strictEqual(res.errors?.[0]?.message, expected);
         }
         assert.strictEqual(logger.calls, cases.length);
       } finally {

@@ -21,7 +21,7 @@ describe("object-utils", () => {
       const obj: { [key: string]: { [key: string]: string } } = {};
       const expected = 7;
       assign(obj, "a.b", expected);
-      assert.strictEqual(obj.a.b, expected);
+      assert.strictEqual(obj.a?.b, expected);
     });
   });
 
