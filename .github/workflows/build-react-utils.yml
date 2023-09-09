@@ -7,4 +7,5 @@ jobs:
   build-react-utils-package:
     uses: ./.github/workflows/build-package.yml
     with:
+      build-script: build:full
       directory: packages/react-utils
