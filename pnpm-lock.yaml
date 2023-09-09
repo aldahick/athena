@@ -125,6 +125,15 @@ importers:
         specifier: ^5.2.2
         version: 5.2.2
 
+  packages/react-utils:
+    devDependencies:
+      '@athenajs/utils':
+        specifier: workspace:^
+        version: link:../utils
+      '@types/node':
+        specifier: ^20.5.8
+        version: 20.5.8
+
   packages/utils:
     dependencies:
       graphql:

@@ -1,0 +1,14 @@
+name: publish-react-utils
+on:
+  push:
+    tags:
+      - react-utils-v**
+jobs:
+  publish-react-utils-package:
+    uses: ./.github/workflows/publish-package.yml
+    with:
+      directory: packages/react-utils
+      package: "@athenajs/react-utils"
+    secrets:
+      npmToken: ${{ secrets.NPM_TOKEN }}
+      slackToken: ${{ secrets.SLACK_TOKEN }}

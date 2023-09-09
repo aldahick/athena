@@ -9,6 +9,7 @@ A modular backend framework atop Apollo and Fastify. Simpler and more opinionate
 
 - [GraphQL](./docs/graphql.md)
 - [ES modules](https://nodejs.org/api/esm.html) all the way down
+- [React utilities](./packages/react-utils/)
 <!--
 - [Database](./docs/database.md) integration(s) (orchid-orm)
 - [Authentication](./docs/auth.md#Authentication) and [authorization](./docs/auth.md#Authorization)

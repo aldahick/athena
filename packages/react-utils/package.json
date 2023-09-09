@@ -1,0 +1,21 @@
+{
+  "name": "@athenajs/react-utils",
+  "version": "0.1.0",
+  "type": "module",
+  "license": "MIT",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "test": "node --enable-source-maps --trace-warnings --test dist",
+    "postversion": "bash ../../scripts/hooks/postversion.sh react-utils",
+    "preversion": "pnpm build"
+  },
+  "repository": {
+    "url": "git+https://github.com/aldahick/athena"
+  },
+  "devDependencies": {
+    "@types/node": "^20.5.8",
+    "@athenajs/utils": "workspace:^"
+  }
+}

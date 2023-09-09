@@ -12,6 +12,7 @@
     "noImplicitAny": true,
     "useUnknownInCatchVariables": true,
     "emitDecoratorMetadata": true,
-    "experimentalDecorators": true
+    "experimentalDecorators": true,
+    "noUncheckedIndexedAccess": true
   }
 }

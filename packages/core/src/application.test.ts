@@ -5,7 +5,6 @@ import { beforeEach, describe, it } from "node:test";
 
 import { getModuleDir } from "@athenajs/utils";
 import assert from "assert";
-import { FastifyReply, FastifyRequest } from "fastify";
 import { FormattedExecutionResult, GraphQLScalarType } from "graphql";
 import path from "path";
 
