@@ -6,7 +6,7 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
-    "build:full": "cd ../utils && pnpm build",
+    "build:full": "cd ../utils && pnpm build && cd ../react-utils && pnpm build",
     "build": "tsc",
     "test": "node --enable-source-maps --trace-warnings --test dist",
     "postversion": "bash ../../scripts/hooks/postversion.sh react-utils",
