@@ -13,11 +13,16 @@ RUN pnpm build
 
 FROM node:18-alpine AS server
 
+WORKDIR /app
+
 RUN npm i -g serve
+RUN npm i @athenajs/react-utils
 
 COPY --from=builder dist dist
 
-RUN echo -e '#!/bin/sh\
-node node_modules/@athenajs/react-utils/dist/config-node.js\
-serve -s dist -l 0.0.0.0:\$PORT' > serve.sh
+ENV PORT=3000
+RUN printf '#!/bin/sh\nset -e\n\
+node node_modules/@athenajs/react-utils/dist/config-node.js\n\
+serve -s dist -l 0.0.0.0:$PORT' >> serve.sh
+
 CMD ["sh", "serve.sh"]

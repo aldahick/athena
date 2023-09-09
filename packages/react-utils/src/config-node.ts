@@ -1,4 +1,5 @@
-import { promises as fs } from "fs";
+import { promises as fs } from "node:fs";
+import { fileURLToPath } from "node:url";
 
 import { attributePrefix } from "./config.js";
 
@@ -6,9 +7,9 @@ import { attributePrefix } from "./config.js";
  * Populates index.html with environment variables from .env.example
  */
 export const addHtmlConfigAttributes = async (
-  inputHtmlFile = "./index.html",
+  inputHtmlFile = "./dist/index.html",
   exampleEnvFile = "./.env.example",
-  outputHtmlFile = "./index.html",
+  outputHtmlFile = "./dist/index.html",
 ) => {
   const indexHtml = await fs.readFile(inputHtmlFile, "utf8");
   const exampleEnv = await fs.readFile(exampleEnvFile, "utf8");
@@ -28,9 +29,6 @@ export const addHtmlConfigAttributes = async (
   await fs.writeFile(outputHtmlFile, outputHtml);
 };
 
-if (
-  process &&
-  process.argv[1] === (await import("url")).fileURLToPath(import.meta.url)
-) {
+if (process.argv[1] === fileURLToPath(import.meta.url)) {
   await addHtmlConfigAttributes();
 }
