@@ -7,7 +7,7 @@ export const getConfigFromAttributes = () => {
   const attrNames = document.body.getAttributeNames();
   const attributeConfig = Object.fromEntries(
     attrNames
-      .filter((name) => name.startsWith(attributePrefix))
+      .filter((name) => name.toLocaleUpperCase().startsWith(attributePrefix))
       .map((name) => [
         name.slice(attributePrefix.length).toLocaleUpperCase(),
         document.body.getAttribute(name) ?? "",
