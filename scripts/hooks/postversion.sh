@@ -7,6 +7,11 @@ if [ "$tag_prefix" == "" ]; then
   exit 1
 fi
 
+if ! command -v jq; then
+  >&2 echo "Error: jq is required. Please install it and re-run this postversion script."
+  exit 1
+fi
+
 version=$(cat package.json | jq -r '.version')
 tag="$tag_prefix-v$version"
 commit_message="$tag_prefix@$version"

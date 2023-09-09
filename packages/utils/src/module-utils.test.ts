@@ -18,5 +18,14 @@ describe("module-utils", () => {
     it("should return true for this test file", () => {
       assert.strictEqual(isModuleMain(import.meta), true);
     });
+    it("should return false when no file was run", () => {
+      const args = [...process.argv];
+      process.argv = args.slice(0, 1);
+      try {
+        assert.strictEqual(isModuleMain(import.meta), false);
+      } finally {
+        process.argv = args;
+      }
+    });
   });
 });
