@@ -12,6 +12,9 @@
     "preversion": "pnpm build",
     "test": "c8 node --enable-source-maps --test dist"
   },
+  "engines": {
+    "node": ">=16.13.2"
+  },
   "repository": {
     "url": "git+https://github.com/aldahick/athena"
   },
@@ -26,10 +29,10 @@
     ]
   },
   "dependencies": {
-    "graphql": "^16.8.0"
+    "graphql": "^16.8.1"
   },
   "devDependencies": {
-    "@types/node": "^20.5.8",
+    "@types/node": "^20.8.3",
     "c8": "^8.0.1"
   }
 }
