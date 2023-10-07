@@ -1,6 +1,5 @@
 import { promises as fs } from "node:fs";
 
-import { injectable } from "@aldahick/tsyringe";
 import { ApolloServer, ApolloServerOptions, BaseContext } from "@apollo/server";
 import fastifyApollo, {
   fastifyApolloDrainPlugin,
@@ -9,6 +8,7 @@ import { assign, recursiveReaddir } from "@athenajs/utils";
 import { FastifyInstance } from "fastify";
 import { GraphQLFieldResolver } from "graphql";
 import { createBatchResolver } from "graphql-resolve-batch";
+import { injectable } from "tsyringe";
 
 import { BaseConfig, injectConfig } from "../config.js";
 import { Logger } from "../logger.js";

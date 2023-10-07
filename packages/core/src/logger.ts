@@ -1,4 +1,4 @@
-import { injectable } from "@aldahick/tsyringe";
+import { injectable } from "tsyringe";
 import winston from "winston";
 
 import { BaseConfig, injectConfig } from "./config.js";

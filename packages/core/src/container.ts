@@ -1,7 +1,7 @@
-import { registry, singleton } from "@aldahick/tsyringe";
+import { registry, singleton } from "tsyringe";
 
 export { singleton as injectable };
-export { container, inject, injectAll } from "@aldahick/tsyringe";
+export { container, inject, injectAll } from "tsyringe";
 
 export const makeRegistryDecorator =
   (token: symbol) => (): ClassDecorator => (target) => {

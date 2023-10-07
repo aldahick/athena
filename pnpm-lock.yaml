@@ -44,9 +44,6 @@ importers:
 
   packages/core:
     dependencies:
-      '@aldahick/tsyringe':
-        specifier: ^4.7.1
-        version: 4.7.1
       '@apollo/server':
         specifier: ^4.9.3
         version: 4.9.3(graphql@16.8.0)
@@ -77,6 +74,9 @@ importers:
       reflect-metadata:
         specifier: ^0.1.13
         version: 0.1.13
+      tsyringe:
+        specifier: ^4.8.0
+        version: 4.8.0
       winston:
         specifier: ^3.10.0
         version: 3.10.0
@@ -153,13 +153,6 @@ packages:
     resolution: {integrity: sha512-1Yjs2SvM8TflER/OD3cOjhWWOZb58A2t7wpE2S9XfBYTiIl+XFhQG2bjy4Pu1I+EAlCNUzRDYDdFwFYUKvXcIA==}
     engines: {node: '>=0.10.0'}
     dev: true
-
-  /@aldahick/tsyringe@4.7.1:
-    resolution: {integrity: sha512-RxQ2QBz8u3wDRwer17Bne/SUq8KLTo8peMM9IZxe/ir4IIRZVRD4yvoFHlLB1+aXKzY6KeP97IPdRHK/P/+2sA==}
-    engines: {node: '>= 6.0.0'}
-    dependencies:
-      tslib: 2.6.0
-    dev: false
 
   /@ampproject/remapping@2.2.1:
     resolution: {integrity: sha512-lFMjJTrFL3j7L9yBxwYfCq2k6qqwHyzuUl/XBnif78PWTJYyL/dfowQHWE3sp6U6ZzqWiiIZnpTMO96zhkjwtg==}
@@ -6575,12 +6568,23 @@ packages:
       typescript: 5.2.2
     dev: true
 
+  /tslib@1.14.1:
+    resolution: {integrity: sha512-Xni35NKzjgMrwevysHTCArtLDpPvye8zV/0E4EyYn43P7/7qvQwPh9BGkHewbMulVntbigmcT7rdX3BNo9wRJg==}
+    dev: false
+
   /tslib@2.5.3:
     resolution: {integrity: sha512-mSxlJJwl3BMEQCUNnxXBU9jP4JBktcEGhURcPR6VQVlnP0FdDEsIaz0C35dXNGLyRfrATNofF0F5p2KPxQgB+w==}
     dev: true
 
   /tslib@2.6.0:
     resolution: {integrity: sha512-7At1WUettjcSRHXCyYtTselblcHl9PJFFVKiCAy/bY97+BPZXSQ2wbq0P9s8tK2G7dFQfNnlJnPAiArVBVBsfA==}
+
+  /tsyringe@4.8.0:
+    resolution: {integrity: sha512-YB1FG+axdxADa3ncEtRnQCFq/M0lALGLxSZeVNbTU8NqhOVc51nnv2CISTcvc1kyv6EGPtXVr0v6lWeDxiijOA==}
+    engines: {node: '>= 6.0.0'}
+    dependencies:
+      tslib: 1.14.1
+    dev: false
 
   /type-check@0.4.0:
     resolution: {integrity: sha512-XleUoc9uwGXqjWwXaUTZAmzMcFZ5858QA2vvx1Ur5xIcixXIP+8LnFDgRplU30us6teqdlskFfu+ae4K79Ooew==}

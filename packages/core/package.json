@@ -30,7 +30,6 @@
     ]
   },
   "dependencies": {
-    "@aldahick/tsyringe": "^4.7.1",
     "@apollo/server": "^4.9.3",
     "@as-integrations/fastify": "^2.1.0",
     "@athenajs/utils": "workspace:^",
@@ -41,6 +40,7 @@
     "graphql": "^16.8.0",
     "graphql-resolve-batch": "^1.0.3",
     "reflect-metadata": "^0.1.13",
+    "tsyringe": "^4.8.0",
     "winston": "^3.10.0"
   },
   "devDependencies": {

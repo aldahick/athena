@@ -1,7 +1,7 @@
-import { injectable } from "@aldahick/tsyringe";
 import fastifyCors from "@fastify/cors";
 import fastifyMultipart from "@fastify/multipart";
 import fastify, { FastifyInstance, RouteHandler } from "fastify";
+import { injectable } from "tsyringe";
 
 import { BaseConfig, injectConfig } from "../config.js";
 import { ContextRequest, resolveContextGenerator } from "../index.js";
