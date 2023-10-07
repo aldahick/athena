@@ -22,8 +22,5 @@ COPY --from=builder .env.example ./
 COPY --from=builder dist dist
 
 ENV PORT=3000
-RUN printf '#!/bin/sh\nset -e\n\
-node node_modules/@athenajs/react-utils/dist/config-node.js\n\
-serve -s dist -l "tcp://0.0.0.0:$PORT"\n' >> serve.sh
 
-CMD ["sh", "serve.sh"]
+CMD ["sh", "node_modules/@athenajs/react-utils/scripts/serve.sh"]
