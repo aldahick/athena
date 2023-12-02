@@ -14,7 +14,7 @@
     "test": "c8 node --enable-source-maps --trace-warnings --test dist"
   },
   "engines": {
-    "node": ">=16.13.2"
+    "node": "^20.10"
   },
   "repository": {
     "url": "git+https://github.com/aldahick/athena"
@@ -33,22 +33,20 @@
     ]
   },
   "dependencies": {
-    "@apollo/server": "^4.9.4",
+    "@apollo/server": "^4.9.5",
     "@as-integrations/fastify": "^2.1.1",
     "@athenajs/utils": "workspace:^",
-    "@fastify/cors": "^8.4.0",
+    "@fastify/cors": "^8.4.1",
     "@fastify/multipart": "^8.0.0",
     "dotenv": "^16.3.1",
-    "fastify": "^4.23.2",
+    "fastify": "^4.24.3",
     "graphql": "^16.8.1",
     "graphql-resolve-batch": "^1.0.3",
     "reflect-metadata": "^0.1.13",
     "tsyringe": "^4.8.0",
-    "winston": "^3.10.0"
+    "winston": "^3.11.0"
   },
   "devDependencies": {
-    "@types/graphql-resolve-batch": "^1.1.7",
-    "@types/node": "^20.8.3",
-    "c8": "^8.0.1"
+    "@types/graphql-resolve-batch": "^1.1.11"
   }
 }

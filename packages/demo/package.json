@@ -13,7 +13,7 @@
     "test": "c8 node --enable-source-maps --trace-warnings --test dist"
   },
   "engines": {
-    "node": ">=16.13.2"
+    "node": "^20.10"
   },
   "repository": {
     "url": "git+https://github.com/aldahick/athena"
@@ -39,10 +39,6 @@
   "devDependencies": {
     "@graphql-codegen/cli": "^5.0.0",
     "@graphql-codegen/typescript": "^4.0.1",
-    "@graphql-codegen/typescript-operations": "^4.0.1",
-    "@types/node": "^20.8.3",
-    "c8": "^8.0.1",
-    "tsc-watch": "^6.0.4",
-    "typescript": "^5.2.2"
+    "@graphql-codegen/typescript-operations": "^4.0.1"
   }
 }

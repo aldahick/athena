@@ -14,13 +14,12 @@
     "preversion": "pnpm build"
   },
   "engines": {
-    "node": ">=16.13.2"
+    "node": "^20.10"
   },
   "repository": {
     "url": "git+https://github.com/aldahick/athena"
   },
   "devDependencies": {
-    "@athenajs/utils": "workspace:^",
-    "@types/node": "^20.8.3"
+    "@athenajs/utils": "workspace:^"
   }
 }

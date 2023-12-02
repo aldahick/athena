@@ -1,4 +1,4 @@
-FROM node:18-alpine AS builder
+FROM node:20-alpine AS builder
 
 RUN npm i -g pnpm@latest
 COPY package.json pnpm-lock.yaml ./
@@ -11,7 +11,7 @@ COPY .env.example ./
 
 RUN pnpm build
 
-FROM node:18-alpine AS server
+FROM node:20-alpine AS server
 
 WORKDIR /app
 
