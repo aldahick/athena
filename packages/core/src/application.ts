@@ -39,7 +39,7 @@ export class Application {
   };
 
   readonly handleError = (err: Error): void => {
-    this.logger.error("uncaught error: " + err.stack);
+    this.logger.error(`uncaught error: ${err.stack}`);
   };
 }
 

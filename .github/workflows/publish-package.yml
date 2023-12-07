@@ -23,10 +23,10 @@ jobs:
   publish-package:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: actions/setup-node@v3
         with:
-          node-version: '18.x'
+          node-version-file: .nvmrc
           registry-url: 'https://registry.npmjs.org'
       - uses: pnpm/action-setup@v2
         with:
@@ -40,7 +40,7 @@ jobs:
           NODE_AUTH_TOKEN: ${{ secrets.npmToken }}
       - uses: slackapi/slack-github-action@v1.24.0
         with:
-          channel-id: 'GTA20JT0C'
+          channel-id: ${{ vars.PUBLISHED_SLACK_CHANNEL_ID }}
           # For posting a simple plain text message
           slack-message: "Published ${{ inputs.package }}@${{ github.ref_name }} to NPM: https://npmjs.com/package/${{ inputs.package }}"
         env:

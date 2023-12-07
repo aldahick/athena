@@ -7,15 +7,15 @@ import { GraphQLScalarType } from "graphql";
 
 import { container } from "../container.js";
 import {
+  ResolverInfo,
   getResolverInfos,
   getResolverInstances,
   resolveField,
   resolveMutation,
   resolveQuery,
-  resolver,
-  ResolverInfo,
-  resolverToken,
   resolveScalar,
+  resolver,
+  resolverToken,
 } from "./graphql-decorators.js";
 
 describe("graphql-decorators", () => {

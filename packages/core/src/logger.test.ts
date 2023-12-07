@@ -1,7 +1,7 @@
 import "reflect-metadata";
 
 import assert from "node:assert";
-import { after, afterEach, before, describe, it, Mock, mock } from "node:test";
+import { Mock, after, afterEach, before, describe, it, mock } from "node:test";
 
 import { BaseConfig } from "./config.js";
 import { Logger } from "./logger.js";
@@ -31,10 +31,9 @@ describe("logger", () => {
     const logger = new Logger(new Config());
     logger.debug("test");
     const firstCall = logMock.mock.calls[0];
+    const expected = JSON.stringify({ level: "debug", message: "test" });
     assert.ok(firstCall);
-    assert.deepStrictEqual(firstCall.arguments, [
-      JSON.stringify({ level: "debug", message: "test" }) + "\n",
-    ]);
+    assert.deepStrictEqual(firstCall.arguments, [`${expected}\n`]);
   });
 
   it("should not print debug messages when options.level is info", () => {
@@ -63,10 +62,9 @@ describe("logger", () => {
     const logger = new Logger(new Config());
     logger.info("test");
     const firstCall = logMock.mock.calls[0];
+    const expected = JSON.stringify({ level: "info", message: "test" });
     assert.ok(firstCall);
-    assert.deepStrictEqual(firstCall.arguments, [
-      JSON.stringify({ level: "info", message: "test" }) + "\n",
-    ]);
+    assert.deepStrictEqual(firstCall.arguments, [`${expected}\n`]);
   });
 
   it("should print beautifully when options.pretty is true", () => {

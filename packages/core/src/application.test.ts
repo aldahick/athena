@@ -3,29 +3,29 @@ import "reflect-metadata";
 
 import { beforeEach, describe, it } from "node:test";
 
-import { getModuleDir } from "@athenajs/utils";
 import assert from "assert";
-import { FormattedExecutionResult, GraphQLScalarType } from "graphql";
 import path from "path";
+import { getModuleDir } from "@athenajs/utils";
+import { FormattedExecutionResult, GraphQLScalarType } from "graphql";
 
 import { createApp } from "./application.js";
 import { BaseConfig, config } from "./config.js";
 import { resolveConfig } from "./config.js";
 import {
-  container,
   ContextGenerator,
-  contextGenerator,
   ContextRequest,
-  controller,
-  get,
   HttpRequest,
   HttpResponse,
   Logger,
+  container,
+  contextGenerator,
+  controller,
+  get,
   post,
   resolveField,
   resolveQuery,
-  resolver,
   resolveScalar,
+  resolver,
 } from "./index.js";
 
 export const fetchTestGraphql = async (query: string) => {
@@ -45,7 +45,7 @@ describe("application", () => {
   describe("#createApp", async () => {
     beforeEach(() => container.reset());
 
-    const initConfig = (testName = "base"): new () => BaseConfig => {
+    const initConfig = (testName = "base"): (new () => BaseConfig) => {
       @config()
       class Config extends BaseConfig {
         graphqlSchemaDirs = [
@@ -126,7 +126,7 @@ describe("application", () => {
       @resolver()
       class HelloResolver {
         @resolveQuery()
-        hello(root: void, args: void, context: object) {
+        hello(root: never, args: never, context: object) {
           assert.deepStrictEqual(context, { test: "context" });
           return "hello, world!";
         }
@@ -141,7 +141,7 @@ describe("application", () => {
       const app = createApp();
       await app.start();
       try {
-        const [res, baseUrl] = await fetchTestGraphql(`query { hello }`);
+        const [res, baseUrl] = await fetchTestGraphql("query { hello }");
         assert.deepStrictEqual(res, { data: { hello: "hello, world!" } });
 
         const restRes = await fetch(`${baseUrl}hello`).then((r) => r.json());
@@ -202,7 +202,7 @@ describe("application", () => {
       const app = createApp();
       await app.start();
       try {
-        const [res] = await fetchTestGraphql(`query { today }`);
+        const [res] = await fetchTestGraphql("query { today }");
         assert.deepStrictEqual(res, { data: { today: today.toISOString() } });
       } finally {
         await app.stop();
@@ -253,7 +253,7 @@ describe("application", () => {
         @resolveQuery()
         errorStackless() {
           const err = new Error("stackless error");
-          delete err.stack;
+          err.stack = undefined;
           throw err;
         }
         @resolveQuery()
@@ -302,7 +302,7 @@ describe("application", () => {
       const app = createApp();
       await app.start();
       try {
-        const [res] = await fetchTestGraphql(`query { hello }`);
+        const [res] = await fetchTestGraphql("query { hello }");
         assert.strictEqual(res.data?.hello, "hello, world");
       } finally {
         await app.stop();

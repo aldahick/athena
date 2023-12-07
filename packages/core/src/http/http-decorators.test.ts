@@ -5,7 +5,7 @@ import { beforeEach, describe, it } from "node:test";
 import assert from "assert";
 
 import { container } from "../container.js";
-import { controller, HttpMethod, httpRoute } from "./http-decorators.js";
+import { HttpMethod, controller, httpRoute } from "./http-decorators.js";
 
 describe("http-decorators", () => {
   describe("#httpRoute", () => {

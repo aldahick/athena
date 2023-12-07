@@ -1,0 +1,24 @@
+{
+  "$schema": "https://biomejs.dev/schemas/1.4.0/schema.json",
+  "files": {
+    "ignore": [
+      "**/graphql.ts"
+    ]
+  },
+  "organizeImports": {
+    "enabled": true
+  },
+  "formatter": {
+    "enabled": true,
+    "indentWidth": 2,
+    "indentStyle": "space"
+  },
+  "linter": {
+    "enabled": true
+  },
+  "javascript": {
+    "parser": {
+      "unsafeParameterDecoratorsEnabled": true
+    }
+  }
+}

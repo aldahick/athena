@@ -14,9 +14,9 @@ import { BaseConfig, injectConfig } from "../config.js";
 import { Logger } from "../logger.js";
 import { ContextRequest, resolveContextGenerator } from "./graphql-context.js";
 import {
+  ResolverInfo,
   getResolverInfos,
   getResolverInstances,
-  ResolverInfo,
 } from "./graphql-decorators.js";
 
 export type TypeDefs = Exclude<
@@ -66,10 +66,8 @@ export class GraphQLServer<Context extends BaseContext = BaseContext> {
   }
 
   async getTypeDefs(): Promise<TypeDefs> {
-    this.logger.debug(
-      "loading graphql type definitions from " +
-        this.config.graphqlSchemaDirs.join(", "),
-    );
+    const dirs = this.config.graphqlSchemaDirs.join(", ");
+    this.logger.debug(`loading graphql type definitions from ${dirs}`);
     const schemaPaths = await Promise.all(
       this.config.graphqlSchemaDirs.map((d) => recursiveReaddir(d)),
     );
@@ -107,12 +105,14 @@ export class GraphQLServer<Context extends BaseContext = BaseContext> {
           if (err && (typeof err === "object" || typeof err === "string")) {
             message = err?.toString();
           }
-          err = new Error(message);
         }
         this.logger.error(
           `an error occurred in GraphQL resolver ${info.typeName}: ${message}`,
         );
-        throw err;
+        if (err instanceof Error) {
+          throw err;
+        }
+        throw new Error(message);
       }
     };
     return info.batch ? createBatchResolver(resolve) : resolve;

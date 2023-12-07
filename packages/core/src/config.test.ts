@@ -17,7 +17,8 @@ describe("config", () => {
         graphqlSchemaDirs = [];
         http = { port: 0 };
       }
-      const expected = (process.env[TEST_KEY] = "test");
+      const expected = "test";
+      process.env[TEST_KEY] = expected;
       const actual = new Config().optionalValue;
       assert.strictEqual(actual, expected);
     });
@@ -42,7 +43,8 @@ describe("config", () => {
         graphqlSchemaDirs = [];
         http = { port: 0 };
       }
-      const expected = (process.env[TEST_KEY] = "test");
+      const expected = "test";
+      process.env[TEST_KEY] = expected;
       const actual = new Config().requiredValue;
       assert.strictEqual(actual, expected);
     });

@@ -5,7 +5,7 @@ export const assign = (target: object, key: string, value: unknown): void => {
   let current = target;
   // not. type. safe.
   const keyParts = key.split(".") as never[];
-  keyParts.forEach((keyPart, index) => {
+  for (const [index, keyPart] of keyParts.entries()) {
     if (index === keyParts.length - 1) {
       current[keyPart] = value as never;
     } else if (
@@ -18,7 +18,7 @@ export const assign = (target: object, key: string, value: unknown): void => {
       current[keyPart] = {} as never;
     }
     current = current[keyPart];
-  });
+  }
 };
 
 export const groupBy = <Item, Key extends string | number, Value = Item>(

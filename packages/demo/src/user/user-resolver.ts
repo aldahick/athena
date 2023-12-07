@@ -1,5 +1,5 @@
-import { resolveField, resolveQuery, resolver } from "@athenajs/core";
 import crypto from "crypto";
+import { resolveField, resolveQuery, resolver } from "@athenajs/core";
 
 import { IUser } from "../graphql.js";
 

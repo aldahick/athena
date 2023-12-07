@@ -7,7 +7,7 @@
   "types": "dist/index.d.ts",
   "scripts": {
     "build": "tsc",
-    "lint": "eslint src",
+    "lint": "biome check src",
     "postversion": "bash ../../scripts/hooks/postversion.sh utils",
     "preversion": "pnpm build",
     "test": "c8 node --enable-source-maps --test dist"

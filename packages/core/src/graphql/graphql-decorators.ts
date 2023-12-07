@@ -41,8 +41,8 @@ const addResolverInfo = (target: object, info: ResolverInfo): void => {
 export const resolveQuery =
   (queryName?: string): MethodDecorator =>
   (target, propertyKey, descriptor) => {
-    queryName ??= propertyKey.toString();
-    resolveField(`Query.${queryName}`)(target, propertyKey, descriptor);
+    const finalQueryName = queryName ?? propertyKey.toString();
+    resolveField(`Query.${finalQueryName}`)(target, propertyKey, descriptor);
   };
 
 /**
@@ -53,8 +53,12 @@ export const resolveQuery =
 export const resolveMutation =
   (mutationName?: string): MethodDecorator =>
   (target, propertyKey, descriptor) => {
-    mutationName ??= propertyKey.toString();
-    resolveField(`Mutation.${mutationName}`)(target, propertyKey, descriptor);
+    const finalMutationName = mutationName ?? propertyKey.toString();
+    resolveField(`Mutation.${finalMutationName}`)(
+      target,
+      propertyKey,
+      descriptor,
+    );
   };
 
 export const resolveScalar =
