@@ -34,7 +34,7 @@
   "dependencies": {
     "@athenajs/core": "workspace:*",
     "@athenajs/utils": "workspace:*",
-    "reflect-metadata": "^0.1.13"
+    "reflect-metadata": "^0.1.14"
   },
   "devDependencies": {
     "@graphql-codegen/cli": "^5.0.0",
