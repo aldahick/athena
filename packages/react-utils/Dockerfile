@@ -6,7 +6,7 @@ RUN pnpm install --frozen-lockfile
 
 COPY src src
 COPY index.html ./
-COPY vite.config.ts tsconfig.json tsconfig.node.json .eslintrc.cjs ./
+COPY vite.config.ts tsconfig.json tsconfig.node.json ./
 COPY .env.example ./
 
 RUN pnpm build
