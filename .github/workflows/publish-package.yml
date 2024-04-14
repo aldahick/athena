@@ -24,11 +24,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-node@v3
+      - uses: actions/setup-node@v4
         with:
           node-version-file: .nvmrc
           registry-url: 'https://registry.npmjs.org'
-      - uses: pnpm/action-setup@v2
+      - uses: pnpm/action-setup@v3
         with:
           version: 8
       - run: pnpm install
@@ -38,7 +38,7 @@ jobs:
         working-directory: ${{ inputs.directory }}
         env:
           NODE_AUTH_TOKEN: ${{ secrets.npmToken }}
-      - uses: slackapi/slack-github-action@v1.24.0
+      - uses: slackapi/slack-github-action@v1
         with:
           channel-id: ${{ vars.PUBLISHED_SLACK_CHANNEL_ID }}
           # For posting a simple plain text message
