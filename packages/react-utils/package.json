@@ -9,7 +9,7 @@
     "build:full": "cd ../utils && pnpm build && cd ../react-utils && pnpm build",
     "build": "tsc",
     "lint": "biome check src",
-    "test": "node --enable-source-maps --trace-warnings --test dist",
+    "test": "c8 node --enable-source-maps --trace-warnings --test dist",
     "postversion": "bash ../../scripts/hooks/postversion.sh react-utils",
     "preversion": "pnpm build"
   },

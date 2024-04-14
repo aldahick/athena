@@ -1,33 +1,63 @@
 import assert from "node:assert";
 import { promises as fs } from "node:fs";
 import path from "node:path";
-import { before, describe, it } from "node:test";
+import { before, beforeEach, describe, it } from "node:test";
 
 import { getModuleDir } from "@athenajs/utils";
+import { addHtmlConfigAttributes } from "./config.js";
 
-import { addHtmlConfigAttributes } from "./config-node.js";
-
-describe("config", () => {
+describe("config-node", () => {
   describe("addHtmlConfigAttributes", () => {
-    let testDir: string;
+    const testDir = path.resolve(getModuleDir(import.meta), "../test/config");
+    const inputEnvPath = path.join(testDir, ".env.example");
+    const inputHtmlPath = path.join(testDir, "index.html");
+    const outputHtmlPath = path.join(testDir, "index-output.html");
+
     before(async () => {
-      testDir = path.resolve(getModuleDir(import.meta), "../test/config");
+      process.env.VAR_1 = "test";
     });
 
-    it("should populate the body tag with env name attributes", async () => {
-      process.env.VAR_1 = "test";
-      const outputHtmlPath = path.join(testDir, "index-output.html");
-      await addHtmlConfigAttributes(
-        path.join(testDir, "index.html"),
-        path.join(testDir, ".env.example"),
-        outputHtmlPath,
-      );
+    beforeEach(async () => {
+      await fs.rm(outputHtmlPath, { force: true });
+    });
+
+    const validateAttributesFile = async () => {
       const expected = await fs.readFile(
         path.join(testDir, "index-expected.html"),
         "utf8",
       );
       const actual = await fs.readFile(outputHtmlPath, "utf8");
       assert.strictEqual(actual, expected);
+    };
+
+    it("should pass command-line arguments if invoked directly", async () => {
+      const originalArgs = [...process.argv];
+      const scriptPath = path.resolve(
+        getModuleDir(import.meta),
+        "config-node.js",
+      );
+      process.argv.splice(1, process.argv.length - 1);
+      process.argv.push(
+        scriptPath,
+        inputHtmlPath,
+        inputEnvPath,
+        outputHtmlPath,
+      );
+      try {
+        await import("./config-node.js");
+        await validateAttributesFile();
+      } finally {
+        process.argv = originalArgs;
+      }
+    });
+
+    it("should populate the body tag with env name attributes", async () => {
+      await addHtmlConfigAttributes(
+        inputHtmlPath,
+        inputEnvPath,
+        outputHtmlPath,
+      );
+      await validateAttributesFile();
     });
   });
 });
