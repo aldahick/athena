@@ -33,7 +33,7 @@
     ]
   },
   "dependencies": {
-    "@apollo/server": "^4.9.5",
+    "@apollo/server": "^4.10.2",
     "@as-integrations/fastify": "^2.1.1",
     "@athenajs/utils": "workspace:^",
     "@fastify/cors": "^8.4.2",
