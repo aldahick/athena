@@ -16,10 +16,10 @@
   },
   "devDependencies": {
     "@biomejs/biome": "^1.6.4",
-    "@types/node": "^20.10.4",
-    "c8": "^8.0.1",
-    "tsc-watch": "^6.0.4",
-    "typescript": "^5.3.3"
+    "@types/node": "^20.12.7",
+    "c8": "^9.1.0",
+    "tsc-watch": "^6.2.0",
+    "typescript": "^5.4.5"
   },
   "pnpm": {
     "overrides": {
