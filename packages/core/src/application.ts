@@ -1,4 +1,4 @@
-import process from "process";
+import process from "node:process";
 
 import { container, injectable } from "./container.js";
 import { GraphQLServer } from "./graphql/index.js";

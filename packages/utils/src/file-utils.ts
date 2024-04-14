@@ -1,7 +1,7 @@
-import { randomBytes } from "crypto";
-import { promises as fs } from "fs";
-import { tmpdir } from "os";
-import { join, resolve } from "path";
+import { randomBytes } from "node:crypto";
+import { promises as fs } from "node:fs";
+import { tmpdir } from "node:os";
+import { join, resolve } from "node:path";
 
 import { chunk } from "./array-utils.js";
 

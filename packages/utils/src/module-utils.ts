@@ -1,5 +1,5 @@
-import { dirname } from "path";
-import { fileURLToPath, pathToFileURL } from "url";
+import { dirname } from "node:path";
+import { fileURLToPath, pathToFileURL } from "node:url";
 
 export const getModuleDir = (importMeta: ImportMeta): string =>
   dirname(fileURLToPath(importMeta.url));

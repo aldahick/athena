@@ -3,8 +3,8 @@ import "reflect-metadata";
 
 import { beforeEach, describe, it } from "node:test";
 
-import assert from "assert";
-import path from "path";
+import assert from "node:assert";
+import path from "node:path";
 import { getModuleDir } from "@athenajs/utils";
 import { FormattedExecutionResult, GraphQLScalarType } from "graphql";
 

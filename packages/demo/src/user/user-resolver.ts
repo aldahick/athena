@@ -1,4 +1,4 @@
-import crypto from "crypto";
+import crypto from "node:crypto";
 import { resolveField, resolveQuery, resolver } from "@athenajs/core";
 
 import { IUser } from "../graphql.js";

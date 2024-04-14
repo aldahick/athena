@@ -1,4 +1,4 @@
-import { IncomingHttpHeaders } from "http";
+import { IncomingHttpHeaders } from "node:http";
 
 import { container, makeRegistryDecorator } from "../container.js";
 

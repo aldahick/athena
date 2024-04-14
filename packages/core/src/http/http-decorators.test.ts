@@ -2,7 +2,7 @@ import "reflect-metadata";
 
 import { beforeEach, describe, it } from "node:test";
 
-import assert from "assert";
+import assert from "node:assert";
 
 import { container } from "../container.js";
 import { HttpMethod, controller, httpRoute } from "./http-decorators.js";
