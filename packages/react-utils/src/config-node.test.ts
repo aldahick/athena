@@ -2,7 +2,6 @@ import assert from "node:assert";
 import { promises as fs } from "node:fs";
 import path from "node:path";
 import { before, beforeEach, describe, it } from "node:test";
-
 import { getModuleDir } from "@athenajs/utils";
 import { addHtmlConfigAttributes } from "./config.js";
 
@@ -13,7 +12,7 @@ describe("config-node", () => {
     const inputHtmlPath = path.join(testDir, "index.html");
     const outputHtmlPath = path.join(testDir, "index-output.html");
 
-    before(async () => {
+    before(() => {
       process.env.VAR_1 = "test";
     });
 

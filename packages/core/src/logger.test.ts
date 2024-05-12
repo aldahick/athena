@@ -1,8 +1,6 @@
 import "reflect-metadata";
-
 import assert from "node:assert";
 import { Mock, after, afterEach, before, describe, it, mock } from "node:test";
-
 import { BaseConfig } from "./config.js";
 import { Logger } from "./logger.js";
 

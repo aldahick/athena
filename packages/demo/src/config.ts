@@ -1,5 +1,4 @@
 import { resolve } from "node:path";
-
 import { BaseConfig, config } from "@athenajs/core";
 import { getModuleDir } from "@athenajs/utils";
 

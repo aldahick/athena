@@ -1,8 +1,6 @@
 import assert from "node:assert";
 import { describe, it } from "node:test";
-
 import gql, { FieldNode, GraphQLResolveInfo } from "graphql";
-
 import { extractOperationNames, extractSelectedFields } from "./index.js";
 
 describe("graphql-utils", () => {

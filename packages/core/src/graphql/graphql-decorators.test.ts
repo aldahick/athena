@@ -1,10 +1,7 @@
 import "reflect-metadata";
-
 import assert from "node:assert";
 import { beforeEach, describe, it } from "node:test";
-
 import { GraphQLScalarType } from "graphql";
-
 import { container } from "../container.js";
 import {
   ResolverInfo,
@@ -99,8 +96,8 @@ describe("graphql-decorators", () => {
       @resolver()
       class UserResolver {
         @resolveField("User.profile", true)
-        async batchProfile() {
-          return;
+        batchProfile(): Promise<void> {
+          return Promise.resolve();
         }
       }
       const actual = getResolverInfos(new UserResolver());

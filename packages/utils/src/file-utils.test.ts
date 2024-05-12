@@ -2,7 +2,6 @@ import assert from "node:assert";
 import { tmpdir } from "node:os";
 import { resolve } from "node:path";
 import { describe, it } from "node:test";
-
 import { recursiveReaddir, tempFile } from "./file-utils.js";
 import { getModuleDir } from "./module-utils.js";
 

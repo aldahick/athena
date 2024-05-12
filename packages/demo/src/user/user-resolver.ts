@@ -1,13 +1,12 @@
 import crypto from "node:crypto";
 import { resolveField, resolveQuery, resolver } from "@athenajs/core";
-
 import { IUser } from "../graphql.js";
 
 @resolver()
 export class UserResolver {
   @resolveQuery()
-  async users(): Promise<Partial<IUser>[]> {
-    return [{ username: "foo" }, { username: "bar" }];
+  users(): Promise<Partial<IUser>[]> {
+    return Promise.resolve([{ username: "foo" }, { username: "bar" }]);
   }
 
   @resolveField("User.id", true)

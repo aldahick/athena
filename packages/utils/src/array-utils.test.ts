@@ -1,6 +1,5 @@
 import assert from "node:assert";
 import { describe, it } from "node:test";
-
 import { chunk, compact, sortBy } from "./array-utils.js";
 
 describe("array-utils", () => {

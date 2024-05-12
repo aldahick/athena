@@ -1,11 +1,10 @@
 import assert from "node:assert";
 import { describe, it } from "node:test";
-
 import { UserResolver } from "./user-resolver.js";
 
 describe("user-resolver", () => {
   const userResolver = new UserResolver();
-  describe("#users", async () => {
+  describe("#users", () => {
     it("should return some users with usernames", async () => {
       const expected = [{ username: "foo" }, { username: "bar" }];
       const actual = await userResolver.users();

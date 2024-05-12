@@ -1,5 +1,4 @@
 import { promises as fs } from "node:fs";
-
 import { ApolloServer, ApolloServerOptions, BaseContext } from "@apollo/server";
 import fastifyApollo, {
   fastifyApolloDrainPlugin,
@@ -9,7 +8,6 @@ import { FastifyInstance } from "fastify";
 import { GraphQLFieldResolver } from "graphql";
 import { createBatchResolver } from "graphql-resolve-batch";
 import { injectable } from "tsyringe";
-
 import { BaseConfig, injectConfig } from "../config.js";
 import { Logger } from "../logger.js";
 import { ContextRequest, resolveContextGenerator } from "./graphql-context.js";
@@ -101,10 +99,11 @@ export class GraphQLServer<Context extends BaseContext = BaseContext> {
         let message = "unknown error";
         if (err instanceof Error) {
           message = err.stack || err.message;
-        } else {
-          if (err && (typeof err === "object" || typeof err === "string")) {
-            message = err?.toString();
-          }
+        } else if (
+          err &&
+          (typeof err === "object" || typeof err === "string")
+        ) {
+          message = err?.toString();
         }
         this.logger.error(
           `an error occurred in GraphQL resolver ${info.typeName}: ${message}`,

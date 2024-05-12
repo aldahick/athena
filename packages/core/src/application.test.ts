@@ -1,13 +1,9 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import "reflect-metadata";
-
-import { beforeEach, describe, it } from "node:test";
-
 import assert from "node:assert";
 import path from "node:path";
+import { beforeEach, describe, it } from "node:test";
 import { getModuleDir } from "@athenajs/utils";
-import { FormattedExecutionResult, GraphQLScalarType } from "graphql";
-
+import { GraphQLScalarType } from "graphql";
 import { createApp } from "./application.js";
 import { BaseConfig, config } from "./config.js";
 import { resolveConfig } from "./config.js";
@@ -27,19 +23,7 @@ import {
   resolveScalar,
   resolver,
 } from "./index.js";
-
-export const fetchTestGraphql = async (query: string) => {
-  const config = resolveConfig();
-  const baseUrl = `http://localhost:${config.http.port}/`;
-  const res: FormattedExecutionResult = await fetch(`${baseUrl}graphql`, {
-    method: "POST",
-    body: JSON.stringify({ query }),
-    headers: {
-      "Content-Type": "application/json",
-    },
-  }).then((r) => r.json());
-  return [res, baseUrl] as const;
-};
+import { fetchTestGraphql } from "./test-util.js";
 
 describe("application", () => {
   describe("#createApp", async () => {
@@ -133,8 +117,8 @@ describe("application", () => {
       }
       @contextGenerator()
       class TestContextGenerator implements ContextGenerator {
-        async generateContext(req: ContextRequest): Promise<object> {
-          return { test: "context" };
+        generateContext(req: ContextRequest): Promise<object> {
+          return Promise.resolve({ test: "context" });
         }
       }
       initConfig();
@@ -155,12 +139,12 @@ describe("application", () => {
       @controller()
       class HelloController {
         @get("/hello")
-        async hello(): Promise<{ hello: string }> {
-          return { hello: "hello, world!" };
+        hello(): Promise<{ hello: string }> {
+          return Promise.resolve({ hello: "hello, world!" });
         }
         @post("/hello")
-        async postHello(): Promise<void> {
-          return;
+        postHello(): Promise<void> {
+          return Promise.resolve();
         }
       }
       initConfig();
@@ -183,8 +167,8 @@ describe("application", () => {
       @resolver()
       class DateResolver {
         @resolveQuery()
-        async today(): Promise<Date> {
-          return today;
+        today(): Promise<Date> {
+          return Promise.resolve(today);
         }
 
         @resolveScalar("Date")

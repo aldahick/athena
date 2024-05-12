@@ -1,5 +1,4 @@
 import { registry, singleton } from "tsyringe";
-
 export { singleton as injectable };
 export { container, inject, injectAll } from "tsyringe";
 

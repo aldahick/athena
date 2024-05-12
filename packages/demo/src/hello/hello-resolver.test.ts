@@ -1,6 +1,5 @@
 import assert from "node:assert";
 import { describe, it } from "node:test";
-
 import { HelloResolver } from "./hello-resolver.js";
 
 describe("hello-resolver", () => {

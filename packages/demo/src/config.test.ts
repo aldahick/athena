@@ -1,8 +1,6 @@
 import assert from "node:assert";
 import { describe, it } from "node:test";
-
 import { recursiveReaddir } from "@athenajs/utils";
-
 import { Config } from "./config.js";
 
 describe("config", () => {

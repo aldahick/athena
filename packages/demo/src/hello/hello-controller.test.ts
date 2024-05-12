@@ -1,8 +1,6 @@
-import { describe, it } from "node:test";
-
 import assert from "node:assert";
-
-import { withTestApp } from "../main.test.js";
+import { describe, it } from "node:test";
+import { withTestApp } from "../test-util.js";
 import { HelloController } from "./hello-controller.js";
 
 describe("hello-controller", () => {

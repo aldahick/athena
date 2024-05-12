@@ -15,8 +15,8 @@
     "node": "^20.10"
   },
   "devDependencies": {
-    "@biomejs/biome": "^1.6.4",
-    "@types/node": "^20.12.7",
+    "@biomejs/biome": "^1.7.3",
+    "@types/node": "^20.12.11",
     "c8": "^9.1.0",
     "tsc-watch": "^6.2.0",
     "typescript": "^5.4.5"

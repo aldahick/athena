@@ -1,6 +1,5 @@
 import assert from "node:assert";
 import { describe, it } from "node:test";
-
 import { assign, groupBy, omit } from "./object-utils.js";
 
 describe("object-utils", () => {

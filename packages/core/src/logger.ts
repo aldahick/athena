@@ -1,6 +1,5 @@
 import { injectable } from "tsyringe";
 import winston from "winston";
-
 import { BaseConfig, injectConfig } from "./config.js";
 
 const WinstonLogger = winston.createLogger as unknown as typeof winston.Logger;

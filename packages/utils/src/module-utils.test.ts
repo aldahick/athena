@@ -2,7 +2,6 @@ import assert from "node:assert";
 import { resolve } from "node:path";
 import process from "node:process";
 import { describe, it } from "node:test";
-
 import { getModuleDir, isModuleMain } from "./module-utils.js";
 
 describe("module-utils", () => {

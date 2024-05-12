@@ -1,7 +1,5 @@
 import "dotenv/config.js";
-
 import process from "node:process";
-
 import { container, inject, makeRegistryDecorator } from "./container.js";
 import { LoggerOptions } from "./logger.js";
 
