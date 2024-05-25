@@ -5,6 +5,7 @@
   "type": "module",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
+  "files": ["dist"],
   "scripts": {
     "build:full": "cd ../utils && pnpm build && cd ../core && pnpm build",
     "build": "tsc",

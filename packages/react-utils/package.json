@@ -5,6 +5,7 @@
   "license": "MIT",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
+  "files": ["dist", "scripts"],
   "scripts": {
     "build:full": "cd ../utils && pnpm build && cd ../react-utils && pnpm build",
     "build": "tsc",
