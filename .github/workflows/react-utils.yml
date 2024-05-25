@@ -1,5 +1,5 @@
 name: React Utils
-run-name: ${{ github.ref_type == 'tag' && 'Publish' || 'Build' }} ${{ github.ref_name || 'react-utils' }}
+run-name: ${{ github.ref_type == 'tag' && 'Publish' || 'Build' }} ${{ github.ref_type == 'tag' && github.ref_name || 'react-utils' }}
 on:
   push:
     branches: '*'
