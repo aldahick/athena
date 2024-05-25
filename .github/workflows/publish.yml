@@ -1,24 +1,20 @@
-name: publish-package
-permissions:
-  id-token: write
+name: Publish
 on:
   workflow_call:
     inputs:
       build-script:
         required: false
         type: string
-        default: build
+        default: build:full
       directory:
         required: true
         type: string
-      package:
-        required: true
-        type: string
     secrets:
-      npmToken:
+      NPM_TOKEN:
         required: true
-      slackToken:
+      SLACK_TOKEN:
         required: true
+
 jobs:
   publish:
     runs-on: ubuntu-latest
@@ -37,11 +33,16 @@ jobs:
       - run: npm publish --provenance --no-git-checks
         working-directory: ${{ inputs.directory }}
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.npmToken }}
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+      - id: package-id
+        working-directory: ${{ inputs.directory }}
+        run: |
+          packageId=$(cat package.json | jq -r '.version')
+          echo "package-id=$packageId" >> "$GITHUB_OUTPUT"
       - uses: slackapi/slack-github-action@v1
         with:
           channel-id: ${{ vars.PUBLISHED_SLACK_CHANNEL_ID }}
           # For posting a simple plain text message
-          slack-message: "Published ${{ inputs.package }}@${{ github.ref_name }} to NPM: https://npmjs.com/package/${{ inputs.package }}"
+          slack-message: "Published ${{ steps.package-id.outputs.packageId }}@${{ github.ref_name }} to NPM: https://npmjs.com/package/${{ steps.package-id.outputs.packageId }}"
         env:
-          SLACK_BOT_TOKEN: ${{ secrets.slackToken }}
+          SLACK_BOT_TOKEN: ${{ secrets.SLACK_TOKEN }}

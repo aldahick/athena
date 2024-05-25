@@ -1,0 +1,20 @@
+name: Core
+run-name: ${{ github.ref_type == 'tag' && 'Publish' || 'Build' }} core
+on:
+  push:
+    branches: '*'
+    tags: core-*
+    paths: packages/core/**
+
+jobs:
+  build:
+    uses: ./.github/workflows/build.yml
+    with:
+      directory: packages/core
+
+  publish:
+    if: ${{ github.ref_type == 'tag' }}
+    uses: ./.github/workflows/publish.yml
+    secrets: inherit
+    with:
+      directory: packages/core

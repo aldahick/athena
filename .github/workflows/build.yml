@@ -1,14 +1,15 @@
-name: build-package
+name: Build
 on:
   workflow_call:
     inputs:
       build-script:
         required: false
         type: string
-        default: build
+        default: build:full
       directory:
         required: true
         type: string
+
 jobs:
   build:
     runs-on: ubuntu-latest

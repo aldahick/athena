@@ -1,0 +1,12 @@
+name: Demo
+run-name: Build demo
+on:
+  push:
+    branches: '*'
+    paths: packages/demo/**
+
+jobs:
+  build:
+    uses: ./.github/workflows/build.yml
+    with:
+      directory: packages/demo

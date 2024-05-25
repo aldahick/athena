@@ -1,0 +1,22 @@
+name: Utils
+run-name: ${{ github.ref_type == 'tag' && 'Publish' || 'Build' }} utils
+on:
+  push:
+    branches: '*'
+    tags: utils-*
+    paths: packages/utils/**
+
+jobs:
+  build:
+    uses: ./.github/workflows/build.yml
+    with:
+      directory: packages/utils
+      build-script: build
+
+  publish:
+    if: ${{ github.ref_type == 'tag' }}
+    uses: ./.github/workflows/publish.yml
+    secrets: inherit
+    with:
+      directory: packages/utils
+      build-script: build
