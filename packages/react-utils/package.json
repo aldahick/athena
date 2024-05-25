@@ -7,7 +7,8 @@
   "types": "dist/index.d.ts",
   "files": [
     "dist",
-    "scripts"
+    "scripts",
+    "Dockerfile"
   ],
   "scripts": {
     "build:full": "cd ../utils && pnpm build && cd ../react-utils && pnpm build",
