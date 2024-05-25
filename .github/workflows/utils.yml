@@ -1,5 +1,5 @@
 name: Utils
-run-name: ${{ github.ref_type == 'tag' && 'Publish' || 'Build' }} utils
+run-name: ${{ github.ref_type == 'tag' && 'Publish' || 'Build' }} ${{ github.ref_name || 'utils' }}
 on:
   push:
     branches: '*'

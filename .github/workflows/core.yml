@@ -1,5 +1,5 @@
 name: Core
-run-name: ${{ github.ref_type == 'tag' && 'Publish' || 'Build' }} core
+run-name: ${{ github.ref_type == 'tag' && 'Publish' || 'Build' }} ${{ github.ref_name || 'core' }}
 on:
   push:
     branches: '*'
