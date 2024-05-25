@@ -16,6 +16,7 @@ jobs:
 
   publish:
     if: ${{ github.ref_type == 'tag' }}
+    needs: build
     uses: ./.github/workflows/publish.yml
     secrets: inherit
     with:
