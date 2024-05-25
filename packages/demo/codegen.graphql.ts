@@ -13,6 +13,18 @@ const config: CodegenConfig = {
     "src/graphql.ts": {
       plugins: ["typescript", "typescript-operations"],
     },
+    "src/graphql-sdk.ts": {
+      documents: "src/**/*.sdk.gql",
+      plugins: [
+        "typescript",
+        "typescript-operations",
+        "typescript-graphql-request",
+      ],
+      config: {
+        noExport: true,
+        gqlImport: "graphql-request#gql",
+      },
+    },
   },
 };
 export default config;

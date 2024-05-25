@@ -1,4 +1,4 @@
-import { recursiveReaddir } from "@athenajs/utils";
+import fs from "node:fs/promises";
 import { describe, expect, it } from "vitest";
 import { Config } from "./config.js";
 
@@ -9,7 +9,9 @@ describe("Config", () => {
     it("should point to a dir containing graphql files", async () => {
       const files = (
         await Promise.all(
-          config.graphqlSchemaDirs.map((dir) => recursiveReaddir(dir)),
+          config.graphqlSchemaDirs.map((dir) =>
+            fs.readdir(dir, { recursive: true }),
+          ),
         )
       ).flat();
       expect(files.length > 0).toEqual(true);

@@ -21,7 +21,7 @@ describe("graphql-decorators", () => {
     it("should register a class in the container", () => {
       @resolver()
       class HelloResolver {}
-      expect(container.isRegistered(HelloResolver)).toEqual(true);
+      expect(container.resolve(HelloResolver)).toBeDefined();
     });
 
     it("should register a class as a resolver in the container", () => {

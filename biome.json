@@ -56,6 +56,18 @@
           }
         }
       }
+    },
+    {
+      "include": [
+        "graphql*sdk.ts"
+      ],
+      "linter": {
+        "rules": {
+          "suspicious": {
+            "noExplicitAny": "off"
+          }
+        }
+      }
     }
   ]
 }

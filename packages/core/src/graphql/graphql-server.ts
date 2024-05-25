@@ -1,9 +1,10 @@
 import { promises as fs } from "node:fs";
+import path from "node:path";
 import { ApolloServer, ApolloServerOptions, BaseContext } from "@apollo/server";
 import fastifyApollo, {
   fastifyApolloDrainPlugin,
 } from "@as-integrations/fastify";
-import { assign, recursiveReaddir } from "@athenajs/utils";
+import { assignDeep } from "@athenajs/utils";
 import { FastifyInstance } from "fastify";
 import { GraphQLFieldResolver } from "graphql";
 import { createBatchResolver } from "graphql-resolve-batch";
@@ -66,12 +67,15 @@ export class GraphQLServer<Context extends BaseContext = BaseContext> {
   async getTypeDefs(): Promise<TypeDefs> {
     const dirs = this.config.graphqlSchemaDirs.join(", ");
     this.logger.debug(`loading graphql type definitions from ${dirs}`);
-    const schemaPaths = await Promise.all(
-      this.config.graphqlSchemaDirs.map((d) => recursiveReaddir(d)),
+    const schemaFiles = await Promise.all(
+      this.config.graphqlSchemaDirs.map(async (d) =>
+        fs.readdir(d, { recursive: true, withFileTypes: true }),
+      ),
     );
-    return Promise.all(
-      schemaPaths.flat().map((path) => fs.readFile(path, "utf-8")),
-    );
+    const schemaPaths = schemaFiles
+      .flat()
+      .map((file) => path.resolve(file.parentPath, file.name));
+    return Promise.all(schemaPaths.map((path) => fs.readFile(path, "utf-8")));
   }
 
   getResolvers(): Resolvers {
@@ -79,7 +83,7 @@ export class GraphQLServer<Context extends BaseContext = BaseContext> {
     for (const instance of getResolverInstances()) {
       for (const info of getResolverInfos(instance)) {
         const resolver = this.makeResolver(instance, info);
-        assign(resolvers, info.typeName, resolver);
+        assignDeep(resolvers, info.typeName, resolver);
       }
     }
     return resolvers;
