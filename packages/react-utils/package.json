@@ -1,11 +1,14 @@
 {
   "name": "@athenajs/react-utils",
-  "version": "0.2.5",
+  "version": "0.2.6",
   "type": "module",
   "license": "MIT",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
-  "files": ["dist", "scripts"],
+  "files": [
+    "dist",
+    "scripts"
+  ],
   "scripts": {
     "build:full": "cd ../utils && pnpm build && cd ../react-utils && pnpm build",
     "build": "tsc",
