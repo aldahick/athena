@@ -1,10 +1,10 @@
 # athena
 
 ![NPM version badge](https://img.shields.io/npm/v/@athenajs/core)
-![Core workflow status badge](https://github.com/aldahick/athena/actions/workflows/build-core.yml/badge.svg)
-![Demo workflow status badge](https://github.com/aldahick/athena/actions/workflows/build-demo.yml/badge.svg)
-![React Utils workflow status badge](https://github.com/aldahick/athena/actions/workflows/build-react-utils.yml/badge.svg)
-![Utils workflow status badge](https://github.com/aldahick/athena/actions/workflows/build-utils.yml/badge.svg)
+![Core workflow status badge](https://github.com/aldahick/athena/actions/workflows/core.yml/badge.svg?branch=main)
+![Demo workflow status badge](https://github.com/aldahick/athena/actions/workflows/demo.yml/badge.svg?branch=main)
+![React Utils workflow status badge](https://github.com/aldahick/athena/actions/workflows/react-utils.yml/badge.svg?branch=main)
+![Utils workflow status badge](https://github.com/aldahick/athena/actions/workflows/utils.yml/badge.svg?branch=main)
 
 A modular backend framework atop Apollo and Fastify. Simpler and more opinionated than its inspiration, [Nest](https://nestjs.org).
 
