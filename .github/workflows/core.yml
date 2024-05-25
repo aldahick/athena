@@ -4,7 +4,9 @@ on:
   push:
     branches: '*'
     tags: core-*
-    paths: packages/core/**
+    paths:
+      - .github/workflows/*
+      - packages/core/**
 
 jobs:
   build:

@@ -3,7 +3,9 @@ run-name: Build demo
 on:
   push:
     branches: '*'
-    paths: packages/demo/**
+    paths:
+      - .github/workflows/*
+      - packages/demo/**
 
 jobs:
   build:
