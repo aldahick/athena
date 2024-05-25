@@ -1,10 +1,10 @@
-name: build-demo
+name: Build demo
 on:
   push:
     paths:
       - packages/demo/**
 jobs:
-  build-demo-package:
+  build:
     uses: ./.github/workflows/build-package.yml
     with:
       build-script: build:full

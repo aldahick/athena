@@ -13,11 +13,9 @@ export class Logger extends WinstonLogger {
   constructor(@injectConfig() config: BaseConfig) {
     super({
       transports: [new winston.transports.Console()],
-      ...(config.log?.pretty
-        ? {
-            format: winston.format.simple(),
-          }
-        : {}),
+      format: config.log?.pretty
+        ? winston.format.simple()
+        : winston.format.json(),
       ...config.log,
     });
   }

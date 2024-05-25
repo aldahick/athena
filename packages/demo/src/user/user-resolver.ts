@@ -5,7 +5,7 @@ import { IUser } from "../graphql.js";
 @resolver()
 export class UserResolver {
   @resolveQuery()
-  users(): Promise<Partial<IUser>[]> {
+  users() {
     return Promise.resolve([{ username: "foo" }, { username: "bar" }]);
   }
 

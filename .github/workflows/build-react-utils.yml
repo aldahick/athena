@@ -1,10 +1,10 @@
-name: build-react-utils
+name: Build react-utils
 on:
   push:
     paths:
       - packages/react-utils/**
 jobs:
-  build-react-utils-package:
+  build:
     uses: ./.github/workflows/build-package.yml
     with:
       build-script: build:full

@@ -1,6 +1,5 @@
 import "reflect-metadata";
-import assert from "node:assert";
-import { beforeEach, describe, it } from "node:test";
+import { beforeEach, describe, expect, it } from "vitest";
 import { container } from "../container.js";
 import { HttpMethod, controller, httpRoute } from "./http-decorators.js";
 
@@ -21,13 +20,13 @@ describe("http-decorators", () => {
       if (!descriptor) {
         throw new Error("somehow missing descriptor");
       }
-      assert.throws(() =>
+      expect(() =>
         httpRoute(HttpMethod.GET, "/hello")(
           helloController,
           "hello",
           descriptor,
         ),
-      );
+      ).throws();
     });
   });
 });

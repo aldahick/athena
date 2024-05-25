@@ -1,19 +1,19 @@
-import assert from "node:assert";
-import { describe, it } from "node:test";
+import { describe, expect, it } from "vitest";
 import { withTestApp } from "../test-util.js";
-import { HelloController } from "./hello-controller.js";
 
-describe("hello-controller", () => {
-  const helloController = new HelloController();
-  describe("#hello", () => {
+describe("HelloController", () => {
+  describe("hello()", () => {
     it("should return a polite, understated greeting", async () => {
       const expected = { hello: "Hello, world!" };
-      const actual = await helloController.hello();
-      assert.deepStrictEqual(actual, expected);
+      await withTestApp(async (url) => {
+        const res = await fetch(`${url}/hello`);
+        expect(res.status).toEqual(200);
+        expect(await res.json()).toEqual(expected);
+      });
     });
   });
 
-  describe("#helloFile", () => {
+  describe("helloFile()", () => {
     it("should take a file and respond briskly", async () => {
       const body = new FormData();
       body.set("file", new Blob(["Hello, world!"]));
@@ -22,7 +22,7 @@ describe("hello-controller", () => {
           method: "POST",
           body,
         });
-        assert.strictEqual(res.status, 200);
+        expect(res.status).toEqual(200);
       });
     });
   });

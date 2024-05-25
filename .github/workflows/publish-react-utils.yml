@@ -1,10 +1,11 @@
-name: publish-react-utils
+name: Publish react-utils
+run-name: Publish ${{ github.ref_name }}
 on:
   push:
     tags:
       - react-utils-v**
 jobs:
-  publish-react-utils-package:
+  publish:
     uses: ./.github/workflows/publish-package.yml
     with:
       build-script: build:full

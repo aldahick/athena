@@ -1,12 +1,11 @@
-import assert from "node:assert";
-import { afterEach, beforeEach, describe, it, mock } from "node:test";
-import { getConfigFromAttributes } from "./config.js";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { getConfigFromAttributes } from "./index.js";
 
 describe("config", () => {
-  describe("getConfigFromAttributes", () => {
+  describe("getConfigFromAttributes()", () => {
     const mockBody = {
-      getAttributeNames: mock.fn(),
-      getAttribute: mock.fn(),
+      getAttributeNames: vi.fn(),
+      getAttribute: vi.fn(),
     };
     let originalDocument: Document;
 
@@ -19,7 +18,7 @@ describe("config", () => {
 
     afterEach(() => {
       global.document = originalDocument;
-      mock.reset();
+      vi.resetAllMocks();
     });
 
     it("should parse config from body attributes and environment variables", async () => {
@@ -33,10 +32,8 @@ describe("config", () => {
       process.env.VITE_var4 = "value4";
       process.env.var5 = "value5";
 
-      mockBody.getAttributeNames.mock.mockImplementation(() =>
-        Object.keys(attributes),
-      );
-      mockBody.getAttribute.mock.mockImplementation(
+      mockBody.getAttributeNames.mockReturnValue(Object.keys(attributes));
+      mockBody.getAttribute.mockImplementation(
         (key: keyof typeof attributes) => attributes[key],
       );
 
@@ -50,7 +47,7 @@ describe("config", () => {
       };
       const actual = getConfigFromAttributes(process.env);
       for (const [key, value] of Object.entries(expected)) {
-        assert.strictEqual(actual[key], value);
+        expect(actual[key]).toEqual(value);
       }
     });
   });

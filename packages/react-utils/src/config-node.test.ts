@@ -1,18 +1,17 @@
-import assert from "node:assert";
 import { promises as fs } from "node:fs";
 import path from "node:path";
-import { before, beforeEach, describe, it } from "node:test";
 import { getModuleDir } from "@athenajs/utils";
+import { beforeAll, beforeEach, describe, expect, it } from "vitest";
 import { addHtmlConfigAttributes } from "./config.js";
 
 describe("config-node", () => {
-  describe("addHtmlConfigAttributes", () => {
+  describe("addHtmlConfigAttributes()", () => {
     const testDir = path.resolve(getModuleDir(import.meta), "../test/config");
     const inputEnvPath = path.join(testDir, ".env.example");
     const inputHtmlPath = path.join(testDir, "index.html");
     const outputHtmlPath = path.join(testDir, "index-output.html");
 
-    before(() => {
+    beforeAll(() => {
       process.env.VAR_1 = "test";
     });
 
@@ -26,7 +25,7 @@ describe("config-node", () => {
         "utf8",
       );
       const actual = await fs.readFile(outputHtmlPath, "utf8");
-      assert.strictEqual(actual, expected);
+      expect(actual).toEqual(expected);
     };
 
     it("should pass command-line arguments if invoked directly", async () => {

@@ -11,26 +11,13 @@
     "lint": "biome check src",
     "postversion": "bash ../../scripts/hooks/postversion.sh core",
     "preversion": "pnpm build",
-    "test": "c8 node --enable-source-maps --trace-warnings --test dist"
+    "test": "vitest run"
   },
   "engines": {
     "node": "^20.10"
   },
   "repository": {
     "url": "git+https://github.com/aldahick/athena"
-  },
-  "c8": {
-    "100": true,
-    "all": true,
-    "exclude-after-remap": true,
-    "exclude": [
-      "src/graphql.ts",
-      "src/index.ts",
-      "src/*/index.ts",
-      "src/*.test.ts",
-      "src/*/*.test.ts",
-      "dist/*"
-    ]
   },
   "dependencies": {
     "@apollo/server": "^4.10.4",

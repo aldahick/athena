@@ -3,7 +3,7 @@ import { HttpRequest, controller, get, post } from "@athenajs/core";
 @controller()
 export class HelloController {
   @get("/hello")
-  hello(): Promise<{ hello: string }> {
+  hello() {
     return Promise.resolve({ hello: "Hello, world!" });
   }
 

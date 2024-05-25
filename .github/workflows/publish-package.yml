@@ -20,7 +20,7 @@ on:
       slackToken:
         required: true
 jobs:
-  publish-package:
+  publish:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4

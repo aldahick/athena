@@ -12,7 +12,7 @@ export const main = async (): Promise<Application> => {
   return app;
 };
 
-/* c8 ignore next 3 */
+/* v8 ignore next 3 */
 if (isModuleMain(import.meta)) {
   await main();
 }

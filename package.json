@@ -16,15 +16,12 @@
   },
   "devDependencies": {
     "@biomejs/biome": "^1.7.3",
+    "@swc/core": "^1.5.7",
     "@types/node": "^20.12.11",
-    "c8": "^9.1.0",
+    "@vitest/coverage-v8": "^1.6.0",
     "tsc-watch": "^6.2.0",
-    "typescript": "^5.4.5"
-  },
-  "pnpm": {
-    "overrides": {
-      "express@<4.19.2": ">=4.19.2",
-      "jose@>=3.0.0 <=4.15.4": ">=4.15.5"
-    }
+    "typescript": "^5.4.5",
+    "unplugin-swc": "^1.4.5",
+    "vitest": "^1.6.0"
   }
 }

@@ -1,7 +1,6 @@
 import "reflect-metadata";
-import assert from "node:assert";
-import { beforeEach, describe, it } from "node:test";
 import { GraphQLScalarType } from "graphql";
+import { beforeEach, describe, expect, it } from "vitest";
 import { container } from "../container.js";
 import {
   ResolverInfo,
@@ -22,7 +21,7 @@ describe("graphql-decorators", () => {
     it("should register a class in the container", () => {
       @resolver()
       class HelloResolver {}
-      assert.strictEqual(container.isRegistered(HelloResolver), true);
+      expect(container.isRegistered(HelloResolver)).toEqual(true);
     });
 
     it("should register a class as a resolver in the container", () => {
@@ -32,7 +31,7 @@ describe("graphql-decorators", () => {
       const expected = [HelloResolver];
       const resolvers = container.resolveAll<object>(resolverToken);
       const actual = resolvers.map((r) => r.constructor);
-      assert.deepStrictEqual(actual, expected);
+      expect(actual).toEqual(expected);
     });
   });
 
@@ -51,7 +50,7 @@ describe("graphql-decorators", () => {
         }
       }
       const actual = getResolverInfos(new HelloResolver());
-      assert.deepStrictEqual(actual, expected);
+      expect(actual).toEqual(expected);
     });
 
     it("should register a field resolver with default name", () => {
@@ -66,7 +65,7 @@ describe("graphql-decorators", () => {
         }
       }
       const actual = getResolverInfos(new Query());
-      assert.deepStrictEqual(actual, expected);
+      expect(actual).toEqual(expected);
     });
 
     it("should throw when somehow decorating a non-function", () => {
@@ -82,7 +81,7 @@ describe("graphql-decorators", () => {
       if (!descriptor) {
         throw new Error("somehow missing descriptor");
       }
-      assert.throws(() => resolveField()(helloResolver, "hello", descriptor));
+      expect(() => resolveField()(helloResolver, "hello", descriptor)).throws();
     });
 
     it("should register a field resolver with batch enabled", () => {
@@ -101,7 +100,7 @@ describe("graphql-decorators", () => {
         }
       }
       const actual = getResolverInfos(new UserResolver());
-      assert.deepStrictEqual(actual, expected);
+      expect(actual).toEqual(expected);
     });
   });
 
@@ -120,7 +119,7 @@ describe("graphql-decorators", () => {
         }
       }
       const actual = getResolverInfos(new HelloResolver());
-      assert.deepStrictEqual(actual, expected);
+      expect(actual).toEqual(expected);
     });
 
     it("should register a query resolver with default name", () => {
@@ -135,7 +134,7 @@ describe("graphql-decorators", () => {
         }
       }
       const actual = getResolverInfos(new HelloResolver());
-      assert.deepStrictEqual(actual, expected);
+      expect(actual).toEqual(expected);
     });
   });
 
@@ -158,7 +157,7 @@ describe("graphql-decorators", () => {
         }
       }
       const actual = getResolverInfos(new HelloResolver());
-      assert.deepStrictEqual(actual, expected);
+      expect(actual).toEqual(expected);
     });
 
     it("should register a mutation resolver with default name", () => {
@@ -173,7 +172,7 @@ describe("graphql-decorators", () => {
         }
       }
       const actual = getResolverInfos(new HelloResolver());
-      assert.deepStrictEqual(actual, expected);
+      expect(actual).toEqual(expected);
     });
   });
 
@@ -192,7 +191,7 @@ describe("graphql-decorators", () => {
         });
       }
       const actual = getResolverInfos(new DateResolver());
-      assert.deepStrictEqual(actual, expected);
+      expect(actual).toEqual(expected);
     });
   });
 
@@ -207,7 +206,7 @@ describe("graphql-decorators", () => {
 
       const expected = [HelloResolver, GoodbyeResolver];
       const actual = getResolverInstances().map((r) => r.constructor);
-      assert.deepStrictEqual(actual, expected);
+      expect(actual).toEqual(expected);
     });
   });
 
@@ -249,7 +248,7 @@ describe("graphql-decorators", () => {
         },
       ] satisfies ResolverInfo[];
       const actual = getResolverInfos(new UserResolver());
-      assert.deepStrictEqual(actual, expected);
+      expect(actual).toEqual(expected);
     });
   });
 });

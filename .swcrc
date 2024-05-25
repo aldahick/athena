@@ -1,0 +1,7 @@
+{
+  "$schema": "https://swc.rs/schema.json",
+  "sourceMaps": "inline",
+  "module": {
+    "type": "es6"
+  }
+}

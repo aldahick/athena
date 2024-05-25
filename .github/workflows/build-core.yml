@@ -1,10 +1,10 @@
-name: build-core
+name: Build core
 on:
   push:
     paths:
       - packages/core/**
 jobs:
-  build-core-package:
+  build:
     uses: ./.github/workflows/build-package.yml
     with:
       build-script: build:full

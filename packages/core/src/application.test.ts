@@ -1,9 +1,8 @@
 import "reflect-metadata";
-import assert from "node:assert";
 import path from "node:path";
-import { beforeEach, describe, it } from "node:test";
 import { getModuleDir } from "@athenajs/utils";
 import { GraphQLScalarType } from "graphql";
+import { beforeEach, describe, expect, it } from "vitest";
 import { createApp } from "./application.js";
 import { BaseConfig, config } from "./config.js";
 import { resolveConfig } from "./config.js";
@@ -103,7 +102,7 @@ describe("application", () => {
       class HelloController {
         @get("/hello")
         hello(req: HttpRequest, res: HttpResponse, context: object): object {
-          assert.deepStrictEqual(context, { test: "context" });
+          expect(context).toEqual({ test: "context" });
           return { hello: "hello, world!" };
         }
       }
@@ -111,7 +110,7 @@ describe("application", () => {
       class HelloResolver {
         @resolveQuery()
         hello(root: never, args: never, context: object) {
-          assert.deepStrictEqual(context, { test: "context" });
+          expect(context).toEqual({ test: "context" });
           return "hello, world!";
         }
       }
@@ -126,10 +125,10 @@ describe("application", () => {
       await app.start();
       try {
         const [res, baseUrl] = await fetchTestGraphql("query { hello }");
-        assert.deepStrictEqual(res, { data: { hello: "hello, world!" } });
+        expect(res).toEqual({ data: { hello: "hello, world!" } });
 
         const restRes = await fetch(`${baseUrl}hello`).then((r) => r.json());
-        assert.deepStrictEqual(restRes, { hello: "hello, world!" });
+        expect(restRes).toEqual({ hello: "hello, world!" });
       } finally {
         await app.stop();
       }
@@ -155,7 +154,7 @@ describe("application", () => {
         const res = await fetch(`http://localhost:${config.http.port}/hello`, {
           method: "GET",
         }).then((r) => r.json());
-        assert.deepStrictEqual(res, { hello: "hello, world!" });
+        expect(res).toEqual({ hello: "hello, world!" });
       } finally {
         await app.stop();
       }
@@ -187,7 +186,7 @@ describe("application", () => {
       await app.start();
       try {
         const [res] = await fetchTestGraphql("query { today }");
-        assert.deepStrictEqual(res, { data: { today: today.toISOString() } });
+        expect(res).toEqual({ data: { today: today.toISOString() } });
       } finally {
         await app.stop();
       }
@@ -199,7 +198,7 @@ describe("application", () => {
         graphqlSchemaDirs = [];
         http = { port: Number(this.required("MISSING_VAR")) };
       }
-      assert.throws(() => createApp());
+      expect(() => createApp()).throws();
     });
 
     it("should log uncaught errors", () => {
@@ -264,10 +263,10 @@ describe("application", () => {
       try {
         for (const [query, expected] of cases) {
           const [res] = await fetchTestGraphql(`query { ${query} }`);
-          assert.strictEqual(res.errors?.length, 1);
-          assert.strictEqual(res.errors?.[0]?.message, expected);
+          expect(res.errors?.length).toEqual(1);
+          expect(res.errors?.[0]?.message).toEqual(expected);
         }
-        assert.strictEqual(logger.calls, cases.length);
+        expect(logger.calls).toEqual(cases.length);
       } finally {
         await app.stop();
       }
@@ -287,7 +286,7 @@ describe("application", () => {
       await app.start();
       try {
         const [res] = await fetchTestGraphql("query { hello }");
-        assert.strictEqual(res.data?.hello, "hello, world");
+        expect(res.data?.hello).toEqual("hello, world");
       } finally {
         await app.stop();
       }

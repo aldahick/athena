@@ -1,10 +1,11 @@
-name: publish-core
+name: Publish core
+run-name: Publish ${{ github.ref_name }}
 on:
   push:
     tags:
       - core-v**
 jobs:
-  publish-core-package:
+  publish:
     uses: ./.github/workflows/publish-package.yml
     with:
       build-script: build:full

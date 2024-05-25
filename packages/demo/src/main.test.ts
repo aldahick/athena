@@ -1,5 +1,4 @@
-import assert from "node:assert";
-import { describe, it } from "node:test";
+import { describe, expect, it } from "vitest";
 import { withTestApp } from "./test-util.js";
 
 describe("main", () => {
@@ -12,7 +11,7 @@ describe("main", () => {
           "Content-Type": "application/json",
         },
       }).then((r) => r.json());
-      assert.deepStrictEqual(res, { data: { hello: "hello, world!" } });
+      expect(res).toEqual({ data: { hello: "hello, world!" } });
     });
   });
 });

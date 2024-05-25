@@ -1,10 +1,10 @@
-name: build-utils
+name: Build utils
 on:
   push:
     paths:
       - packages/utils/**
 jobs:
-  build-utils-package:
+  build:
     uses: ./.github/workflows/build-package.yml
     with:
       directory: packages/utils
