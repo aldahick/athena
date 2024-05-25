@@ -30,7 +30,7 @@ jobs:
       - run: pnpm install
       - run: pnpm ${{ inputs.build-script }}
         working-directory: ${{ inputs.directory }}
-      - run: npm publish --provenance --no-git-checks
+      - run: pnpm publish --provenance --no-git-checks
         working-directory: ${{ inputs.directory }}
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
