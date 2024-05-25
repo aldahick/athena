@@ -20,6 +20,3 @@ echo "Committing new git tag: $tag at commit '$commit_message'"
 git add package.json
 git commit -m "$commit_message"
 git tag $tag
-
-git push
-git push --tags
