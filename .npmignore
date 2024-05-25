@@ -1,0 +1,4 @@
+*.tsbuildinfo
+src
+test
+vitest*
