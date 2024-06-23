@@ -35,7 +35,7 @@
   "dependencies": {
     "@athenajs/core": "workspace:*",
     "@athenajs/utils": "workspace:*",
-    "graphql-request": "^7.1.0",
+    "graphql-request": "^6.1.0",
     "reflect-metadata": "^0.2.2"
   },
   "devDependencies": {

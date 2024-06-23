@@ -1,12 +1,14 @@
 {
-  "$schema": "https://biomejs.dev/schemas/1.7.3/schema.json",
-  "organizeImports": {
-    "enabled": true
-  },
+  "$schema": "https://biomejs.dev/schemas/1.8.2/schema.json",
   "formatter": {
     "enabled": true,
-    "indentWidth": 2,
-    "indentStyle": "space"
+    "indentStyle": "space",
+    "indentWidth": 2
+  },
+  "javascript": {
+    "parser": {
+      "unsafeParameterDecoratorsEnabled": true
+    }
   },
   "linter": {
     "enabled": true,
@@ -26,9 +28,9 @@
         "useBlockStatements": "error",
         "useCollapsedElseIf": "error",
         "useConsistentArrayType": "error",
-        "useImportType": "off",
         "useForOf": "error",
         "useFragmentSyntax": "error",
+        "useImportType": "off",
         "useShorthandAssign": "error",
         "useSingleCaseStatement": "error"
       },
@@ -38,17 +40,12 @@
       }
     }
   },
-  "javascript": {
-    "parser": {
-      "unsafeParameterDecoratorsEnabled": true
-    }
+  "organizeImports": {
+    "enabled": true
   },
   "overrides": [
     {
-      "include": [
-        "vitest.config.mts",
-        "codegen*.ts"
-      ],
+      "include": ["*lintstagedrc.mjs", "vitest.config.mts", "codegen*.ts"],
       "linter": {
         "rules": {
           "style": {
@@ -58,9 +55,7 @@
       }
     },
     {
-      "include": [
-        "graphql*sdk.ts"
-      ],
+      "include": ["graphql*sdk.ts"],
       "linter": {
         "rules": {
           "suspicious": {

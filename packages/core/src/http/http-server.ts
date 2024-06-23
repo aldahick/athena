@@ -34,9 +34,10 @@ export class HttpServer {
       for (const info of getControllerInfos(instance)) {
         const callback: HttpHandler<unknown> =
           instance[info.propertyKey as never];
-        const controllerName = `${
-          instance.constructor.name
-        }.${info.propertyKey.toString()}`;
+        const controllerName = [
+          instance.constructor.name,
+          info.propertyKey,
+        ].join(".");
         this.logger.debug(
           `registering http controller ${controllerName} for route ${info.route}`,
         );
