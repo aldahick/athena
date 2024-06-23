@@ -1,3 +1,3 @@
 export default {
-  "*.{json,ts,tsx}": "biome check",
+  "*.{ts,tsx}": "biome check",
 };

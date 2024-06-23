@@ -5,6 +5,9 @@
     "indentStyle": "space",
     "indentWidth": 2
   },
+  "organizeImports": {
+    "enabled": true
+  },
   "javascript": {
     "parser": {
       "unsafeParameterDecoratorsEnabled": true
@@ -39,9 +42,6 @@
         "useAwait": "error"
       }
     }
-  },
-  "organizeImports": {
-    "enabled": true
   },
   "overrides": [
     {
