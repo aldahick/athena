@@ -16,12 +16,13 @@
     "test": "vitest run"
   },
   "engines": {
-    "node": "^20.10"
+    "node": "^20.12"
   },
   "repository": {
     "url": "git+https://github.com/aldahick/athena"
   },
+  "bugs": "https://github.com/aldahick/athena/issues",
   "dependencies": {
-    "graphql": "^16.8.1"
+    "graphql": "^16.9.0"
   }
 }

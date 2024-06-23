@@ -19,12 +19,13 @@
     "test": "vitest run"
   },
   "engines": {
-    "node": "^20.10"
+    "node": "^20.12"
   },
   "repository": {
     "url": "git+https://github.com/aldahick/athena"
   },
+  "bugs": "https://github.com/aldahick/athena/issues",
   "devDependencies": {
-    "@athenajs/utils": "workspace:^"
+    "@athenajs/utils": "workspace:*"
   }
 }

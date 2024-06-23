@@ -13,11 +13,12 @@
     "test": "vitest run"
   },
   "engines": {
-    "node": "^20.10"
+    "node": "^20.12"
   },
   "repository": {
     "url": "git+https://github.com/aldahick/athena"
   },
+  "bugs": "https://github.com/aldahick/athena/issues",
   "c8": {
     "100": true,
     "note": "100% code coverage is usually unnecessary. This is a demo project.",
@@ -34,13 +35,13 @@
   "dependencies": {
     "@athenajs/core": "workspace:*",
     "@athenajs/utils": "workspace:*",
-    "graphql-request": "^6.1.0",
+    "graphql-request": "^7.1.0",
     "reflect-metadata": "^0.2.2"
   },
   "devDependencies": {
     "@graphql-codegen/cli": "^5.0.2",
-    "@graphql-codegen/typescript": "^4.0.6",
+    "@graphql-codegen/typescript": "^4.0.7",
     "@graphql-codegen/typescript-graphql-request": "^6.2.0",
-    "@graphql-codegen/typescript-operations": "^4.2.0"
+    "@graphql-codegen/typescript-operations": "^4.2.1"
   }
 }
