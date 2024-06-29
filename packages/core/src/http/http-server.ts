@@ -53,7 +53,7 @@ export class HttpServer {
   async start(): Promise<void> {
     const { host = "localhost", port } = this.config.http;
     await this.fastify?.listen({ port, host });
-    this.logger.info(`listening on port ${port}`);
+    this.logger.info(`listening on ${host}:${port}`);
   }
 
   async stop(): Promise<void> {
