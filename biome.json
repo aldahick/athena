@@ -18,6 +18,7 @@
     "rules": {
       "complexity": {
         "noExcessiveCognitiveComplexity": "error",
+        "noUselessConstructor": "off",
         "useSimplifiedLogicExpression": "error"
       },
       "correctness": {
@@ -45,7 +46,7 @@
   },
   "overrides": [
     {
-      "include": ["*lintstagedrc.mjs", "vitest.config.mts", "codegen*.ts"],
+      "include": ["*lintstagedrc.mjs", "vitest.config.mts", "vite.config.ts", "codegen*.ts"],
       "linter": {
         "rules": {
           "style": {
