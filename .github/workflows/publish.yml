@@ -39,7 +39,7 @@ jobs:
       - id: package-id
         working-directory: ${{ inputs.directory }}
         run: |
-          packageId=$(cat package.json | jq -r '.version')
+          packageId=$(cat package.json | jq -r '.name')
           echo "package-id=$packageId" >> "$GITHUB_OUTPUT"
       - uses: slackapi/slack-github-action@v1
         with:
