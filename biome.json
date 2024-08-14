@@ -1,5 +1,5 @@
 {
-  "$schema": "https://biomejs.dev/schemas/1.8.2/schema.json",
+  "$schema": "https://biomejs.dev/schemas/1.8.3/schema.json",
   "formatter": {
     "enabled": true,
     "indentStyle": "space",
@@ -46,7 +46,16 @@
   },
   "overrides": [
     {
-      "include": ["*lintstagedrc.mjs", "vitest.config.mts", "vite.config.ts", "codegen*.ts"],
+      "include": [
+        "*lintstagedrc.mjs",
+        "vitest.config.mts",
+        "vite.config.ts",
+        "codegen*.ts",
+        "app/root.tsx",
+        "app/routes/*.tsx",
+        "*.config.js",
+        "*.config.ts"
+      ],
       "linter": {
         "rules": {
           "style": {
@@ -56,7 +65,9 @@
       }
     },
     {
-      "include": ["graphql*sdk.ts"],
+      "include": [
+        "graphql*sdk.ts"
+      ],
       "linter": {
         "rules": {
           "suspicious": {

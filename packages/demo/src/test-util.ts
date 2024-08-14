@@ -3,6 +3,7 @@ import { container } from "@athenajs/core";
 import { GraphQLClient } from "graphql-request";
 import { Sdk, getSdk } from "./graphql-sdk.js";
 import { main } from "./main.js";
+import "./graphql.js";
 
 export const withTestApp = async (
   callback: (sdk: Sdk, url: string) => Promise<void>,

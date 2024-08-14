@@ -17,7 +17,7 @@ export const athenaViteConfig = ({
           enabled: true,
           include: ["src"],
           reporter: ["html", "text-summary", "lcov"],
-          ignoreEmptyLines: true,
+          ignoreEmptyLines: false,
           extension: [".ts"],
           thresholds: {
             "100": true,
