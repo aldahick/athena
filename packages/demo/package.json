@@ -13,7 +13,7 @@
     "test": "vitest run"
   },
   "engines": {
-    "node": "^20.12"
+    "node": "^22.10"
   },
   "repository": {
     "url": "git+https://github.com/aldahick/athena"

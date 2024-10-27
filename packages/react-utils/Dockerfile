@@ -1,5 +1,5 @@
 # Make sure to build this image using the root context, not "web" context
-FROM node:20-alpine AS builder
+FROM node:22-alpine AS builder
 ARG WEB_DIR=.
 
 WORKDIR /app
@@ -17,7 +17,7 @@ COPY ${WEB_DIR}/.env.example ./
 
 RUN pnpm build
 
-FROM node:20-alpine AS server
+FROM node:22-alpine AS server
 ARG WEB_DIR=.
 
 WORKDIR /app
