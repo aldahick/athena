@@ -8,6 +8,8 @@
 
 A modular backend framework atop Apollo and Fastify. Simpler and more opinionated than its inspiration, [Nest](https://nestjs.org).
 
+If you're curious about recent changes, please see the [changelog](./CHANGELOG.md).
+
 ## Features
 
 - [GraphQL](./docs/graphql.md)
@@ -22,6 +24,7 @@ A modular backend framework atop Apollo and Fastify. Simpler and more opinionate
 
 - [x] [GraphQL](./packages/demo/src/hello/hello-resolver.ts)
   - [x] [Simple batch resolvers](./packages/demo/src/user/user-resolver.ts)
+  - [x] [Subscription resolvers](./packages/core/src/test/subscription.test.ts)
 - [x] [HTTP](./packages/demo/src/hello/hello-controller.ts)
 - [x] [CI](./.github/workflows/build-package.yml) / [CD](./.github/workflows/publish-package.yml)
 - [ ] Auth
