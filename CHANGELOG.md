@@ -4,7 +4,7 @@ This project uses [semver](https://semver.org/).
 
 Versions before 1.0 (Oct 21, 2023) are not included here - please see the [commit history before that point](https://github.com/aldahick/athena/commits/main/?after=8667f1dae3690173a398e58f3b4e100942adfc1e+0) if you're curious.
 
-## v1.3.1
+## v1.3.2
 
 - Implement subscription resolvers
 
