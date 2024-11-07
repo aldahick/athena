@@ -32,6 +32,8 @@ jobs:
       - run: pnpm install
       - run: pnpm ${{ inputs.build-script }}
         working-directory: ${{ inputs.directory }}
+      - run: cp README.md ${{ inputs.directory }}
+        if: ${{ inputs.directory == 'packages/core' }}
       - run: pnpm publish --provenance --no-git-checks
         working-directory: ${{ inputs.directory }}
         env:
