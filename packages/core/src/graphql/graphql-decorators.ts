@@ -71,6 +71,17 @@ export const resolveScalar =
     });
   };
 
+export const resolveSubscription =
+  (subscriptionName?: string): MethodDecorator =>
+  (target, propertyKey, descriptor) => {
+    const finalSubscriptionName = subscriptionName ?? propertyKey.toString();
+    resolveField(`Subscription.${finalSubscriptionName}`)(
+      target,
+      propertyKey,
+      descriptor,
+    );
+  };
+
 /**
  * Registers a method (on a resolver) to handle a specific GraphQL field.
  * @todo improve batch docs

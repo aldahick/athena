@@ -1,5 +1,6 @@
 import fastifyCors from "@fastify/cors";
 import fastifyMultipart from "@fastify/multipart";
+import fastifyWebsocket from "@fastify/websocket";
 import fastify, { FastifyInstance, RouteHandler } from "fastify";
 import { injectable } from "tsyringe";
 import { BaseConfig, injectConfig } from "../config.js";
@@ -30,6 +31,8 @@ export class HttpServer {
     this.fastify = fastify();
     await this.fastify.register(fastifyCors);
     await this.fastify.register(fastifyMultipart);
+    await this.fastify.register(fastifyWebsocket);
+
     for (const instance of getControllerInstances()) {
       for (const info of getControllerInfos(instance)) {
         const callback: HttpHandler<unknown> =
@@ -66,7 +69,7 @@ export class HttpServer {
   ): RouteHandler {
     const contextGenerator = resolveContextGenerator();
     return async (req, res) => {
-      const context = (await contextGenerator?.generateContext(
+      const context = (await contextGenerator?.httpContext(
         req as ContextRequest,
       )) as Context;
       return callback(req, res, context);

@@ -1,14 +1,18 @@
 import { promises as fs } from "node:fs";
 import path from "node:path";
-import { ApolloServer, ApolloServerOptions, BaseContext } from "@apollo/server";
-import fastifyApollo, {
+import {
   fastifyApolloDrainPlugin,
-} from "@as-integrations/fastify";
+  fastifyApolloHandler,
+} from "@aldahick/apollo-fastify";
+import { ApolloServer, ApolloServerOptions, BaseContext } from "@apollo/server";
 import { assignDeep } from "@athenajs/utils";
+import { makeExecutableSchema } from "@graphql-tools/schema";
 import { FastifyInstance } from "fastify";
-import { GraphQLFieldResolver } from "graphql";
+import { GraphQLFieldResolver, Source, parse } from "graphql";
 import { createBatchResolver } from "graphql-resolve-batch";
+import { makeHandler } from "graphql-ws/lib/use/@fastify/websocket";
 import { injectable } from "tsyringe";
+import { WebSocket, createWebSocketStream } from "ws";
 import { BaseConfig, injectConfig } from "../config.js";
 import { Logger } from "../logger.js";
 import { ContextRequest, resolveContextGenerator } from "./graphql-context.js";
@@ -42,20 +46,45 @@ export class GraphQLServer<Context extends BaseContext = BaseContext> {
     if (this.started) {
       return;
     }
-    this.apollo = new ApolloServer({
-      typeDefs: await this.getTypeDefs(),
-      resolvers: this.getResolvers(),
+    const typeDefs = await this.getTypeDefs();
+    const resolvers = this.getResolvers();
+    const schema = makeExecutableSchema({ typeDefs, resolvers });
+    const contextGenerator = resolveContextGenerator();
+
+    const apollo = new ApolloServer<Context>({
+      schema,
       plugins: [fastifyApolloDrainPlugin(fastify)],
     });
-    await this.apollo.start();
-    const contextGenerator = resolveContextGenerator();
-    await fastify.register(fastifyApollo(this.apollo), {
-      context: async (req) => {
-        return (await contextGenerator?.generateContext(
+    this.apollo = apollo;
+    await apollo.start();
+
+    const httpHandler = fastifyApolloHandler(this.apollo, {
+      context: (req) =>
+        contextGenerator?.httpContext(
           req as ContextRequest,
-        )) as Context;
-      },
+        ) as Promise<Context>,
     });
+    const wsHandler = makeHandler({
+      schema,
+      context: contextGenerator?.websocketContext?.bind(contextGenerator),
+    });
+
+    await fastify.register((fastify) => {
+      fastify.get("/graphql", { websocket: true }, (socket, req) => {
+        // graphql-ws@5.16 has mismatched types: https://github.com/enisdenjo/graphql-ws/issues/553
+        const connection = createWebSocketStream(
+          socket,
+        ) as unknown as WebSocket & { socket: WebSocket };
+        connection.socket = socket;
+        return wsHandler.call(fastify, connection, req);
+      });
+      fastify.route({
+        method: ["POST", "OPTIONS"],
+        url: "/graphql",
+        handler: httpHandler,
+      });
+    });
+
     this.started = true;
   }
 
@@ -75,7 +104,13 @@ export class GraphQLServer<Context extends BaseContext = BaseContext> {
     const schemaPaths = schemaFiles
       .flat()
       .map((file) => path.resolve(file.parentPath, file.name));
-    return Promise.all(schemaPaths.map((path) => fs.readFile(path, "utf-8")));
+    return await Promise.all(
+      schemaPaths.map(async (schemaPath) => {
+        const source = await fs.readFile(schemaPath, "utf-8");
+        const name = path.basename(schemaPath);
+        return parse(new Source(source, name));
+      }),
+    );
   }
 
   getResolvers(): Resolvers {
@@ -95,29 +130,35 @@ export class GraphQLServer<Context extends BaseContext = BaseContext> {
     if (typeof resolver !== "function") {
       return resolver;
     }
+
+    const handleError = (err: unknown) => {
+      let message = "unknown error";
+      if (err instanceof Error) {
+        message = err.stack || err.message;
+      } else if (err && (typeof err === "object" || typeof err === "string")) {
+        message = err?.toString();
+      }
+      this.logger.error(
+        `an error occurred in GraphQL resolver ${info.typeName}: ${message}`,
+      );
+      if (err instanceof Error) {
+        throw err;
+      }
+      throw new Error(message);
+    };
+
     const callback = resolver.bind(instance);
     const resolve = async (...args: unknown[]) => {
       try {
         return await callback(...args);
       } catch (err) {
-        let message = "unknown error";
-        if (err instanceof Error) {
-          message = err.stack || err.message;
-        } else if (
-          err &&
-          (typeof err === "object" || typeof err === "string")
-        ) {
-          message = err?.toString();
-        }
-        this.logger.error(
-          `an error occurred in GraphQL resolver ${info.typeName}: ${message}`,
-        );
-        if (err instanceof Error) {
-          throw err;
-        }
-        throw new Error(message);
+        handleError(err);
       }
     };
+
+    if (info.typeName.startsWith("Subscription.")) {
+      return { subscribe: resolve };
+    }
     return info.batch ? createBatchResolver(resolve) : resolve;
   }
 }

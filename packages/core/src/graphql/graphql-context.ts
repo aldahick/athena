@@ -1,4 +1,5 @@
 import { IncomingHttpHeaders } from "node:http";
+import { Context, SubscribeMessage } from "graphql-ws";
 import { container, makeRegistryDecorator } from "../container.js";
 
 export interface ContextRequest {
@@ -7,7 +8,11 @@ export interface ContextRequest {
 }
 
 export interface ContextGenerator {
-  generateContext(req: ContextRequest): Promise<unknown | undefined>;
+  httpContext(req: ContextRequest): Promise<unknown | undefined>;
+  websocketContext?(
+    context: Context,
+    message: SubscribeMessage,
+  ): Promise<unknown | undefined>;
 }
 
 export const contextGeneratorToken = Symbol("GraphQLContextGenerator");

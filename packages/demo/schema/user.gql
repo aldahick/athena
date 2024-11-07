@@ -2,6 +2,10 @@ extend type Query {
   users: [User!]!
 }
 
+type Subscription {
+  userUpdated: User!
+}
+
 type User {
   id: ID!
   username: String!

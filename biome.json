@@ -24,7 +24,7 @@
       "correctness": {
         "noUnusedImports": "error",
         "useExhaustiveDependencies": "off",
-        "useHookAtTopLevel": "error"
+        "useHookAtTopLevel": "off"
       },
       "style": {
         "noDefaultExport": "error",
@@ -51,8 +51,6 @@
         "vitest.config.mts",
         "vite.config.ts",
         "codegen*.ts",
-        "app/root.tsx",
-        "app/routes/*.tsx",
         "*.config.js",
         "*.config.ts"
       ],
@@ -72,6 +70,18 @@
         "rules": {
           "suspicious": {
             "noExplicitAny": "off"
+          }
+        }
+      }
+    },
+    {
+      "include": [
+        "*.tsx"
+      ],
+      "linter": {
+        "rules": {
+          "correctness": {
+            "useHookAtTopLevel": "error"
           }
         }
       }

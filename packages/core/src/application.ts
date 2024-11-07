@@ -20,8 +20,8 @@ export class Application {
   };
 
   readonly stop = async (): Promise<void> => {
-    await this.graphqlServer.stop();
     await this.httpServer.stop();
+    await this.graphqlServer.stop();
     this.unregisterErrorHandlers();
   };
 
