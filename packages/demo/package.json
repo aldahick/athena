@@ -4,7 +4,6 @@
   "main": "dist/main.js",
   "type": "module",
   "scripts": {
-    "build:full": "cd ../core && pnpm build:full && cd ../demo && pnpm build",
     "build": "tsc",
     "dev": "tsc-watch --onSuccess 'node --enable-source-maps dist/main.js'",
     "generate": "graphql-codegen --config codegen.graphql.ts",

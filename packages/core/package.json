@@ -9,7 +9,6 @@
     "dist"
   ],
   "scripts": {
-    "build:full": "cd ../utils && pnpm build && cd ../core && pnpm build",
     "build": "tsc",
     "lint": "biome check src",
     "postversion": "bash ../../scripts/hooks/postversion.sh core",

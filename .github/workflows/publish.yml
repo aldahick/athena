@@ -4,10 +4,6 @@ permissions:
 on:
   workflow_call:
     inputs:
-      build-script:
-        required: false
-        type: string
-        default: build:full
       directory:
         required: true
         type: string
@@ -30,8 +26,7 @@ jobs:
         with:
           version: 9
       - run: pnpm install
-      - run: pnpm ${{ inputs.build-script }}
-        working-directory: ${{ inputs.directory }}
+      - run: pnpm build ${{ inputs.directory }}
       - run: cp README.md ${{ inputs.directory }}
         if: ${{ inputs.directory == 'packages/core' }}
       - run: pnpm publish --provenance --no-git-checks
