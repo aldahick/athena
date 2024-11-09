@@ -2,7 +2,7 @@ name: Build
 on:
   workflow_call:
     inputs:
-      directory:
+      package:
         required: true
         type: string
 
@@ -18,8 +18,8 @@ jobs:
         with:
           version: 9
       - run: pnpm install
-      - run: pnpm build ${{ inputs.directory }}
+      - run: pnpm build ${{ inputs.package }}
       - run: pnpm test
-        working-directory: ${{ inputs.directory }}
+        working-directory: packages/${{ inputs.package }}
       - run: pnpm lint
-        working-directory: ${{ inputs.directory }}
+        working-directory: packages/${{ inputs.package }}

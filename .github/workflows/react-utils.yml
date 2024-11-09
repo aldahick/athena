@@ -12,7 +12,7 @@ jobs:
   build:
     uses: ./.github/workflows/build.yml
     with:
-      directory: packages/react-utils
+      package: react-utils
 
   publish:
     if: ${{ github.ref_type == 'tag' }}
@@ -20,4 +20,4 @@ jobs:
     uses: ./.github/workflows/publish.yml
     secrets: inherit
     with:
-      directory: packages/react-utils
+      package: react-utils

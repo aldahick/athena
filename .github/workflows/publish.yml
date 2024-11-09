@@ -4,7 +4,7 @@ permissions:
 on:
   workflow_call:
     inputs:
-      directory:
+      package:
         required: true
         type: string
     secrets:
@@ -26,15 +26,15 @@ jobs:
         with:
           version: 9
       - run: pnpm install
-      - run: pnpm build ${{ inputs.directory }}
-      - run: cp README.md ${{ inputs.directory }}
-        if: ${{ inputs.directory == 'packages/core' }}
+      - run: pnpm build ${{ inputs.package }}
+      - run: cp README.md packages/${{ inputs.package }}
+        if: ${{ inputs.package == 'core' }}
       - run: pnpm publish --provenance --no-git-checks
-        working-directory: ${{ inputs.directory }}
+        working-directory: packages/${{ inputs.package }}
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
       - id: package-id
-        working-directory: ${{ inputs.directory }}
+        working-directory: packages/${{ inputs.package }}
         run: |
           packageId=$(cat package.json | jq -r '.name')
           echo "packageId=$packageId" >> "$GITHUB_OUTPUT"
