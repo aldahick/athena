@@ -1,5 +1,5 @@
 import { setTimeout } from "node:timers/promises";
-import { Context, SubscribeMessage, createClient } from "graphql-ws";
+import { Context, SubscribePayload, createClient } from "graphql-ws";
 import { describe, expect, it, vi } from "vitest";
 import {
   ContextGenerator,
@@ -35,9 +35,9 @@ describe("subscription", () => {
     const websocketContext = vi
       .fn()
       .mockImplementation(
-        (socketContext: Context, message: SubscribeMessage) => {
+        (socketContext: Context, payload: SubscribePayload) => {
           expect(socketContext.acknowledged).toEqual(true);
-          expect(message.payload.query).toEqual(query);
+          expect(payload.query).toEqual(query);
           return context;
         },
       );

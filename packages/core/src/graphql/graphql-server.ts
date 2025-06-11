@@ -10,9 +10,8 @@ import { makeExecutableSchema } from "@graphql-tools/schema";
 import { FastifyInstance } from "fastify";
 import { GraphQLFieldResolver, Source, parse } from "graphql";
 import { createBatchResolver } from "graphql-resolve-batch";
-import { makeHandler } from "graphql-ws/lib/use/@fastify/websocket";
+import { makeHandler } from "graphql-ws/use/@fastify/websocket";
 import { injectable } from "tsyringe";
-import { WebSocket, createWebSocketStream } from "ws";
 import { BaseConfig, injectConfig } from "../config.js";
 import { Logger } from "../logger.js";
 import { ContextRequest, resolveContextGenerator } from "./graphql-context.js";
@@ -66,18 +65,12 @@ export class GraphQLServer<Context extends BaseContext = BaseContext> {
     });
     const wsHandler = makeHandler({
       schema,
-      context: contextGenerator?.websocketContext?.bind(contextGenerator),
+      context: (context, id, payload, args) =>
+        contextGenerator?.websocketContext?.(context, payload),
     });
 
     await fastify.register((fastify) => {
-      fastify.get("/graphql", { websocket: true }, (socket, req) => {
-        // graphql-ws@5.16 has mismatched types: https://github.com/enisdenjo/graphql-ws/issues/553
-        const connection = createWebSocketStream(
-          socket,
-        ) as unknown as WebSocket & { socket: WebSocket };
-        connection.socket = socket;
-        return wsHandler.call(fastify, connection, req);
-      });
+      fastify.get("/graphql", { websocket: true }, wsHandler);
       fastify.route({
         method: ["POST", "OPTIONS"],
         url: "/graphql",
