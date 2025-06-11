@@ -23,6 +23,6 @@
   },
   "bugs": "https://github.com/aldahick/athena/issues",
   "dependencies": {
-    "graphql": "^16.10.0"
+    "graphql": "^16.11.0"
   }
 }
