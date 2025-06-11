@@ -39,9 +39,15 @@ jobs:
           packageId=$(cat package.json | jq -r '.name')
           echo "packageId=$packageId" >> "$GITHUB_OUTPUT"
       - uses: slackapi/slack-github-action@v1
+        if: ${{ failure() }}
         with:
           channel-id: ${{ vars.PUBLISHED_SLACK_CHANNEL_ID }}
-          # For posting a simple plain text message
-          slack-message: "Published ${{ steps.package-id.outputs.packageId }}@${{ github.ref_name }} to NPM: https://npmjs.com/package/${{ steps.package-id.outputs.packageId }}"
+          slack-message: "❌ Failed to publish ${{ steps.package-id.outputs.packageId }}@${{ github.ref_name }}: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+        env:
+          SLACK_BOT_TOKEN: ${{ secrets.SLACK_TOKEN }}
+      - uses: slackapi/slack-github-action@v1
+        with:
+          channel-id: ${{ vars.PUBLISHED_SLACK_CHANNEL_ID }}
+          slack-message: "🚢 Published ${{ steps.package-id.outputs.packageId}}@${{ github.ref_name }} to NPM: https://npmjs.com/package/${{ steps.package-id.outputs.packageId }}"
         env:
           SLACK_BOT_TOKEN: ${{ secrets.SLACK_TOKEN }}
