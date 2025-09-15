@@ -16,7 +16,7 @@
     "build": "tsx ./scripts/build.ts"
   },
   "engines": {
-    "node": ">=20"
+    "node": ">=22"
   },
   "devDependencies": {
     "@biomejs/biome": "^2.2.4",
