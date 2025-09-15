@@ -16,7 +16,7 @@ jobs:
           node-version-file: .nvmrc
       - uses: pnpm/action-setup@v4
         with:
-          version: 9
+          version: latest
       - run: pnpm install
       - run: pnpm build ${{ inputs.package }}
       - run: pnpm test

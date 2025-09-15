@@ -6,7 +6,7 @@
 ![React Utils workflow status badge](https://github.com/aldahick/athena/actions/workflows/react-utils.yml/badge.svg?branch=main)
 ![Utils workflow status badge](https://github.com/aldahick/athena/actions/workflows/utils.yml/badge.svg?branch=main)
 
-A modular backend framework atop Apollo and Fastify. Simpler and more opinionated than its inspiration, [Nest](https://nestjs.org).
+A modular backend framework atop Apollo and Fastify. Simpler and more opinionated than its inspiration, [Nest](https://nestjs.org). Requires an [LTS version](https://nodejs.org/en/about/previous-releases) of Node.
 
 If you're curious about recent changes, please see the [changelog](./CHANGELOG.md).
 

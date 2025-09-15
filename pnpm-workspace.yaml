@@ -1,2 +1,8 @@
 packages:
-  - 'packages/*'
+  - packages/*
+
+onlyBuiltDependencies:
+  - '@apollo/protobufjs'
+  - '@biomejs/biome'
+  - '@swc/core'
+  - esbuild
