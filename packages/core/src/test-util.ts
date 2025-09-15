@@ -23,7 +23,7 @@ export const fetchTestGraphql = async (baseUrl: string, query: string) => {
 export const createTestConfig = () => {
   const port = randomInt(10_000, 20_000);
   @config()
-  class Config extends BaseConfig {
+  class _Config extends BaseConfig {
     graphqlSchemaDirs = [
       path.join(getModuleDir(import.meta), "../test/application/schema"),
     ];

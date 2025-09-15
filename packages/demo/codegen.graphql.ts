@@ -7,7 +7,7 @@ const config: CodegenConfig = {
     typesPrefix: "I",
   },
   hooks: {
-    afterAllFileWrite: "biome check --apply-unsafe",
+    afterAllFileWrite: "biome check --write --unsafe",
   },
   generates: {
     "src/graphql.ts": {

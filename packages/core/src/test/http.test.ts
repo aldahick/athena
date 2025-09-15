@@ -5,7 +5,7 @@ import { withTestApp } from "../test-util.js";
 describe("http", () => {
   it("should register http controllers", () => {
     @controller()
-    class HelloController {
+    class _HelloController {
       @get("/hello")
       hello(): Promise<{ hello: string }> {
         return Promise.resolve({ hello: "hello, world!" });

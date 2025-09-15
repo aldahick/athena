@@ -1,12 +1,22 @@
 {
-  "$schema": "https://biomejs.dev/schemas/1.9.4/schema.json",
+  "$schema": "https://biomejs.dev/schemas/2.2.4/schema.json",
   "formatter": {
     "enabled": true,
     "indentStyle": "space",
     "indentWidth": 2
   },
-  "organizeImports": {
-    "enabled": true
+  "files": {
+    "includes": [
+      "**",
+      "!**/graphql-sdk.ts"
+    ]
+  },
+  "assist": {
+    "actions": {
+      "source": {
+        "organizeImports": "on"
+      }
+    }
   },
   "javascript": {
     "parser": {
@@ -24,7 +34,8 @@
       "correctness": {
         "noUnusedImports": "error",
         "useExhaustiveDependencies": "off",
-        "useHookAtTopLevel": "off"
+        "useHookAtTopLevel": "off",
+        "noSwitchDeclarations": "error"
       },
       "style": {
         "noDefaultExport": "error",
@@ -35,8 +46,7 @@
         "useForOf": "error",
         "useFragmentSyntax": "error",
         "useImportType": "off",
-        "useShorthandAssign": "error",
-        "useSingleCaseStatement": "error"
+        "useShorthandAssign": "error"
       },
       "suspicious": {
         "noSkippedTests": "error",
@@ -46,13 +56,13 @@
   },
   "overrides": [
     {
-      "include": [
-        "*lintstagedrc.mjs",
-        "vitest.config.mts",
-        "vite.config.ts",
-        "codegen*.ts",
-        "*.config.js",
-        "*.config.ts"
+      "includes": [
+        "**/*lintstagedrc.mjs",
+        "**/vitest.config.mts",
+        "**/vite.config.ts",
+        "**/codegen*.ts",
+        "**/*.config.js",
+        "**/*.config.ts"
       ],
       "linter": {
         "rules": {
@@ -63,8 +73,8 @@
       }
     },
     {
-      "include": [
-        "graphql*sdk.ts"
+      "includes": [
+        "**/graphql*sdk.ts"
       ],
       "linter": {
         "rules": {
@@ -75,8 +85,8 @@
       }
     },
     {
-      "include": [
-        "*.tsx"
+      "includes": [
+        "**/*.tsx"
       ],
       "linter": {
         "rules": {

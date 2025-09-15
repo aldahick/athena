@@ -1,7 +1,7 @@
 import "reflect-metadata";
 import { beforeEach, describe, expect, it } from "vitest";
 import { container } from "../container.js";
-import { HttpMethod, controller, httpRoute } from "./http-decorators.js";
+import { controller, HttpMethod, httpRoute } from "./http-decorators.js";
 
 describe("http-decorators", () => {
   describe("#httpRoute", () => {

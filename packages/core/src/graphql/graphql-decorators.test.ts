@@ -3,15 +3,15 @@ import { GraphQLScalarType } from "graphql";
 import { beforeEach, describe, expect, it } from "vitest";
 import { container } from "../container.js";
 import {
-  ResolverInfo,
   getResolverInfos,
   getResolverInstances,
+  ResolverInfo,
   resolveField,
   resolveMutation,
   resolveQuery,
-  resolveScalar,
   resolver,
   resolverToken,
+  resolveScalar,
 } from "./graphql-decorators.js";
 
 describe("graphql-decorators", () => {

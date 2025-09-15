@@ -21,7 +21,7 @@ describe("config", () => {
       vi.resetAllMocks();
     });
 
-    it("should parse config from body attributes and environment variables", async () => {
+    it("should parse config from body attributes and environment variables", () => {
       const attributes = {
         CONFIG_var1: "value1",
         // this should be present as an empty string

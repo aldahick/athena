@@ -1,21 +1,21 @@
 import "reflect-metadata";
 import {
-  MockInstance,
   afterAll,
   afterEach,
   beforeAll,
   describe,
   expect,
   it,
+  MockInstance,
   vi,
 } from "vitest";
 import { BaseConfig } from "./config.js";
 import { Logger } from "./logger.js";
 
 describe("logger", () => {
-  let logMock: MockInstance;
+  let _logMock: MockInstance;
   beforeAll(() => {
-    logMock = vi.spyOn(process.stdout, "write");
+    _logMock = vi.spyOn(process.stdout, "write");
   });
   afterEach(() => {
     vi.resetAllMocks();

@@ -1,13 +1,13 @@
 import { setTimeout } from "node:timers/promises";
-import { Context, SubscribePayload, createClient } from "graphql-ws";
+import { Context, createClient, SubscribePayload } from "graphql-ws";
 import { describe, expect, it, vi } from "vitest";
 import {
   ContextGenerator,
   contextGenerator,
 } from "../graphql/graphql-context.js";
 import {
-  resolveSubscription,
   resolver,
+  resolveSubscription,
 } from "../graphql/graphql-decorators.js";
 import { withTestApp } from "../test-util.js";
 
@@ -17,9 +17,9 @@ describe("subscription", () => {
     const context = { context: true };
 
     @resolver()
-    class BirthdayResolver {
+    class _BirthdayResolver {
       @resolveSubscription("birthday")
-      async *birthday(root: never, args: never, actualContext: unknown) {
+      async *birthday(_root: never, _args: never, actualContext: unknown) {
         expect(actualContext).toEqual(context);
         for (let i = 0; i < 2; i++) {
           yield { birthday: { id: i.toString(), name: `name ${i}` } };
@@ -42,12 +42,12 @@ describe("subscription", () => {
         },
       );
     @contextGenerator()
-    class BirthdayContextGenerator implements ContextGenerator {
+    class _BirthdayContextGenerator implements ContextGenerator {
       httpContext = httpContext;
       websocketContext = websocketContext;
     }
 
-    return withTestApp(async (baseUrl, config) => {
+    return withTestApp(async (_baseUrl, config) => {
       const client = createClient({
         url: `ws://localhost:${config.http.port}/graphql`,
       });

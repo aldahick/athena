@@ -1,4 +1,4 @@
-import { HttpRequest, controller, get, post } from "@athenajs/core";
+import { controller, get, HttpRequest, post } from "@athenajs/core";
 
 @controller()
 export class HelloController {

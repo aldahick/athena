@@ -33,6 +33,11 @@ export type IQuery = {
   users: IUser[];
 };
 
+export type ISubscription = {
+  __typename?: "Subscription";
+  userUpdated: IUser;
+};
+
 export type IUser = {
   __typename?: "User";
   id: Scalars["ID"]["output"];

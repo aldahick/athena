@@ -1,5 +1,5 @@
-import { GraphQLClient, RequestOptions } from "graphql-request";
-import { gql } from "graphql-request";
+import { GraphQLClient, gql, RequestOptions } from "graphql-request";
+
 type Maybe<T> = T | undefined;
 type InputMaybe<T> = T | undefined;
 type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
@@ -31,6 +31,11 @@ type IQuery = {
   __typename?: "Query";
   hello: Scalars["String"]["output"];
   users: IUser[];
+};
+
+type ISubscription = {
+  __typename?: "Subscription";
+  userUpdated: IUser;
 };
 
 type IUser = {
@@ -86,12 +91,15 @@ export function getSdk(
     hello(
       variables?: IHelloQueryVariables,
       requestHeaders?: GraphQLClientRequestHeaders,
+      signal?: RequestInit["signal"],
     ): Promise<IHelloQuery> {
       return withWrapper(
         (wrappedRequestHeaders) =>
-          client.request<IHelloQuery>(HelloDocument, variables, {
-            ...requestHeaders,
-            ...wrappedRequestHeaders,
+          client.request<IHelloQuery>({
+            document: HelloDocument,
+            variables,
+            requestHeaders: { ...requestHeaders, ...wrappedRequestHeaders },
+            signal,
           }),
         "hello",
         "query",
@@ -101,12 +109,15 @@ export function getSdk(
     getUsers(
       variables?: IGetUsersQueryVariables,
       requestHeaders?: GraphQLClientRequestHeaders,
+      signal?: RequestInit["signal"],
     ): Promise<IGetUsersQuery> {
       return withWrapper(
         (wrappedRequestHeaders) =>
-          client.request<IGetUsersQuery>(GetUsersDocument, variables, {
-            ...requestHeaders,
-            ...wrappedRequestHeaders,
+          client.request<IGetUsersQuery>({
+            document: GetUsersDocument,
+            variables,
+            requestHeaders: { ...requestHeaders, ...wrappedRequestHeaders },
+            signal,
           }),
         "getUsers",
         "query",

@@ -45,7 +45,7 @@ describe("error", () => {
       }
 
       @resolver()
-      class ErrorResolver {
+      class _ErrorResolver {
         @resolveQuery()
         hello() {
           throw testCase.error;
@@ -72,7 +72,7 @@ describe("error", () => {
 
   it("should throw startup errors unmodified", () => {
     @config()
-    class Config extends BaseConfig {
+    class _Config extends BaseConfig {
       graphqlSchemaDirs = [];
       http = { port: Number(this.required("MISSING_VAR")) };
     }
@@ -85,7 +85,7 @@ describe("error", () => {
       error = vi.fn();
     }
     @resolver()
-    class HelloResolver {
+    class _HelloResolver {
       @resolveQuery()
       hello() {
         return "hello, world!";

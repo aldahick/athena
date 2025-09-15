@@ -3,15 +3,15 @@ import { describe, expect, it } from "vitest";
 import {
   resolveField,
   resolveQuery,
-  resolveScalar,
   resolver,
+  resolveScalar,
 } from "../graphql/graphql-decorators.js";
 import { fetchTestGraphql, withTestApp } from "../test-util.js";
 
 describe("resolver", () => {
   it("should register batch resolvers", () => {
     @resolver()
-    class PersonResolver {
+    class _PersonResolver {
       @resolveQuery("people")
       people() {
         return [{ id: "first" }, { id: "second" }];
@@ -44,7 +44,7 @@ describe("resolver", () => {
     // for simplicity's sake, we assume tests will only be run within a calendar day. :)
     const today = new Date();
     @resolver()
-    class DateResolver {
+    class _DateResolver {
       @resolveQuery()
       today(): Promise<Date> {
         return Promise.resolve(today);
@@ -70,7 +70,7 @@ describe("resolver", () => {
 
   it("should allow 'this' access in resolvers", () => {
     @resolver()
-    class HelloResolver {
+    class _HelloResolver {
       private greeting = "hello, world";
       @resolveQuery()
       hello() {

@@ -8,7 +8,7 @@ import { ApolloServer, ApolloServerOptions, BaseContext } from "@apollo/server";
 import { assignDeep } from "@athenajs/utils";
 import { makeExecutableSchema } from "@graphql-tools/schema";
 import { FastifyInstance } from "fastify";
-import { GraphQLFieldResolver, Source, parse } from "graphql";
+import { GraphQLFieldResolver, parse, Source } from "graphql";
 import { createBatchResolver } from "graphql-resolve-batch";
 import { makeHandler } from "graphql-ws/use/@fastify/websocket";
 import { injectable } from "tsyringe";
@@ -16,9 +16,9 @@ import { BaseConfig, injectConfig } from "../config.js";
 import { Logger } from "../logger.js";
 import { ContextRequest, resolveContextGenerator } from "./graphql-context.js";
 import {
-  ResolverInfo,
   getResolverInfos,
   getResolverInstances,
+  ResolverInfo,
 } from "./graphql-decorators.js";
 
 export type TypeDefs = Exclude<
@@ -65,7 +65,7 @@ export class GraphQLServer<Context extends BaseContext = BaseContext> {
     });
     const wsHandler = makeHandler({
       schema,
-      context: (context, id, payload, args) =>
+      context: (context, _id, payload, _args) =>
         contextGenerator?.websocketContext?.(context, payload),
     });
 

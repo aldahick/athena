@@ -1,7 +1,7 @@
 import { randomInt } from "node:crypto";
 import { container } from "@athenajs/core";
 import { GraphQLClient } from "graphql-request";
-import { Sdk, getSdk } from "./graphql-sdk.js";
+import { getSdk, Sdk } from "./graphql-sdk.js";
 import { main } from "./main.js";
 import "./graphql.js";
 

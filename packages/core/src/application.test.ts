@@ -6,7 +6,7 @@ import { createTestConfig } from "./test-util.js";
 describe("application", () => {
   it("should start and stop multiple times", async () => {
     @resolver()
-    class HelloResolver {
+    class _HelloResolver {
       @resolveQuery()
       hello() {
         return "hello, world!";

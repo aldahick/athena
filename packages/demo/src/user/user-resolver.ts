@@ -13,7 +13,7 @@ export class UserResolver {
   }
 
   @resolveField("User.id", true)
-  async id(users: IUser[]): Promise<IUser["id"][]> {
+  id(users: IUser[]): IUser["id"][] {
     return users.map((u) =>
       crypto.createHash("md5").update(u.username).digest("hex"),
     );
