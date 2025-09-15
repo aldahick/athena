@@ -2,8 +2,10 @@ name: React Utils
 run-name: ${{ github.ref_type == 'tag' && 'Publish' || 'Build' }} ${{ github.ref_type == 'tag' && github.ref_name || 'react-utils' }}
 on:
   push:
-    branches: '*'
-    tags: react-utils-*
+    branches:
+      - '*'
+    tags:
+      - react-utils-*
     paths:
       - .github/workflows/*
       - packages/react-utils/**

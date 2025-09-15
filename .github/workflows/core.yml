@@ -2,8 +2,10 @@ name: Core
 run-name: ${{ github.ref_type == 'tag' && 'Publish' || 'Build' }} ${{ github.ref_type == 'tag' && github.ref_name || 'core' }}
 on:
   push:
-    branches: '*'
-    tags: core-*
+    branches:
+      - '*'
+    tags:
+      - core-*
     paths:
       - .github/workflows/*
       - packages/core/**
