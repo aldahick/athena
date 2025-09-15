@@ -2,8 +2,10 @@ name: Utils
 run-name: ${{ github.ref_type == 'tag' && 'Publish' || 'Build' }} ${{ github.ref_type == 'tag' && github.ref_name || 'utils' }}
 on:
   push:
-    branches: '*'
-    tags: utils-*
+    branches:
+      - '*'
+    tags:
+      - utils-*
     paths:
       - .github/workflows/*
       - packages/utils/**
