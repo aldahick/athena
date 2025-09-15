@@ -20,15 +20,15 @@
   },
   "devDependencies": {
     "@biomejs/biome": "^2.2.4",
-    "@swc/core": "^1.12.0",
-    "@types/node": "^24.0.0",
-    "@vitest/coverage-v8": "^3.2.3",
+    "@swc/core": "^1.13.5",
+    "@types/node": "^24.5.0",
+    "@vitest/coverage-v8": "^3.2.4",
     "husky": "^9.1.7",
-    "lint-staged": "^16.1.0",
+    "lint-staged": "^16.1.6",
     "tsc-watch": "^7.1.1",
-    "tsx": "^4.20.0",
-    "typescript": "^5.8.3",
-    "unplugin-swc": "^1.5.4",
-    "vitest": "^3.2.3"
+    "tsx": "^4.20.5",
+    "typescript": "^5.9.2",
+    "unplugin-swc": "^1.5.7",
+    "vitest": "^3.2.4"
   }
 }
