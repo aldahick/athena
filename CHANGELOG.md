@@ -4,6 +4,12 @@ Breaking changes occur in minor versions during 1.x.
 
 Versions before 1.0 (Oct 21, 2023) are not included here - please see the [commit history before that point](https://github.com/aldahick/athena/commits/main/?after=8667f1dae3690173a398e58f3b4e100942adfc1e+0) if you're curious.
 
+## v1.5.0
+
+- **Breaking** Require Node 22+. This was already the case, but now it's documented correctly (at all).
+- Update dependencies
+  - Biome 1 -> 2
+
 ## v1.4.0
 
 - **Breaking** Change second arg of `ContextGenerator.websocketContext` to `graphql-ws/SubscribePayload`
